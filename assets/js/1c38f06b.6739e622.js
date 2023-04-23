@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkocp_gitp=self.webpackChunkocp_gitp||[]).push([[7932],{2498:p=>{p.exports=JSON.parse('{"label":"facebook","permalink":"/ocp-gitp/blog/tags/facebook","allTagsPath":"/ocp-gitp/blog/tags","count":1}')}}]);
