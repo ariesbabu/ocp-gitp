@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkocp_gitp=self.webpackChunkocp_gitp||[]).push([[4288],{6741:o=>{o.exports=JSON.parse('{"label":"dns","permalink":"/tags/dns","allTagsPath":"/tags","count":1,"items":[{"id":"ocp_topology/infra_topology","title":"IDP and DNS Implementation","description":"Design Overview","permalink":"/ocp_topology/infra_topology"}]}')}}]);
