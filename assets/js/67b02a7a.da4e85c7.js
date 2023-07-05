@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkocp_gitp=self.webpackChunkocp_gitp||[]).push([[4003],{4572:p=>{p.exports=JSON.parse('{"label":"postgres","permalink":"/tags/postgres","allTagsPath":"/tags","count":1,"items":[{"id":"ocp_topology/ocp_topology","title":"Design","description":"Design Overview","permalink":"/ocp_topology/"}]}')}}]);
