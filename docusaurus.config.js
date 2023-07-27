@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'OCP on Nutanix',
   tagline: '',
-  url: 'https://github.com',
+  url: 'https://ocp.howntnx.win',
   baseUrl: '/ocp-gitp/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -16,7 +16,7 @@ const config = {
 
   // GitHub pages deployment config
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'nutanix-japan', // Usually your GitHub org/user name.
+  organizationName: 'ariesbabu', // Usually your GitHub org/user name.
   projectName: 'ocp-gitp', // Usually your repo name.
   deploymentBranch: "gh-pages",
 
@@ -41,7 +41,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/nutanix-japan/ocp-gitp/edit/main/',
+            'https://github.com/ariesbabu/ocp-gitp/edit/main/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -70,7 +70,7 @@ const config = {
         },
         items: [
           {
-            href: 'https://github.com/nutanix-japan/ocp-gitp',
+            href: 'https://github.com/ariesbabu/ocp-gitp',
             label: 'GitHub',
             position: 'right',
           },
