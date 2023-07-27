@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkocp_gitp=self.webpackChunkocp_gitp||[]).push([[8229],{5637:p=>{p.exports=JSON.parse('{"label":"docusaurus","permalink":"/ocp-gitp/blog/tags/docusaurus","allTagsPath":"/ocp-gitp/blog/tags","count":4}')}}]);
