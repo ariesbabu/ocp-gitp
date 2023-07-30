@@ -9,7 +9,7 @@ const config = {
   title: 'OCP on Nutanix HCI',
   tagline: '',
   url: 'https://ocp.howntnx.win',
-  baseUrl: '/ocp-gitp/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
