@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'OCP on Nutanix',
+  title: 'OCP on Nutanix HCI',
   tagline: '',
   url: 'https://ocp.howntnx.win',
   baseUrl: '/ocp-gitp/',
