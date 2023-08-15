@@ -27,7 +27,6 @@ module.exports = {
                         'ocp_ntnx_hci/prov_vm',
                         'ocp_ntnx_hci/ocp_vms'],
               },
-              "ocp_assisted_install/ocp_assisted_install",
             ]
     },
     'ocp_access/ocp_access',

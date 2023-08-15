@@ -28,9 +28,9 @@ scalability, and rapid innovation through One-Click management.
 :::info
 
 -   **Installation** - choose one of the following
+    -   **OCP: NCM Marketplace Installer** - 40 minutes
     -   **OCP: IPI Installation** - 60 minutes
-    -   **OCP: NCM Installation** - 60 minutes 
-    -   **OCP: Assisted Installer** - 40 minutes
+    -   **OCP: NCM Installation** - 60 minutes
 -   **Nutanix Storage CSI** - 30 minutes
 -   **OCP Workload Backup/Restore** - 60 minutes 
 -   **OCP and Nutanix NDB** - 60 minutes
