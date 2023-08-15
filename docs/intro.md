@@ -28,7 +28,7 @@ scalability, and rapid innovation through One-Click management.
 :::info
 
 -   **Installation** - choose one of the following
-    -   **OCP: NCM Marketplace Installer** - 40 minutes
+    -   **OCP: NCM Marketplace Installation** - 60 minutes
     -   **OCP: IPI Installation** - 60 minutes
     -   **OCP: NCM Installation** - 60 minutes
 -   **Nutanix Storage CSI** - 30 minutes
@@ -66,12 +66,12 @@ This workshop has been tested with the following software versions:
 The lab is designed to take your through installing OCP cluster on Nutanix HCI, deploying workloads, and doing optional labs.  
 
 1. Choose one installation of the OCP cluster methods:
+   -   NCM Marketplace Installation
    -   OCP IPI Installation
    -   OCP on Nutanix NCM Installation
        -   OCP: Deploying OCP Cluster
        -   OCP: Scale out and Scale in OCP Cluster Worker Nodes
        -   OCP: Deploying Nutanix CSI Drivers for OCP Cluster
-   -   OCP Assisted Installation
 
 2. Setting up Nutanix Storage CSI
    
