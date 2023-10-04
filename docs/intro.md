@@ -96,5 +96,5 @@ The lab is designed to take your through installing OCP cluster on Nutanix HCI, 
 
 6. Optional Labs
    
-   -   Deploy second OCP cluster using NCM
-   -   Deploying IDP for OCP
+   - Deploy second OCP cluster using NCM
+   - Deploying IDP for OCP
