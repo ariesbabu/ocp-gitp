@@ -131,6 +131,18 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     EOF
 
     ```
+6. Install Helm (if it is not present)
+
+   ```bash title="Install latest Helm"
+   curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+   #
+   chmod 700 get_helm.sh
+   #
+   ./get_helm.sh
+   ```
+   ```bash title="Verify Helm version"
+   helm version
+   ```
 
 6.  Run the following script to check if your OCP cluster is Kasten K10 ready
 

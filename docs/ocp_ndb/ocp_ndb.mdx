@@ -131,7 +131,7 @@ This way developers can easily integrate VM based databases in their regular mic
     </TabItem>
     </Tabs>
 
-5. Make sure your OCP cluster is accesible
+5. Make sure your OCP cluster is accessible
 
    ```bash title="Ensure that you are getting output"
    oc get nodes
@@ -148,6 +148,18 @@ This way developers can easily integrate VM based databases in their regular mic
    ```
    ```bash title="Verify Helm version"
    helm version
+   ```
+
+7. Install [latest version](https://cert-manager.io/docs/installation/#getting-started) of Cert Manager as a pre-requisite for NDB Operator
+   
+   ```bash
+   oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.yaml
+   ```
+
+8. Make sure all Cert Manager services are up and running
+
+   ```bash
+   oc get po -w -n cert-manager
    ```
    
 <!-- 7. We will install go language to be able to deploy the software
@@ -321,7 +333,7 @@ In this section we will create a Postgres database using NDB Operator.
    apiVersion: v1
    kind: Secret
    metadata:
-     name: your-db-secret
+     name: your-db-secret        
    type: Opaque
    stringData:
      password: postgres_password
@@ -370,7 +382,7 @@ In this section we will create a Postgres database using NDB Operator.
    
 5. On the top right-hand corner, click on **admin** user name and select **REST API Explorer**
 
-6. This will open a new browser tab
+6. This will open a Swagger UI in a new browser tab
 
 7. In the browser tab, scroll to the bottom to see **Clusters**
 
@@ -390,13 +402,13 @@ In this section we will create a Postgres database using NDB Operator.
 
 1. Create a Database resource by using the following manifest
 
-   ```bash {12,18,24,26,29}
+   ```bash {6,12,18,24,26,29}
    cat << EOF > ndb.yaml
    apiVersion: ndb.nutanix.com/v1alpha1
    kind: Database
    metadata:
      # This name that will be used within the kubernetes cluster
-     name: dbforflower
+     name: dbforflower                                      # << This will be our database object's name
    spec:
      # NDB server specific details
      ndb:
@@ -416,10 +428,10 @@ In this section we will create a Postgres database using NDB Operator.
      # Database instance specific details (that is to be provisioned)
      databaseInstance:
        # The database instance name on NDB
-       databaseInstanceName: "pgserver"                   # << this will be our databse server name
+       databaseInstanceName: "pgserver"                   # << this will be our database server name
        # Names of the databases on that instance
        databaseNames:
-         - predictiondb                                   # << this will be our databse name
+         - predictiondb                                   # << this will be our database name
        # Credentials secret name for NDB installation
        # data: password, ssh_public_key
        credentialSecret: your-db-secret

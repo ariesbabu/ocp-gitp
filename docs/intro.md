@@ -28,9 +28,9 @@ scalability, and rapid innovation through One-Click management.
 :::info
 
 -   **Installation** - choose one of the following
-    -   **OCP: NCM Marketplace Installation** - 60 minutes
     -   **OCP: IPI Installation** - 60 minutes
-    -   **OCP: NCM Installation** - 60 minutes
+    -   **OCP: NCM Installation** - 60 minutes 
+    -   **OCP: Assisted Installer** - 40 minutes
 -   **Nutanix Storage CSI** - 30 minutes
 -   **OCP Workload Backup/Restore** - 60 minutes 
 -   **OCP and Nutanix NDB** - 60 minutes
@@ -66,18 +66,24 @@ This workshop has been tested with the following software versions:
 The lab is designed to take your through installing OCP cluster on Nutanix HCI, deploying workloads, and doing optional labs.  
 
 1. Choose one installation of the OCP cluster methods:
-   -   NCM Marketplace Installation
    -   OCP IPI Installation
    -   OCP on Nutanix NCM Installation
        -   OCP: Deploying OCP Cluster
        -   OCP: Scale out and Scale in OCP Cluster Worker Nodes
        -   OCP: Deploying Nutanix CSI Drivers for OCP Cluster
+   -   OCP Assisted Installation
 
 2. Setting up Nutanix Storage CSI
    
    -   Nutanix Storage CSI  
+   -   Deploying OCP Image Registry with Nutanix Objects Store as storage
 
 3. Workload Backup and Restore
+   
+   - Deploying Wordpress application on OCP
+   - Setting up Nutanix Objects as for backup target
+   - Deploying Kasten K10 backup application on OCP
+   - Backup and Restore Wordpress
 
 4. OCP and Nutanix NDB
 
@@ -87,13 +93,8 @@ The lab is designed to take your through installing OCP cluster on Nutanix HCI, 
    
    - Deploying serverless application on OCP
    - CICD of serverless application on OCP
-   
-5. Workloads on OCP
-    -   Deploying Wordpress application on OCP
-    -   Setting up Nutanix Objects as for backup target
-    -   Deploying Kasten K10 backup application on OCP
-    -   Backup and Restore Wordpress
 
 6. Optional Labs
-    -   Deploy second OCP cluster using NCM
-    -   Deploying IDP for OCP
+   
+   - Deploy second OCP cluster using NCM
+   - Deploying IDP for OCP
