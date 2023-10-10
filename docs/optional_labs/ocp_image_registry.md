@@ -104,7 +104,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
    - Username: administrator
    - Password: default
 
-2. We will add the following entries to DNS server using the two consecutive IPs you found in the previous section
+2. We will add the following entries to DNS server
    
    :::danger Use your HPOC cluster's IP Addresses
 
