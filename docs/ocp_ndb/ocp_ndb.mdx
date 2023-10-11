@@ -630,7 +630,7 @@ We have only modified the implementation to suit deployment in a OCP cluster wit
        DB_DATABASE: predictiondb
        DB_USER: postgres 
        DB_HOST: dbforflower-svc
-       DB_PORT: 80
+       DB_PORT: "80"
     ```
     ```mdx-code-block
     </TabItem>
