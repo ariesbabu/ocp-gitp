@@ -71,7 +71,6 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
         - Paste the following script in the script window once you have access to your ssh key-pair.
         
            ```yaml title="Remember to change to your hostname"
-           ---
            #cloud-config
 
            # Set the hostname
@@ -84,7 +83,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
                groups: wheel, users
                ssh_authorized_keys:
                # Paste the generated public key here
-               - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGD8G3rihOrlVjdiayQy/6TX3tGiLZrIBAwtsgpeq/BsY3uprTalg7VFuwa/hqDtWxU7ewHPNknVjDntOBcAFXFjfs3bHc7FKJ50Bw1vfK6q3u+LSEVpy0u8gJx7AsMa26TlYUaVH2+KlgPOaSvoJYuHy3Zwshw8dLK3Qx29dDSxhotAJivZE8TT4jL+Be60y1E72zCUzWzJFfldMwlgyxw323r6awgxmGYlqUoz3ljkHI9Xflb9fMkBWCYhDDv2y7dHEc3W1vRokKvd4bFpbWUFJbEiwOj4PFTUqoLKhqmCmjbjJBmkWeA2qDzjoxzI/16T1CigFZDdAdMTIDa/KD lb
+               - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGD8G3rihOrlVjdiayQy/.............
                # You can also use the salter 1N or 6N format using OPENSSL (openssl passwd -1 -salt SaltSalt "yourplaintextpassword")
                # Paste the generated password here
                passwd: $1$SaltSalt$aOsqVFP2QULyFo5JYkOYB/
