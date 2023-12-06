@@ -203,7 +203,7 @@ This way developers can easily integrate VM based databases in their regular mic
 2. Install NDB Operator using Helm
    
    ```bash
-   helm install ndb-operator nutanix/ndb-operator -n ndb-operator --create-namespace
+   helm install ndb-operator nutanix/ndb-operator --version 0.5.1 -n ndb-operator --create-namespace
    ```
    ```text title="Output"
    NAME: ndb-operator
@@ -415,40 +415,53 @@ We will use curl command to get the Era's cluster UUID in this section.
 
 ### Create Postgres Database using the NDB Operator
 
+1. Create a ``NDBServer`` server resource by using the following manifest:
+
+   ```bash 
+   apiVersion: ndb.nutanix.com/v1alpha1
+   kind: NDBServer
+   metadata:
+     labels:
+       app.kubernetes.io/name: ndbserver
+       app.kubernetes.io/instance: ndbserver
+       app.kubernetes.io/part-of: ndb-operator
+       app.kubernetes.io/managed-by: kustomize
+       app.kubernetes.io/created-by: ndb-operator
+       name: ndb
+   spec:
+     # Name of the secret that holds the credentials for NDB: username, password and ca_certificate created earlier
+     credentialSecret: your-ndb-secret
+     # NDB Server's API URL
+     server: https://[NDB IP]:8443/era/v0.9
+     # Example
+     # server: https://10.42.25.105:8443/era/v0.9
+     # Set to true to skip SSL certificate validation, should be false if ca_certificate is provided in the credential secret.
+     skipCertificateVerification: true
+   ```
+ 
+
 1. Create a Database resource by using the following manifest
 
-   ```bash {6,12,18,24,26,31}
+   ```bash {6,9,14}
    cat << EOF > ndb.yaml
    apiVersion: ndb.nutanix.com/v1alpha1
    kind: Database
    metadata:
      # This name that will be used within the kubernetes cluster
-     name: dbforflower                                      # << This will be our database object's name
+     name: dbforflower                                                  # << This will be our kubernetes database object's name
    spec:
-     # NDB server specific details
-     ndb:
-       # Cluster id of the cluster where the Database has to be provisioned
-       # Can be fetched from the NDB server's GET /clusters endpoint
-       clusterId: "eafdb83c-e512-46ce-8d7d-6859dc170272"   # << NDB server's cluster UUID from previous sections
-       # Credentials secret name for NDB installation
-       # data: username, password, 
-       # stringData: ca_certificate
-       credentialSecret: your-ndb-secret
-       # The NDB Server
-       server: https://[NDB IP]:8443/era/v0.9              # << Use NDB server's IP
-       # Example URL below
-       # server: https://10.38.7.119:8443/era/v0.9         # << this is NDB URL example
-       # Set to true to skip SSL verification, default: false.
-       skipCertificateVerification: true
+     # Name of the NDBServer resource created earlier
+     ndbRef: ndb
+     isClone: false
      # Database instance specific details (that is to be provisioned)
      databaseInstance:
        # The database instance name on NDB
        databaseInstanceName: "pgserver<yourinitials>"                   # << this will be our database server name
        # Example
-       databaseInstanceName: "pgserverbln"                   # << this will be our database server name
+       #databaseInstanceName: "pgserverbln"
        # Names of the databases on that instance
        databaseNames:
-         - predictiondb                                   # << this will be our database name
+         - predictiondb                                                 # << this will be our database name
        # Credentials secret name for NDB installation
        # data: password, ssh_public_key
        credentialSecret: your-db-secret
