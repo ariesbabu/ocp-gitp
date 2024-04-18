@@ -87,7 +87,7 @@ We will create a bucket for backup destination
 
     ![](ocp_image_registry_images/bucket_ua.png)
 
-8.  In the **Share Bucket xyz-k10** window, type in your email that you configured in User Access section
+8.  In the **Share Bucket ocpuserXX-registry** window, type in your email that you configured in User Access section
 
 9.  Give **Read** and **Write** permissions
 
