@@ -10,13 +10,10 @@ title: Backup and Restore Applications
 
 2.  Click on **Applications**
 
-    ![](ocp_k10_backup_restore_images/kasten_apps.png)
-
 3.  As we installed our Wordpress application in the `default`
-    namespace, click on **Create a Policy** button under `default`
-    namespace as shown here
+    namespace, select the `default` namespace, click on the three dots to expose the menu.
 
-    ![](ocp_k10_backup_restore_images/kasten_default_policy.png)
+    Select the **Create a Policy** option
 
 4.  In the **New Policy** window, leave the policy name as
     **default-backup**
@@ -35,7 +32,7 @@ title: Backup and Restore Applications
 
     ![](ocp_k10_backup_restore_images/kasten_policy_run_once.png)
 
-9.  Confirm by clicking on **Run Policy**
+9.  Confirm by clicking on **Yes, Continue**
 
 10. Return to Kasten dashboard
 
@@ -89,17 +86,13 @@ and restore operations.
 
     ![](ocp_k10_backup_restore_images/kasten_restore_start.png)
 
-3.  Click on restore
-
-    ![](ocp_k10_backup_restore_images/kasten_restore_2.png)
+3.  Select the three dots to expose the menu and click on **Restore**
 
 4.  You will see two restore points and be asked to **Select an
     Instance**
 
-    -   Restore from backup (this will restore from Nutanix DFS
-        snapshot)
-    -   Restore from export (this will restore from Objects stores
-        xyz-k10 bucket)
+    -   Restore from backup (this will restore from Nutanix DFS snapshot)
+    -   Restore from export (this will restore from Objects stores xyz-k10 bucket)
 
 5.  Select the EXPORTED one to ntnx-objects
 

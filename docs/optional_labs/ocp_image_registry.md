@@ -250,7 +250,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
     {"op": "remove", "path": "/spec/storage" },
     {"op": "add", "path": "/spec/storage", "value":
     {"s3":
-    {"bucket": "ocpuserXX-bucket-name",                        ### <<< REMEMBER TO USE YOUR BUCKET NAME
+    {"bucket": "ocpuserXX-registry",                        ### <<< REMEMBER TO USE YOUR BUCKET NAME
     "regionEndpoint": "https://ntnx-objects.ntnxlab.local",
     "encrypt": false, 
     "region": "us-east-1"}}}]'
@@ -266,7 +266,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
     {"op": "remove", "path": "/spec/storage" },
     {"op": "add", "path": "/spec/storage", "value":
     {"s3":
-    {"bucket": "ocpuser01-ocp-registry",                       ### <<< REMEMBER TO USE YOUR BUCKET NAME
+    {"bucket": "ocpuser01-registry",                       ### <<< REMEMBER TO USE YOUR BUCKET NAME
     "regionEndpoint": "https://ntnx-objects.ntnxlab.local",
     "encrypt": false, 
     "region": "us-east-1"}}}]'
