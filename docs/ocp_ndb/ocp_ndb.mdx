@@ -417,7 +417,8 @@ We will use curl command to get the Era's cluster UUID in this section.
 
 1. Create a ``NDBServer`` server resource by using the following manifest:
 
-   ```bash 
+   ```bash
+   cat << EOF > ndbserver.yaml 
    apiVersion: ndb.nutanix.com/v1alpha1
    kind: NDBServer
    metadata:
@@ -437,8 +438,10 @@ We will use curl command to get the Era's cluster UUID in this section.
      # server: https://10.42.25.105:8443/era/v0.9
      # Set to true to skip SSL certificate validation, should be false if ca_certificate is provided in the credential secret.
      skipCertificateVerification: true
+   EOF
    ```
- 
+
+1. Edit the file to modify your NDB server IP
 
 1. Create a Database resource by using the following manifest
 
