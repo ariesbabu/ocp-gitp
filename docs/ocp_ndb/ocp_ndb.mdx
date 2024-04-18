@@ -428,7 +428,7 @@ We will use curl command to get the Era's cluster UUID in this section.
        app.kubernetes.io/part-of: ndb-operator
        app.kubernetes.io/managed-by: kustomize
        app.kubernetes.io/created-by: ndb-operator
-       name: ndb
+      name: ndb
    spec:
      # Name of the secret that holds the credentials for NDB: username, password and ca_certificate created earlier
      credentialSecret: your-ndb-secret
@@ -443,10 +443,16 @@ We will use curl command to get the Era's cluster UUID in this section.
 
 1. Edit the file to modify your NDB server IP
 
+1. Connect the OCP cluster to your NDB server by applying the manifest you created
+   
+   ```bash
+   oc apply -f ndbserver.yaml
+   ```
+
 1. Create a Database resource by using the following manifest
 
    ```bash {6,9,14}
-   cat << EOF > ndb.yaml
+   cat << EOF > database.yaml
    apiVersion: ndb.nutanix.com/v1alpha1
    kind: Database
    metadata:
@@ -474,16 +480,16 @@ We will use curl command to get the Era's cluster UUID in this section.
    EOF
    ```
 
-5. Edit the ``ndb.yaml`` file to populate with your environment details
+5. Edit the ``database.yaml`` file to populate with your environment details
    
    ```bash
-   vi ndb.yaml
+   vi database.yaml
    ```
 
 6. Create the NDB ``Database`` resource
-   
+   ndb
    ```bash
-   oc apply -f ndb.yaml
+   oc apply -f database.yaml
    ```
 
 7. Check the status of the deployment
