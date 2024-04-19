@@ -468,7 +468,7 @@ We will use curl command to get the Era's cluster UUID in this section.
       # Example
       # clusterId: "a913265b-377c-44cf-8984-d049ade62585"
       # The database instance name on NDB
-      name: "pgserverbln"                                            # << this will be our database server name
+      name: "pgserver<yourinitials>"                                            # << this will be our database server name
       # Example
       #name: "pgserverbln"
       # Names of the databases on that instance
@@ -501,8 +501,8 @@ We will use curl command to get the Era's cluster UUID in this section.
    oc get database 
    ```
    ```text title="Output - you will see provisioning status"
-   NAME          IP ADDRESS    STATUS               DATABASE INSTANCE ID                   DATABASE SERVER ID
-   dbforflower                 PROVISIONING         3f04f1f0-36bf-483a-96e6-ccc3c1384c68
+   NAME          IP ADDRESS   STATUS     TYPE
+   dbforflower                CREATING
    ```  
    
 8. You can also track the progress of the database deployment by looking at the ``ndb-operator-controller-manager`` pod logs in ``ndb-operator-system`` namespace
@@ -521,7 +521,7 @@ We will use curl command to get the Era's cluster UUID in this section.
 
 It will take about **20 minutes** to provision the ``pgserver`` database server and ``predictiondb`` database.
 
-You can continue with the other labs or get that much needed break.
+Refer to the following document for other database creation option with [NDB Options](https://github.com/nutanix-cloud-native/ndb-operator)
 
 :::
 
@@ -533,8 +533,8 @@ You can continue with the other labs or get that much needed break.
     oc get database 
     ```
     ```text title="Output - note the READY status and the IP address of the database VM"
-    NAME          IP ADDRESS    STATUS   DATABASE INSTANCE ID                   DATABASE SERVER ID
-    dbforflower   10.38.7.115   READY    3f04f1f0-36bf-483a-96e6-ccc3c1384c68   65e26459-2ebc-40e4-9111-4d02f556fdb8
+    NAME          IP ADDRESS    STATUS   TYPE
+    dbforflower   10.38.13.45   READY    postgres
     ```
 
 11. NDB Operator also creates a service and an endpoint for you to access the database server 
@@ -543,11 +543,11 @@ You can continue with the other labs or get that much needed break.
     oc get service,ep 
     ```
     ```text title="Output - note the Cluster IP, endpoint's external IP and port number"
-    NAME                        TYPE                CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
-    service/dbforflower-svc     ClusterIP           172.30.38.131    <none>        80/TCP    20m
+    NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+    service/dbforflower-svc   ClusterIP   172.30.188.239   <none>        80/TCP    73s
 
-    NAME                        ENDPOINTS           AGE    
-    endpoints/dbforflower-svc   10.38.7.115:5432    20m       # << This is IP of the PostGres server deployed by NDB                            
+    NAME                        ENDPOINTS          AGE                               
+    endpoints/dbforflower-svc   10.38.13.45:5432   73s # << This is IP of the PostGres server deployed by NDB   
     ```
     The database is now available as an ``ClusterIP`` resource on port ``80``service to other workloads.
 
