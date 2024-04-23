@@ -535,7 +535,7 @@ Refer to the following document for other database creation option with [NDB Opt
     dbforflower   10.38.13.45   READY    postgres
     ```
 
-11. NDB Operator also creates a service and an endpoint for you to access the database server 
+11. NDB Operator also creates a service and an endpoint(IP+Port) for you to access the database server 
     
     ```bash
     oc get service,ep 
@@ -552,14 +552,18 @@ Refer to the following document for other database creation option with [NDB Opt
     We just need to use the ``ClusterIP`` of the database service to connect from the front end application pod.
 
 12. Check if you are able to connect to you database. We will do this by deploying a standalone postgres pod.
+    
+    ```bash title="Set SCC to run PSQL pod"
+    oc adm policy add-scc-to-user anyuid -z default
+    ```
 
-    ```bash title="Deploy the Postgres pod"
+    ```bash title="Deploy the PSQL pod"
     oc run --restart=Never psql --image=quay.io/coreos/postgres --env=POSTGRES_PASSWORD=postgres_password
     ```
-    ```bash title="Login to the pod and connect to database server"
+    ```bash title="Login to the PSQL pod and connect to the database server"
     oc exec -it psql -- /bin/sh
     ```
-    ```bash title="Inside the Postgres pod, logon to the predictiondb database"
+    ```bash title="Inside the PSQL pod, logon to the predictiondb database"
     psql -h dbforflower-svc -p 80 -U postgres -d predictiondb
     ```
 
