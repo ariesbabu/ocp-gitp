@@ -455,29 +455,29 @@ We will use curl command to get the Era's cluster UUID in this section.
    kind: Database
    metadata:
    # This name that will be used within the kubernetes cluster
-   name: dbforflower                                                  # << This will be our kubernetes database object's name
+     name: dbforflower                                                            # << This will be our kubernetes database object's name
    spec:
-   # Name of the NDBServer resource created earlier
-   ndbRef: ndb
-   isClone: false
-   # Database instance specific details (that is to be provisioned)
-   databaseInstance:
-      clusterId: "a913265b-377c-44cf-8984-d049ade62585"
-      # Example
-      # clusterId: "a913265b-377c-44cf-8984-d049ade62585"
-      # The database instance name on NDB
-      name: "pgserver<yourinitials>"                                            # << this will be our database server name
-      # Example
-      #name: "pgserverbln"
-      # Names of the databases on that instance
-      databaseNames:
-         - predictiondb                                              # << this will be our database name
-      # Credentials secret name for NDB installation
-      # data: password, ssh_public_key
-      credentialSecret: your-db-secret
-      size: 10
-      timezone: "UTC"
-      type: postgres
+     # Name of the NDBServer resource created earlier
+     ndbRef: ndb
+     isClone: false
+     # Database instance specific details (that is to be provisioned)
+     databaseInstance:
+        clusterId: "a913265b-377c-44cf-8984-d049ade62585".                       # << Change to the NDB server's UUID from previous step
+        # Example
+        # clusterId: "a913265b-377c-44cf-8984-d049ade62585"
+        # The database instance name on NDB
+        name: "pgserver<yourinitials>"                                           # << this will be our database server name
+        # Example
+        #name: "pgserverbln"
+        # Names of the databases on that instance
+        databaseNames:
+           - predictiondb                                                        # << this will be our database name
+        # Credentials secret name for NDB installation
+        # data: password, ssh_public_key
+        credentialSecret: your-db-secret
+        size: 10
+        timezone: "UTC"
+        type: postgres
    EOF
    ```
 
