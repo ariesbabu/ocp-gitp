@@ -37,6 +37,14 @@ OCP has Integrated Source to Image [S2I](https://github.com/openshift/source-to-
 - OCP will take care of the deployment part in the OCP (kubernetes)
 - OCP will also create a route/ingress where the end-users can access the application
 
+## Pre-requisites
+
+This lab requires that the OpenShift has access to a container registry to store the application container.
+
+Pipeline generator uses the internal registry ``image-registry.openshift-image-registry.svc:5000`` in the ``build`` step by default 
+
+Make sure to have the internal or external registry configured. Steps to configure internal registry are documented [here](../optional_labs/ocp_image_registry.md)
+
 ## High Level steps
 
 1. Install Red Hat OpenShift Pipelines operator from OperatorHub
@@ -45,6 +53,7 @@ OCP has Integrated Source to Image [S2I](https://github.com/openshift/source-to-
 4. Upload to OCP image registry
 5. Deploy application to OCP cluster
 6. Expose the application and access
+
 
 ## Install Red Hat OpenShift Pipelines operator
 
@@ -89,7 +98,7 @@ In the bare-metal and virtual machine world, one would create different servers 
    oc create ns dev
    oc create ns stage
    ```
-3. Grant ServiceAccount to projects
+3. Grant edit role to ServiceAccount group for these projects(namespaces)
    
    ```bash
    oc adm policy add-role-to-group edit system:serviceaccounts -n dev
@@ -120,8 +129,9 @@ In the bare-metal and virtual machine world, one would create different servers 
 5. Copy and paste the following url
 
    ```url
-   https://github.com/nutanix-japan/ocp-gitp.git
+   https://github.com/ariesbabu/ocp-gitp.git
    ```
+
 6. Click on **Edit Import Strategy**
    
 7. Choose the following options
@@ -129,17 +139,19 @@ In the bare-metal and virtual machine world, one would create different servers 
    - **Import strategy** - Buider Ima-cluster1ge
    - **Buider Image** - NodeJS
    - **Buider Image version** - ``latest`` (ok for testing - not great for production)
-   - **Add pipeline** - leave checked (click show pipeline visualization to see build steps)
+   - **Build Option** - Choose Pipelines from drop down menu
    - **Target port** - ``3000``
    - **Create a route** - leave checked
    - **Path** - ``/ocp-gitp/ ``
    - **Secure route** - unchecked 
    
    ![](images/dev_option1.png)
-   ![](images/dev_option2.png)
+   
    ![](images/dev_option3.png)
 
-8. Click on **Pipelines**
+8. Click on **Create** button at the end after confirming the options above
+
+8. On the left hand side pane, click on **Pipelines**
    
 9. Click on **Last run** pipeline run (PLR) corresponding to your **ocp-gitp-git** pipeline you created
     
