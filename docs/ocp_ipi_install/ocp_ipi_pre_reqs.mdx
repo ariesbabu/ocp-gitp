@@ -241,12 +241,23 @@ All this will be done on the UserXX-LinuxToolsVM.
 1. In the UserXX-LinuxToolsVM, Create a the Root CA certificates
 
    ```bash
-   openssl genrsa -out rootCA.key 2048
-   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.crt
+   openssl genrsa -des3 -out rootCA.key 2048
    ```
-   ```bash title="Execution example - make sure to retype the input values as shown here"
-   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.crt
-   ##
+   ```text title="Execution example - make sure to retype the input values as shown here"
+   # openssl genrsa -des3 -out rootCA.key 2048
+   #
+   Enter PEM pass phrase:              << Enter a passphrase (of at least 4 characters)
+   Verifying - Enter PEM pass phrase:  << Re-enter the passphrase for confirmation
+   ```   
+2. Enter this command to create the pem file for rootCA 
+   
+   ```bash
+   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.pem
+   ```
+   ```text title="Execution example - make sure to retype the input values as shown here"
+   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.pem
+   #
+   Enter pass phrase for rootCA.key:   << Enter the passphrase created during .key file generation of rootCA
    You are about to be asked to enter information that will be incorporated
    into your certificate request.
    What you are about to enter is what is called a Distinguished Name or a DN.
@@ -262,37 +273,63 @@ All this will be done on the UserXX-LinuxToolsVM.
    Common Name (eg, your name or your server's hostname) []:rootca.ntnxlab.local
    Email Address []:first.last@nutanix.com
    ```
-   
-2. Create a configuration file for Prism Central's certificate parameters 
 
-   ```bash
-   cat << EOF > pc.conf
-   [ req ]
-   default_bits    = 2048
-   distinguished_name = req_distinguished_name
-   req_extensions   = req_ext
-   [ req_distinguished_name ]
-   countryName     = Country Name (2 letter code)
-   stateOrProvinceName = State or Province Name
-   localityName    = Locality Name
-   organizationName  = Organization Name
-   organizationName_default = pc
-   commonName     = Common Name
-   commonName_default     = ntnxlab.local
-   [ req_ext ]
+2. Create the following script. This script will be used to generate certificates for your Prism Central (can also be used to other servers)
+
+   ```text
+   cat << 'REALEND' > gencert.sh 
+   #!/bin/sh
+   
+   if [ "$#" -ne 1 ]
+   then
+      echo "Usage: supply a server fqdn"
+      exit 1
+   fi
+
+   # Assign the first argument/input for the command to the variable
+
+   DOMAIN=$1
+
+   # Generate private key and csr for the DOMAIN
+
+   openssl genrsa -out $DOMAIN.key 2048
+   openssl req -new -key $DOMAIN.key -out $DOMAIN.csr
+
+   # Create a .ext file with SAN names for your DOMAIN
+
+   cat > $DOMAIN.ext << EOF
+   authorityKeyIdentifier=keyid,issuer
+   basicConstraints=CA:FALSE
+   keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
    subjectAltName = @alt_names
    [alt_names]
-   DNS.1  = pc.ntnxlab.local
+   DNS.1 = $DOMAIN
    EOF
+
+   # Sign the csr using the rootCA key and cert
+
+   openssl x509 -req -in $DOMAIN.csr -CA rootCA.pem -CAkey rootCA.key \
+   -CAcreateserial -out $DOMAIN.crt -days 825 -sha256 -extfile $DOMAIN.ext
+
+   REALEND
    ```
-3. Create the private key and CSR for Prism Central
-  
+
+3. Provide execute permission to the script and execute it
+   
    ```bash
-   openssl genrsa -out pc.key 2048
-   openssl req -new -sha256  -key pc.key -config ./pc.conf -out pc.csr
+   chmod u+x gencert.sh
    ```
-   ```bash title="Execution example - make sure to retype the input values as shown here"
-   openssl req -new -sha256  -key pc.key -config ./pc.conf -out pc.csr
+4. Generate certificate(.pem) and private key (.key) for your Prism Central server
+
+   ```bash
+   # Format
+   # ./gencert.sh <server fqdn>
+
+   ./gencert.sh pc.ntnxlab.local
+   ```
+   ```text title="Execution example - make sure to retype the input values as shown here"
+   ./gencert.sh pc.ntnxlab.local
+   #
    You are about to be asked to enter information that will be incorporated
    into your certificate request.
    What you are about to enter is what is called a Distinguished Name or a DN.
@@ -300,51 +337,42 @@ All this will be done on the UserXX-LinuxToolsVM.
    For some fields there will be a default value,
    If you enter '.', the field will be left blank.
    -----
-   Country Name (2 letter code) []:JP
-   State or Province Name []:Chiba
-   Locality Name []:Kashiwa
-   Organization Name [pc]:pc
-   Common Name [ntnxlab.local]:ntnxlab.local
+   Country Name (2 letter code) [XX]:JP
+   State or Province Name (full name) []:Chiba
+   Locality Name (eg, city) [Default City]:Kashiwa
+   Organization Name (eg, company) [Default Company Ltd]:nutanix
+   Organizational Unit Name (eg, section) []:pc
+   Common Name (eg, your name or your server's hostname) []:pc.ntnxlab.local
+   Email Address []:first.last@nutanix.com
+
+   Please enter the following 'extra' attributes
+   to be sent with your certificate request
+   A challenge password []:             << Enter a passphrase (of at least 4 characters)
+   An optional company name []:nutanix
+   Certificate request self-signature ok
+   subject=C = JP, ST = Chiba, L = Kashiwa, O = pc, OU = pc, CN = pc.ntnxlab.local, emailAddress = first.last@nutanix.com
+   Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
    ```
 
-4. Check your Prism Central's DNS alternative names in the CSR you created
-
-   ```bash
-   openssl req -noout -text -in pc.csr | grep DNS
-   ```
-   ```bash title="Output"
-   DNS:pc.ntnxlab.local
-   ```
-
-5. Create a file called pctext to store the DNS/SAN names
-
-   ```bash
-   echo "subjectAltName = DNS:pc.ntnxlab.local" >> pctext
-   ```
-6. Sign the CSR using rootCA's private key and produce a certificate for Prism Central
-
-   ```bash
-   openssl x509 -req -in pc.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out pc.crt -days 1024 -sha256 -extfile pctext
-   ```
 
 7. List the contents of the directory to make sure pc.crt, pc.key and rootCA.crt files are present
 
    ```bash
-   ls -l *.crt *.key | awk '{print $9}'
+   ls -l *.pem *.crt *.key | awk '{print $9}'
    ```
    ```bash title="Output"
-   pc.crt               ## Prism Central's public certificate signed by Root CA
-   pc.key               ## Prism Central's private key
-   rootCA.crt           ## Root CA's public certificate
-   rootCA.key           ## Root CA's private key
+   pc.ntnxlab.local.crt               ## Prism Central's public certificate signed by Root CA
+   pc.ntnxlab.local.key               ## Prism Central's private key
+   rootCA.crt                         ## Root CA's public certificate
+   rootCA.key                         ## Root CA's private key
    ```
    
-8. ``cat`` out the contents of ``rootCA.crt``, ``pc.key`` and ``pc.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+8. ``cat`` out the contents of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
 
    ```buttonless
    cat rootCA.crt
-   cat pc.key
-   cat pc.crt
+   cat pc.ntnxlab.local.key
+   cat pc.ntnxlab.local.crt
    ```
 
 9. In UserXX-WindowsToolsPC, use Notepad to create three new files with the same names
@@ -371,11 +399,13 @@ All this will be done on the UserXX-LinuxToolsVM.
     
     > **Private Key Type** - RSA 2048 bit 
     
-    > **Private Key** - ``pc.key``
+    > **Private Key** - ``pc.ntnxlab.local.key``
    
-    > **Public Certificate** - ``pc.crt``
+    > **Public Certificate** - ``pc.ntnxlab.local.crt``
     
     > **CA Certificate/Chain** - ``rootCA.crt``
+
+   ![](images/certs-on-wintools.png)
 
 13. Click on **Import Files**
 

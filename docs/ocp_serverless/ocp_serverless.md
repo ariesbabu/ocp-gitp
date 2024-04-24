@@ -139,7 +139,7 @@ In the bare-metal and virtual machine world, one would create different servers 
    - **Import strategy** - Buider Ima-cluster1ge
    - **Buider Image** - NodeJS
    - **Buider Image version** - ``latest`` (ok for testing - not great for production)
-   - **Build Option** - Choose Pipelines from drop down menu
+   - **Build Option** - Choose **Pipelines** from drop down menu
    - **Target port** - ``3000``
    - **Create a route** - leave checked
    - **Path** - ``/ocp-gitp/ ``
