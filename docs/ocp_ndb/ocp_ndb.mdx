@@ -564,14 +564,14 @@ Refer to the following document for other database creation option with [NDB Opt
     metadata:
     name: psql
     spec:
-    restartPolicy: Never
-    containers:
-    - name: psql 
-      image: quay.io/coreos/postgres
-      env:
-      - name: POSTGRES_PASSWORD
+     restartPolicy: Never
+     containers:
+     - name: psql 
+       image: quay.io/coreos/postgres
+       env:
+       - name: POSTGRES_PASSWORD
          value: postgres_password
-      securityContext:
+       securityContext:
          allowPrivilegeEscalation: true
     EOF
     ```
