@@ -558,7 +558,22 @@ Refer to the following document for other database creation option with [NDB Opt
     ```
 
     ```bash title="Deploy the PSQL pod"
-    oc run --restart=Never psql --image=quay.io/coreos/postgres --env=POSTGRES_PASSWORD=postgres_password
+    cat << EOF | oc apply -f -
+    apiVersion: v1
+    kind: Pod
+    metadata:
+    name: psql
+    spec:
+    restartPolicy: Never
+    containers:
+    - name: psql 
+      image: quay.io/coreos/postgres
+      env:
+      - name: POSTGRES_PASSWORD
+         value: postgres_password
+      securityContext:
+         allowPrivilegeEscalation: true
+    EOF
     ```
     ```bash title="Login to the PSQL pod and connect to the database server"
     oc exec -it psql -- /bin/sh
