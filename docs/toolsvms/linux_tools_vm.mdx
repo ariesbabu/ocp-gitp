@@ -81,6 +81,9 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
              - default
              - name: nutanix
                groups: wheel, users
+               shell: /bin/basearch
+               sudo:
+                 - 'ALL=(ALL) NOPASSWD:ALL'
                ssh_authorized_keys:
                # Paste the generated public key here
                - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGD8G3rihOrlVjdiayQy/.............
