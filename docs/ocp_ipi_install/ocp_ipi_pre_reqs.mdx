@@ -462,7 +462,7 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
 
    oc image extract $CCO_IMAGE --file="/usr/bin/ccoctl" -a pull_secret.json
 
-   chmod u+x ccoctl && cp ccoctl /usr/local/bin/ 
+   chmod u+x ccoctl && sudo cp ccoctl /usr/local/bin/ 
    ```
 
 2. Make sure the ccoctl file is present 
