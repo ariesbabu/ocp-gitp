@@ -9,13 +9,33 @@ This CentOS VM image will be staged with packages used to support multiple lab e
 
 Deploy this VM on your assigned cluster if directed to do so as part of **Lab Setup**.
 
+
+## Upload Linux Tools VM Image
+
+:::caution
+
+Only deploy the image once with your *Initials* in the image name, it does not need to be cleaned up as part of any lab completion.
+
+:::
+
+1. In Prism Central > Select Compute and Storage > Images  
+2. Click on Add Image 
+3. Select the URL radio button and paste the following image URL
+   
+   ```bash
+   https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-9-latest.x86_64.qcow2
+   ```
+4. Click on Upload File and in the description add your *Initials*
+5. Click on Next and select Place Image Directly on cluster
+6. Click on Save
+   
+## Deploying Linux Tools VM
+
 :::caution
 
 Only deploy the VM once with your *Initials* in the VM name, it does not need to be cleaned up as part of any lab completion.
 
 :::
-
-## Deploying Linux Tools VM
 
 1. In **Prism Central** > select **Menu** > **Compute and Storage > VMs**, and click **Create VM**
 
@@ -30,7 +50,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 3.  Under **Disks** select **Attach Disk**
     -   **Type** - DISK
     -   **Operation** - Clone from Image
-    -   **Image** - Linux_ToolsVM.qcow2
+    -   **Image** - Centos9Stream.qcow2
     -   **Capacity** - leave at default size
     -   **Bus Type** - leave at default SCSI Setting
 4.  Click **Save**
