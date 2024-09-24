@@ -80,6 +80,13 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
 We will need to install SSL certificates on the pre-provisioned ``nutanix-objects`` store to be able to use it as a OCP registry storage and to avoid other security threats.
 
 1. Generate certificate(.pem) and private key (.key) for your Prism Central server
+  
+   :::note
+
+   The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
+
+   This is usually not required in environments that doesn't prepopulate deteministic FQDN as the SAN of the certificate.
+   :::
 
    ```bash
    # Format
@@ -88,39 +95,31 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    ./gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
    ```
 
-   :::note
-
-   The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
-
-   This is usually not required in environments that doesn't prepopulate deteministic FQDN as the SAN of the certificate.
-   :::
-   
-
    ```text title="Execution example - make sure to retype the input values as shown here"
-   gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
-   #
-   You are about to be asked to enter information that will be incorporated
-   into your certificate request.
-   What you are about to enter is what is called a Distinguished Name or a DN.
-   There are quite a few fields but you can leave some blank
-   For some fields there will be a default value,
-   If you enter '.', the field will be left blank.
-   -----
-   Country Name (2 letter code) [XX]:JP
-   State or Province Name (full name) []:Chiba
-   Locality Name (eg, city) [Default City]:Kashiwa
-   Organization Name (eg, company) [Default Company Ltd]:nutanix
-   Organizational Unit Name (eg, section) []: ntnx-objects
-   Common Name (eg, your name or your server's hostname) []: ntnx-objects.ntnxlab.local
-   Email Address []:first.last@nutanix.com
+    gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
+    #
+    You are about to be asked to enter information that will be incorporated
+    into your certificate request.
+    What you are about to enter is what is called a Distinguished Name or a DN.
+    There are quite a few fields but you can leave some blank
+    For some fields there will be a default value,
+    If you enter '.', the field will be left blank.
+    -----
+    Country Name (2 letter code) [XX]:JP
+    State or Province Name (full name) []:Chiba
+    Locality Name (eg, city) [Default City]:Kashiwa
+    Organization Name (eg, company) [Default Company Ltd]:nutanix
+    Organizational Unit Name (eg, section) []: ntnx-objects
+    Common Name (eg, your name or your server's hostname) []: ntnx-objects.ntnxlab.local
+    Email Address []:first.last@nutanix.com
 
-   Please enter the following 'extra' attributes
-   to be sent with your certificate request
-   A challenge password []:             << Enter a passphrase (of at least 4 characters)
-   An optional company name []:nutanix
-   Certificate request self-signature ok
-   subject=C = JP, ST = Chiba, L = Kashiwa, O = pc, OU = pc, CN = pc.ntnxlab.local, emailAddress = first.last@nutanix.com
-   Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
+    Please enter the following 'extra' attributes
+    to be sent with your certificate request
+    A challenge password []:             << Enter a passphrase (of at least 4 characters)
+    An optional company name []:nutanix
+    Certificate request self-signature ok
+    subject=C = JP, ST = Chiba, L = Kashiwa, O = pc, OU = pc, CN = pc.ntnxlab.local, emailAddress = first.last@nutanix.com
+    Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
    ```
 
 
