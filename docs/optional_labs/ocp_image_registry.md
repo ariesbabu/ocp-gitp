@@ -35,6 +35,46 @@ We will look at both in this section. Nutanix CSI Volumes PVC is optional. Use o
 
 In this section we will provision Nutanix Objects based S3 storage to serve as a storage for all OpenShift image registry containers. 
 
+### Create a DNS Entry for Nutanix Objects Store
+
+In this section we will add nutanix objects store's DNS records for lookup by OCP Image registry. 
+
+1. Logon to the AutoAD windows VM 
+
+   - Username: administrator
+   - Password: your HPOC password
+
+2. We will add the following entries to DNS server
+   
+   :::danger Create DNS Entry If Not Present
+   
+   Use your HPOC cluster's IP Addresses only.
+
+   The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster. For information on locating your cluster IP see Getting Started [Networking](../intro.md#networking) section. 
+   
+   :::
+   
+   ```buttonless
+   10.38.18.221  ntnx-objects.ntnxlab.local
+   ```
+
+3. Open PowerShell as Administrator and create the two A records
+
+   ```PowerShell title="Add the API A record for Objects IP"
+   Add-DnsServerResourceRecordA -Name ntnx-objects -IPv4Address 10.38.18.221 -ZoneName ntnxlab.local -ZoneScope ntnxlab.local
+   ```
+
+3. Test name resolution for added entries
+
+   ```PowerShell {6} 
+   nslookup ntnx-objects.ntnxlab.local
+   Server: dc.ntnxlab.local
+   Address: 10.38.18.203
+
+   Name: ntnx-objects.ntnxlab.local
+   Address: 10.38.18.221 
+   ```
+
 ### Installing SSL Certificate on Objects
 
 We will need to install SSL certificates on the pre-provisioned ``nutanix-objects`` store to be able to use it as a OCP registry storage and to avoid other security threats.
@@ -49,9 +89,11 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    ```
 
    ::: note
+
    The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
 
    This is usually not required in environments that doesn't prepopulate deteministic FQDN as the SAN of the certificate.
+
    :::
 
    ```text title="Execution example - make sure to retype the input values as shown here"
@@ -102,7 +144,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    cat pc.ntnxlab.local.crt
    ```
 
-4. Go to Prism Central > Services > Objects
+4. Go to **Prism Central** > **Services** > **Objects**
 5. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
 6. Click on **Replace SSL Certificate**
 7. Upload the following files
@@ -110,6 +152,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    - Private key - ``pc.ntnxlab.local.key``
    - Public Certificate - ``pc.ntnxlab.local.crt``
    - CA Certificate/Chain - ``rootCA.pem`` (This was created in the previous section during IPI pre-requisites preparation)
+
 8. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
 9. Click on **Save**
 
@@ -174,47 +217,9 @@ We will create a bucket for backup destination
 
 10. Click on **Save**
 
-### Create a DNS Entry for Nutanix Objects Store
+### Create Kubernets Resources to use Objects Store
 
-In this section we will add nutanix objects store's DNS records for lookup by OCP Image registry. 
-
-1. Logon to the AutoAD windows VM 
-
-   - Username: administrator
-   - Password: your HPOC password
-
-2. We will add the following entries to DNS server
-   
-   :::danger Create DNS Entry If Not Present
-   
-   Use your HPOC cluster's IP Addresses only.
-
-   The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster. For information on locating your cluster IP see Getting Started [Networking](../intro.md#networking) section. 
-   
-   :::
-   
-   ```buttonless
-   10.38.18.221  ntnx-objects.ntnxlab.local
-   ```
-
-3. Open PowerShell as Administrator and create the two A records
-
-   ```PowerShell title="Add the API A record for Objects IP"
-   Add-DnsServerResourceRecordA -Name ntnx-objects -IPv4Address 10.38.18.221 -ZoneName ntnxlab.local -ZoneScope ntnxlab.local
-   ```
-
-3. Test name resolution for added entries
-
-   ```PowerShell {6} 
-   nslookup ntnx-objects.ntnxlab.local
-   Server: dc.ntnxlab.local
-   Address: 10.38.18.203
-
-   Name: ntnx-objects.ntnxlab.local
-   Address: 10.38.18.221 
-   ```
-
-### Download Object Store's Public Certificate
+We will need to create kubernetes resources to use the Objects store as the OCP registry store
 
 1. Change to the directory where ``rootCA.pem`` file is present. (if not already there)
 
@@ -287,6 +292,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
   ```buttonless title="Output"
   secret/image-registry-private-configuration-user created
   ```
+
 6. Update the image registry configuration to use the newly create nutanix objects S3 bucket 
     
     ```mdx-code-block
@@ -363,7 +369,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
       - lastTransitionTime: "2022-10-04T01:56:40Z"
         reason: S3 Bucket Exists                             
         status: "True"
-        type: StorageExists                       ## << your Nutanix bucket connection is successful
+        type: StorageExists                                  ## << your Nutanix bucket connection is successful
     ```
 
 ## Verify Image Contents in S3 Bucket 
