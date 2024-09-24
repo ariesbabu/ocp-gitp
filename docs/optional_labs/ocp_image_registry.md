@@ -88,13 +88,13 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    ./gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
    ```
 
-   ::: note
+   :::note
 
    The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
 
    This is usually not required in environments that doesn't prepopulate deteministic FQDN as the SAN of the certificate.
-
    :::
+   
 
    ```text title="Execution example - make sure to retype the input values as shown here"
    gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
