@@ -211,9 +211,9 @@ In this section please using the download links provided is also ok.
    tar xvf openshift-client-linux.tar.gz 
    ```
    ```bash title="Adding to path"
-   cp kubectl /usr/local/bin
-   cp oc /usr/local/bin
-   cp openshift-install /usr/local/bin
+   sudo cp kubectl /usr/local/bin
+   sudo cp oc /usr/local/bin
+   sudo cp openshift-install /usr/local/bin
    ```
 2. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
 
@@ -468,7 +468,7 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
 
    oc image extract $CCO_IMAGE --file="/usr/bin/ccoctl" -a pull_secret.json
 
-   chmod u+x ccoctl && sudo cp ccoctl /usr/local/bin/ 
+   chmod u+x ccoctl
    ```
 
 2. Make sure the ccoctl file is present 
@@ -477,7 +477,7 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
    ls -lh ccoctl 
    ```
    ```bash title="Output"
-   -rwxr----- 1 root root Apr 19 00:41 ccoctl
+   -rwxr----- 1 nutanix nutanix Apr 19 00:41 ccoctl
    ```
 3. Create a Prism Central credentials file in ``creds`` directory
 
@@ -509,13 +509,13 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
 5. Use the ccoctl tool to process the CredentialsRequests objects and generate secret manifest files. These manifests file will be used during OCP cluster Certification
 
    ```bash
-   ccoctl nutanix create-shared-secrets --credentials-requests-dir=credreqs --output-dir=. --credentials-source-filepath=creds/pc_credentials.yaml
+   ./ccoctl nutanix create-shared-secrets --credentials-requests-dir=credreqs --output-dir=. --credentials-source-filepath=creds/pc_credentials.yaml
    ```
    ```buttonless title="Output"
    2022/09/29 23:53:36 Saved credentials configuration to: manifests/openshift-machine-api-nutanix-credentials-credentials.yaml
    ```
 
-6. Check the ``manifests/openshift-machine-api-nutanix-credentials-credentials.yaml`` file to make sure the contents are good
+6. Check the ``manifests/openshift-machine-api-nutanix-credentials-credentials.yaml`` file to make sure the contents are good using ``cat``
 
    ```buttonless {8} title="Your credentials will be different"
    apiVersion: v1
