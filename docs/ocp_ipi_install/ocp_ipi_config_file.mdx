@@ -31,6 +31,12 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
    Now your UserXX-LinuxToolsVM will be able to trust SSL connections to Prism Central and will ``openshift-install`` binary
 
 4. Create a local ssh key which we will then use to access all the OCP cluster nodes/vms
+
+   :::info
+   Use existing ssh key pair that you may have access to if required.
+   This ssh key pair can be used to logon to OCP nodes(vms) for troubleshooting purposes.
+   :::
+   
    
    ```bash
    ssh-keygen -t rsa -b 2048
