@@ -217,7 +217,7 @@ We will create a bucket for backup destination
 
 10. Click on **Save**
 
-### Create Kubernets Resources to use Objects Store
+### Create Kubernetes Resources to use Objects Store
 
 We will need to create kubernetes resources to use the Objects store as the OCP registry store
 
