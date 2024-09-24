@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkocp_gitp=self.webpackChunkocp_gitp||[]).push([[1797],{3769:e=>{e.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"default"}')}}]);
