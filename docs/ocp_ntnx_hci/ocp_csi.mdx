@@ -41,7 +41,7 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 1.  Login to you Windows Tools VM using the following credentials;
 
     -   **Username** - administrator@ntnxlab.local
-    -   **Password** - nutanix/4u
+    -   **Password** - your HPOC password
 
 2.  Using Chrome browser browse to Console URL you obtained in the previous section.
 
@@ -142,14 +142,14 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
     <TabItem value="On NCM deployed OCP Clusters - use LB_DNS VM">
     ```
     ``` bash
-    export KUBECONFIG=~/openshift/auth/kubeconfig
+    export KUBECONFIG=/home/nutanix/xyz/auth/kubeconfig
     ```
     ```mdx-code-block
     </TabItem>
     <TabItem value="On IPI deployed OCP Clusters - use UserXX-LinuxToolsVM">
     ``` 
     ``` bash 
-    export KUBECONFIG=/root/xyz/auth/kubeconfig 
+    export KUBECONFIG=/home/nutanix/xyz/auth/kubeconfig
     ```
     ```mdx-code-block
     </TabItem>
@@ -214,7 +214,7 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
       csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret
       csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers
       csi.storage.k8s.io/fstype: ext4
-      storageContainer: Default                                ## << Change this to match your Storage Container
+      storageContainer: default                                ## << Change this to match your Storage Container
       storageType: NutanixVolumes             
     allowVolumeExpansion: true
     reclaimPolicy: Delete

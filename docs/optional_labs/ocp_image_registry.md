@@ -102,11 +102,13 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
 1. Logon to the AutoAD windows VM 
 
    - Username: administrator
-   - Password: default
+   - Password: your HPOC password
 
 2. We will add the following entries to DNS server
    
-   :::danger Use your HPOC cluster's IP Addresses
+   :::danger Create DNS Entry If Not Present
+   
+   Use your HPOC cluster's IP Addresses only.
 
    The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster. For information on locating your cluster IP see Getting Started [Networking](../intro.md#networking) section. 
    
