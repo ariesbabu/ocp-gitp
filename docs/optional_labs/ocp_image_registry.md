@@ -35,6 +35,85 @@ We will look at both in this section. Nutanix CSI Volumes PVC is optional. Use o
 
 In this section we will provision Nutanix Objects based S3 storage to serve as a storage for all OpenShift image registry containers. 
 
+### Installing SSL Certificate on Objects
+
+We will need to install SSL certificates on the pre-provisioned ``nutanix-objects`` store to be able to use it as a OCP registry storage and to avoid other security threats.
+
+1. Generate certificate(.pem) and private key (.key) for your Prism Central server
+
+   ```bash
+   # Format
+   # ./gencert.sh <server fqdn>
+
+   ./gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
+   ```
+
+   ::: note
+   The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
+
+   This is usually not required in environments that doesn't prepopulate deteministic FQDN as the SAN of the certificate.
+   :::
+
+   ```text title="Execution example - make sure to retype the input values as shown here"
+   gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
+   #
+   You are about to be asked to enter information that will be incorporated
+   into your certificate request.
+   What you are about to enter is what is called a Distinguished Name or a DN.
+   There are quite a few fields but you can leave some blank
+   For some fields there will be a default value,
+   If you enter '.', the field will be left blank.
+   -----
+   Country Name (2 letter code) [XX]:JP
+   State or Province Name (full name) []:Chiba
+   Locality Name (eg, city) [Default City]:Kashiwa
+   Organization Name (eg, company) [Default Company Ltd]:nutanix
+   Organizational Unit Name (eg, section) []: ntnx-objects
+   Common Name (eg, your name or your server's hostname) []: ntnx-objects.ntnxlab.local
+   Email Address []:first.last@nutanix.com
+
+   Please enter the following 'extra' attributes
+   to be sent with your certificate request
+   A challenge password []:             << Enter a passphrase (of at least 4 characters)
+   An optional company name []:nutanix
+   Certificate request self-signature ok
+   subject=C = JP, ST = Chiba, L = Kashiwa, O = pc, OU = pc, CN = pc.ntnxlab.local, emailAddress = first.last@nutanix.com
+   Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
+   ```
+
+
+2. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
+
+   ```bash
+   ls -l *.pem *.crt *.key | awk '{print $9}'
+   ```
+   ```bash title="Output"
+   ntnx-objects.ntnxlab.local.crt               ## Prism Central's public certificate signed by Root CA
+   ntnx-objects.ntnxlab.local.key               ## Prism Central's private key
+   rootCA.pem                                   ## Root CA's public certificate
+   rootCA.key                                   ## Root CA's private key
+   ```
+   
+3. ``cat`` out the contents of ``rootCA.pem``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+
+   ```buttonless
+   cat rootCA.pem
+   cat pc.ntnxlab.local.key
+   cat pc.ntnxlab.local.crt
+   ```
+
+4. Go to Prism Central > Services > Objects
+5. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
+6. Click on **Replace SSL Certificate**
+7. Upload the following files
+  
+   - Private key - ``pc.ntnxlab.local.key``
+   - Public Certificate - ``pc.ntnxlab.local.crt``
+   - CA Certificate/Chain - ``rootCA.pem`` (This was created in the previous section during IPI pre-requisites preparation)
+8. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
+9. Click on **Save**
+
+
 ### Generating Access Keys for S3 Bucket
 
 1.  Go to **Prism Central** > **Objects**
@@ -137,40 +216,9 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
 
 ### Download Object Store's Public Certificate
 
-1. Logon to Prism Central Web GUI on the WindowsToolsVM
+1. Change to the directory where ``rootCA.pem`` file is present. (if not already there)
 
-   ```url
-   https://pc.ntnxlab.local/
-   ```
-
-2. Browse to **Services > Objects** (this will open in a new browser tab)
-
-3. Select the **ntnx-objects**  objects store 
-
-4. Click on Actions and select **Manage FQDNs and SSL Certificates**
-
-   ![](ocp_image_registry_images/objects_ssl_cert.png)
-
-5. Click on **Download CA Certificate**
-
-6. Copy the contents of the downloaded pem (public certificate) to your clipboard
-
-7. Go to your UserXX-LinuxToolsVM 
-
-8. Go to you working directory 
-
-   ```bash
-   cd /root/xyz/
-   ```
-
-9. Create a new file and paste the contents of the above pem file 
-    
-   ```bash
-   vi ntnx-objects.pem
-   ```
-   Save and close the file.
-
-10. Create a connection to your OCP cluster (if not already done so)
+2. Create a connection to your OCP cluster (if not already done so)
 
    ```bash
    export KUBECONFIG=/root/xyz/auth/kubeconfig
@@ -191,16 +239,16 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
    xyz-7q676-worker-kbsfw   Ready    worker   104m   v1.24.0+b62823b
    ```
 
-11. Create a config map 
+3. Create a config map 
 
   ```bash
-  oc create configmap object-ca --from-file=ca-bundle.crt=ntnx-objects.pem -n openshift-config 
+  oc create configmap object-ca --from-file=ca-bundle.crt=rootCA.pem -n openshift-config 
   ```
   ```buttonless title="Output"
   configmap/object-ca created
   ```
 
-12. Make the nutanix objects ssl certificate available to OCP's global proxy settings
+4. Make the nutanix objects ssl certificate available to OCP's global proxy settings
   
   ```bash
   oc patch proxy/cluster --type=merge --patch='{"spec":{"trustedCA":{"name":"object-ca"}}}'
@@ -209,7 +257,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
   proxy.config.openshift.io/cluster patched
   ```
 
-13. Create a secret with the bucket access and secret key you generated in the previous section 
+5. Create a secret with the bucket access and secret key you generated in the previous section 
   
     ```mdx-code-block
     <Tabs>
@@ -239,7 +287,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
   ```buttonless title="Output"
   secret/image-registry-private-configuration-user created
   ```
-14. Update the image registry configuration to use the newly create nutanix objects S3 bucket 
+6. Update the image registry configuration to use the newly create nutanix objects S3 bucket 
     
     ```mdx-code-block
     <Tabs>
@@ -281,42 +329,43 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
     config.imageregistry.operator.openshift.io/cluster patched
     ```
 
-15. Enable the image registry (by default image registry is disabled)
+7. Enable the image registry (by default image registry is disabled)
    
- ```bash
- oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
- ```
- ```buttonless title="Output"
- config.imageregistry.operator.openshift.io/cluster patched
- ```
+    ```bash
+    oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+    ```
+    ```buttonless title="Output"
+    config.imageregistry.operator.openshift.io/cluster patched
+    ```
 
-16. You can use the config description to check if the image registry sucessfully connected to Nutanix Objects store ``xyz-ocp-registry``
+8. You can use the config description to check if the image registry sucessfully connected to Nutanix Objects store ``xyz-ocp-registry``
 
-  ```bash
-  oc get config.imageregistry.operator.openshift.io/cluster -oyaml
-  ```
-  ```yaml {8,10} title="Output"
-  kind: Config
-  
-  spec:
-    httpSecret: xxxxxxxxxx
-    logLevel: Normal
+    ```bash
+    oc get config.imageregistry.operator.openshift.io/cluster -oyaml
+    ```
+    ```yaml {8,10} title="Output"
+    kind: Config
+    
+    spec:
+      httpSecret: xxxxxxxxxx
+      logLevel: Normal
+      ## Snipped for brevity
+        s3:
+          bucket: xyz-ocp-registry                            ## << your Nutanix bucket for storing container images
+          region: us-east-1
+          regionEndpoint: https://ntnx-objects.ntnxlab.local  ## << your Nutanix Object's URL
+          trustedCA:
+            name: ""
+          virtualHostedStyle: false
+      unsupportedConfigOverrides: null
     ## Snipped for brevity
-      s3:
-        bucket: xyz-ocp-registry                            ## << your Nutanix bucket for storing container images
-        region: us-east-1
-        regionEndpoint: https://ntnx-objects.ntnxlab.local  ## << your Nutanix Object's URL
-        trustedCA:
-          name: ""
-        virtualHostedStyle: false
-    unsupportedConfigOverrides: null
-  ## Snipped for brevity
-  status:
-    - lastTransitionTime: "2022-10-04T01:56:40Z"
-      reason: S3 Bucket Exists                             
-      status: "True"
-      type: StorageExists                       ## << your Nutanix bucket connection is successful
-  ```
+    status:
+      - lastTransitionTime: "2022-10-04T01:56:40Z"
+        reason: S3 Bucket Exists                             
+        status: "True"
+        type: StorageExists                       ## << your Nutanix bucket connection is successful
+    ```
+
 ## Verify Image Contents in S3 Bucket 
 
 We will install a simple application to verify if the local OCP image registry is able to store container images in the S3 bucket. Verification of our setup as we go helps us setup our workload on OCP cluster without running into issues.

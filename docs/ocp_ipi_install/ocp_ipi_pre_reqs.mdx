@@ -283,26 +283,25 @@ All this will be done on the UserXX-LinuxToolsVM.
 2. Create the following script. This script will be used to generate certificates for your Prism Central (can also be used to other servers)
 
    ```text
-   cat << 'REALEND' > gencert.sh 
    #!/bin/bash
-   
-   if [ "$#" -ne 1 ]
-   then
-      echo "Usage: supply a server fqdn"
+
+   # Check if the number of arguments is at least 1 and at most 2
+   if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+      echo "Usage: $0 <server-fqdn> [optional-second-dns]"
       exit 1
    fi
 
-   # Assign the first argument/input for the command to the variable
-
+   # Assign the first argument to DOMAIN
    DOMAIN=$1
 
-   # Generate private key and csr for the DOMAIN
+   # Assign the second argument to SECOND_DOMAIN, if provided
+   SECOND_DOMAIN=$2
 
+   # Generate private key and csr for the DOMAIN
    openssl genrsa -out $DOMAIN.key 2048
    openssl req -new -key $DOMAIN.key -out $DOMAIN.csr
 
-   # Create a .ext file with SAN names for your DOMAIN
-
+   # Create a .ext file with SAN names for your DOMAIN and optional SECOND_DOMAIN
    cat > $DOMAIN.ext << EOF
    authorityKeyIdentifier=keyid,issuer
    basicConstraints=CA:FALSE
@@ -312,8 +311,14 @@ All this will be done on the UserXX-LinuxToolsVM.
    DNS.1 = $DOMAIN
    EOF
 
-   # Sign the csr using the rootCA key and cert
+   # Add SECOND_DOMAIN to the .ext file if it was provided
+   if [ -n "$SECOND_DOMAIN" ]; then
+   cat >> $DOMAIN.ext << EOF
+   DNS.2 = $SECOND_DOMAIN
+   EOF
+   fi
 
+   # Sign the csr using the rootCA key and cert
    openssl x509 -req -in $DOMAIN.csr -CA rootCA.pem -CAkey rootCA.key \
    -CAcreateserial -out $DOMAIN.crt -days 825 -sha256 -extfile $DOMAIN.ext
 
