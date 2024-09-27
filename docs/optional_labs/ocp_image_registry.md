@@ -143,12 +143,12 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    rootCA.key                                   ## Root CA's private key
    ```
    
-3. ``cat`` out the contents of ``rootCA.pem``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+3. ``cat`` out the contents of ``rootCA.pem``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
 
    ```buttonless
    cat rootCA.pem
-   cat pc.ntnxlab.local.key
-   cat pc.ntnxlab.local.crt
+   cat ntnx-objects.ntnxlab.local.key
+   cat ntnx-objects.ntnxlab.local.crt
    ```
 
 4. Go to **Prism Central** > **Services** > **Objects**
@@ -156,8 +156,8 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
 6. Click on **Replace SSL Certificate**
 7. Upload the following files
   
-   - Private key - ``pc.ntnxlab.local.key``
-   - Public Certificate - ``pc.ntnxlab.local.crt``
+   - Private key - ``ntnx-objects.ntnxlab.local.key``
+   - Public Certificate - ``ntnx-objects.ntnxlab.local.crt``
    - CA Certificate/Chain - ``rootCA.pem`` (This was created in the previous section during IPI pre-requisites preparation)
 
 8. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
@@ -251,23 +251,13 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
    xyz-7q676-worker-kbsfw   Ready    worker   104m   v1.24.0+b62823b
    ```
 
-3. Create a config map 
+3. Confirm the config map with the ``rootCA.pem`` contents for ``proxy/cluster`` resource
 
-  ```bash
-  oc create configmap object-ca --from-file=ca-bundle.crt=rootCA.pem -n openshift-config 
-  ```
-  ```buttonless title="Output"
-  configmap/object-ca created
-  ```
-
-4. Make the nutanix objects ssl certificate available to OCP's global proxy settings
-  
-  ```bash
-  oc patch proxy/cluster --type=merge --patch='{"spec":{"trustedCA":{"name":"object-ca"}}}'
-  ```
-  ```buttonless title="Output"
-  proxy.config.openshift.io/cluster patched
-  ```
+    ```bash
+    oc -n openshift-config get cm user-ca-bundle -oyaml
+    ```
+   
+   This should match with the contents oc ``rootCA.pem`` file
 
 5. Create a secret with the bucket access and secret key you generated in the previous section 
   
