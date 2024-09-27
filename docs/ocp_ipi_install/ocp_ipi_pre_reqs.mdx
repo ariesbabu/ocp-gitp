@@ -282,6 +282,13 @@ All this will be done on the UserXX-LinuxToolsVM.
 
 2. Create the following script. This script will be used to generate certificates for your Prism Central (can also be used to other servers)
 
+   with the following name:
+
+   ```bash
+   vi gencert.sh
+   ```
+   Paste the following content in the script:
+
    ```text
    #!/bin/bash
 
@@ -321,8 +328,6 @@ All this will be done on the UserXX-LinuxToolsVM.
    # Sign the csr using the rootCA key and cert
    openssl x509 -req -in $DOMAIN.csr -CA rootCA.pem -CAkey rootCA.key \
    -CAcreateserial -out $DOMAIN.crt -days 825 -sha256 -extfile $DOMAIN.ext
-
-   REALEND
    ```
 
 3. Provide execute permission to the script and execute it
