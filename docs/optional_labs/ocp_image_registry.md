@@ -154,7 +154,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
 4. Go to **Prism Central** > **Services** > **Objects**
 5. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
 6. Click on **Replace SSL Certificate**
-7. Upload the following files
+7. Upload the following files:
   
    - Private key - ``ntnx-objects.ntnxlab.local.key``
    - Public Certificate - ``ntnx-objects.ntnxlab.local.crt``
