@@ -137,10 +137,10 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
     </div>
     </details>
     ```
-    ```yml {3-14,20,36,42-43} title="Sample install-config.yaml file - Edit the highlighted parts"
-    additionalTrustBundlePolicy: Always
-    additionalTrustBundle: | 
-        -----BEGIN CERTIFICATE-----
+    ```yml {1,2,3,51} title="Sample install-config.yaml file - Edit the highlighted parts"
+    additionalTrustBundlePolicy: Always                                 # Change the value to Always
+    additionalTrustBundle: |                                            # Add this key
+        -----BEGIN CERTIFICATE-----                                     # Copy rootCA.pem contents here
         MIIEJzCCAw+gAwIBAgIUfW+2AkjS2Ha3i4RWsXbPRO5jIe0wDQYJKoZIhvcNAQEL
         BQAwgaIxCzAJBgNVBAYTAkpQMRAwDgYDVQQIDAdLYXNoaXdhMRAwDgYDVQQHDAdL
         YXNoaXdhMRAwDgYDVQQKDAdudXRhbml4MQ8wDQYDVQQLDAZyb290Y2ExHTAbBgNV
@@ -185,10 +185,10 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
       name:  ocpuser01
     networking:
       clusterNetwork:
-      - cidr: 10.128.0.0/14
+      - cidr: 10.128.0.0/14         
         hostPrefix: 23
       machineNetwork:
-      - cidr: 10.38.11.0/26
+      - cidr: 10.38.11.0/26                                             # Change to the Nutanix clusters CIDR
       networkType: OVNKubernetes
       serviceNetwork:
       - 172.30.0.0/16
