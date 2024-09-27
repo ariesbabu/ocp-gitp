@@ -58,7 +58,7 @@ This will be simplest part of all, provided you have done everything correctly t
     <TabItem value="kubeconfig file" label="kubeconfig">
 
     ```text title="Export your kubeconfig file to env"
-    export KUBECONFIG=/root/xyz/auth/kubeconfig
+    export KUBECONFIG=/home/nutanix/auth/kubeconfig
     ```
 
     </TabItem>
