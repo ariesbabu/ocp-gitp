@@ -217,7 +217,13 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
       ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAxxxx....
     ```
 
-6. Now we can create all the other manifests required for OCP cluster installation
+6. Make a copy of the install-config.yaml for troubleshooting reference
+
+    ```bash
+    cp install-config.yaml install-config-bkup.yaml
+    ```
+
+7. Now we can create all the other manifests required for OCP cluster installation
    
    ```bash
    openshift-install create manifests
