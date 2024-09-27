@@ -121,7 +121,15 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
     subject=C = JP, ST = Chiba, L = Kashiwa, O = pc, OU = pc, CN = pc.ntnxlab.local, emailAddress = first.last@nutanix.com
     Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
    ```
+   
+2. Confirm if the SAN are populated correctly with both FQDN
 
+   ```bash
+   openssl x509 -in ntnx-objects.ntnxlab.local.crt -noout -text | grep -A 1 "Subject Alternative Name"
+   # output here
+            X509v3 Subject Alternative Name: 
+                DNS:ntnx-objects.ntnxlab.local, DNS:ntnx-objects.prism-central.cluster.local   # < Confirmed both FQDN are present
+   ```
 
 2. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
 
