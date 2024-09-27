@@ -47,7 +47,7 @@ This will be simplest part of all, provided you have done everything correctly t
    INFO Waiting up to 10m0s (until 8:30AM) for the openshift-console route to be created... 
    INFO Install complete!                            
    INFO To access the cluster as the system:admin user when using 'oc', run 
-   INFO     export KUBECONFIG=/root/xyz/auth/kubeconfig 
+   INFO     export KUBECONFIG=/home/nutanix/auth/kubeconfig
    INFO Access the OpenShift web-console here: https://console-openshift-console.apps.xyz.ntnxlab.local 
    INFO Login to the console with user: "kubeadmin", and password: "xxxx-xxxx-xxxx-xxxx" 
    INFO Time elapsed: 27m0s
