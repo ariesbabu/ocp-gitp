@@ -136,7 +136,7 @@ In the bare-metal and virtual machine world, one would create different servers 
    
 7. Choose the following options
     
-   - **Import strategy** - Buider Ima-cluster1ge
+   - **Import strategy** - Buider Image
    - **Buider Image** - NodeJS
    - **Buider Image version** - ``latest`` (ok for testing - not great for production)
    - **Build Option** - Choose **Pipelines** from drop down menu
