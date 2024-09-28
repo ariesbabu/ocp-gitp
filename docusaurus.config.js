@@ -35,7 +35,7 @@ const config = {
       ({
         docs: {
           routeBasePath: '/',
-          showLastUpdateAuthor: true,
+          showLastUpdateAuthor: false,
           showLastUpdateTime: false,
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
