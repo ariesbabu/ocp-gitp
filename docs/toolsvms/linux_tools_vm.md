@@ -23,7 +23,7 @@ Only deploy the image once with your *Initials* in the image name, it does not n
 3. Select the URL radio button and paste the following image URL
    
    ```bash
-   https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-9-latest.x86_64.qcow2
+   https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img
    ```
 4. Click on Upload File and in the description add your *Initials*
 5. Click on Next and select Place Image Directly on cluster
@@ -90,70 +90,39 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 
         - Paste the following script in the script window once you have access to your ssh key-pair.
         
-           ```yaml title="Remember to change to your hostname"
+           ```yaml title="Remember to change to your hostname ocpuserXX-LinuxToolsVM"
            #cloud-config
-
-           # Set the hostname
-           hostname: DockerVm
-           
-           # Create a new user
+           hostname: ocpuserXX-LinuxToolsVM
+           package_update: true
+           package_upgrade: true
+           package_reboot_if_required: true
+           packages:
+             - open-iscsi
+             - nfs-common
+             - git
+             - jq
+             - bind-utils
+             - nmap
+           runcmd:
+             - systemctl stop ufw && systemctl disable ufw
            users:
              - default
-             - name: nutanix
-               groups: wheel, users
+             - name: ubuntu
+               groups: sudo
                shell: /bin/bash
                sudo:
                  - 'ALL=(ALL) NOPASSWD:ALL'
-               ssh_authorized_keys:
-               # Paste the generated public key here
-               - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGD8G3rihOrlVjdiayQy/.............
-               # You can also use the salter 1N or 6N format using OPENSSL (openssl passwd -1 -salt SaltSalt "yourplaintextpassword")
-               # Paste the generated password here
-               passwd: $1$SaltSalt$aOsqVFP2QULyFo5JYkOYB/
-               shell: /bin/bash
-               lock-passwd: false
-               ssh_pwauth: True                 
-           
-           # Enable password authentication for root
-           ssh_pwauth: True
-           
-           # Run package upgrade
-           package_upgrade: true
-           
-           # Install the following packages - add extra that you would need
-           packages:
-           - git
-           - bind-utils
-           - nmap
-           - curl
-           - wget 
-           - vim
-           - python3
-           - python3-pip
-           - yum-utils
-           
-           # Run additional commands
-           runcmd:
-             - 'sleep 10'
-             - 'echo "nutanix ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
-             - 'yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo'
-             - 'yum install -y docker-ce docker-ce-cli containerd.io'
-             - 'systemctl enable docker'
-             - 'systemctl start docker'
-             - 'curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
-             - 'chmod +x /usr/local/bin/docker-compose'
-             - 'groupadd docker'
-             - 'usermod -aG docker nutanix'
-             - 'echo "%docker ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+               ssh-authorized-keys: 
+               - ssh-rsa XXXXXX.... # Replace XXXXX with your ssh key-pair
            ```
 
 
 9. Click on **Next**
-9.  Click **Create VM** at the bottom
-10. Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
-11. Select your *Initials*-Linux-ToolsVM
-12. Click update and change the added disk size to 40 GB
-12. Under **Actions** drop-down menu, choose **Power On**
+10. Click **Create VM** at the bottom
+11. Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
+12. Select your *Initials*-Linux-ToolsVM
+13. Click update and change the added disk size to 40 GB
+14. Under **Actions** drop-down menu, choose **Power On**
 
     :::note
     It may take up to 10 minutes for the VM to be ready.
@@ -161,12 +130,12 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
     You can watch the console of the VM from Prism Central to make sure all the clouinit script has finished running.
     :::
 
-13. Login to the VM via SSH or Console session, using the following command:
+15. Login to the VM via SSH or Console session, using the following command:
 
     ```bash
-    ssh -i <your_private_key> -l nutanix <IP of LinuxToolsVM>
+    ssh -i <your_private_key> -l ubuntu <IP of LinuxToolsVM>
     ```
     ```bash title="Example command"
-    ssh -i id_rsa -l nutanix 10.54.63.96
+    ssh -i id_rsa -l ubuntu 10.54.63.96
     ```
 

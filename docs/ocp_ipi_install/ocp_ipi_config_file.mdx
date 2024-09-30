@@ -20,13 +20,13 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 2. Copy the Root CA's public certificate to the local certiface repository
 
    ```bash
-   cd /root/xyz
-   sudo cp rootCA.pem /etc/pki/ca-trust/source/anchors/
+   cd /ubuntu/xyz
+   sudo cp rootCA.pem /usr/local/share/ca-certificates/
    ```
 3. Update the local CA trust repository with the new one your created
 
    ```bash
-   sudo update-ca-trust
+   sudo update-ca-certificates
    ```
    Now your UserXX-LinuxToolsVM will be able to trust SSL connections to Prism Central and will ``openshift-install`` binary
 

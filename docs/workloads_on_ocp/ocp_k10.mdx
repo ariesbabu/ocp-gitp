@@ -51,51 +51,22 @@ in a single cluster.
 
 ## Installing VolumeSnapshotClass
 
-Before you proceed with this section, verify that Nutanix CSI operator version and make sure it is `2.5.1` - we need this version to be able to implement volumesnapshotclass
+Before you proceed with this section, verify that Nutanix CSI operator version and make sure it is at least `2.5.1` - we need this version to be able to implement volumesnapshotclass
 
 ![](ocp_k10_images/csi_operator_version.png)
 
 We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix CSI. This helps in facilitating snapshots of the source workload.
 
-1.  Depending on the OCP cluster installation you chose, log on to the **UserXX-LinuxToolsVM** or **LB_DNS** VM to be able to access OCP cluster. 
+1. Logon to your UserXX-LinuxToolsVM (deployed on the HPOC cluster) using Mac Terminal or Windows PowerShell 
 
-    :::caution How did you install OCP?
-
-    If you installed OCP using NCM (Calm), you will be performing commands in **LB_DNS** VM's console.
-
-    We suggest doing the following when modifications to commands are required:
-
-    1.  Edit code from lab instructions using vi/nano/vim
-
-    2.  Modify the required fields (highlighted)
-
-    3.  Paste the commands into the terminal of LB_DNS vm through Calm UI
-
-    Use the following key combinations to paste content into Calm invoked terminal. 
-
-    ```mdx-code-block
-    <Tabs groupId="operating-systems">
-        <TabItem value="mac" label="macOS">Use <b>Command + v</b> to paste.</TabItem>
-        <TabItem value="win" label="Windows">Use <b>Shift + Insert</b> to paste.</TabItem>
-    </Tabs>
-    ```
-    :::
+   ```bash title="Use IP address of UserXX-LinuxToolsVM"
+   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
+   ```
 
 2.  Export the OCP cluster's KUBECONFIG file to environment so we can perform `oc` commands
 
-    ```mdx-code-block
-    <Tabs>
-    <TabItem value="On NCM deployed OCP Clusters - use LB_DNS VM">
-    ```
-    ``` bash
-    export KUBECONFIG=~/openshift/auth/kubeconfig
-    ```
-    ```mdx-code-block
-    </TabItem>
-    <TabItem value="On IPI deployed OCP Clusters - use UserXX-LinuxToolsVM">
-    ``` 
     ``` bash 
-    export KUBECONFIG=/root/xyz/auth/kubeconfig 
+    export KUBECONFIG=/home/ubuntu/xyz/auth/kubeconfig
     ```
     ```bash title="Install Helm"
     # We also need to install Helm and jq on on Linux Tools VM
@@ -108,10 +79,7 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     ```bash title="Install jq"
     yum install jq -y
     ```
-    ```mdx-code-block
-    </TabItem>
-    </Tabs>
-    ```
+
 3. Create the ``VolumeSnapshotClass``
 
     ``` bash

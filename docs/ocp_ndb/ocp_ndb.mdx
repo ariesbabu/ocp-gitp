@@ -85,14 +85,10 @@ This way developers can easily integrate VM based databases in their regular mic
 
 1. Logon to your Linux Tools VM using root user name and password (Terminal on Mac/ Putty or PowerShell in Windows)
    
-   ```bash 
-   ssh -l root <Linux Tools VM IP>
+   ```bash title="Use IP address of UserXX-LinuxToolsVM"
+   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
    ```
 
-   > **Username** - root
-
-   > **Password** - nutanix default
-   
    :::tip Can't find the Linux Tools VM?
 
    If you don't have a Linux Tools VM deployed on your HPOC cluster, follow instructions [here](../toolsvms/linux_tools_vm.mdx) to deploy one.
@@ -102,8 +98,8 @@ This way developers can easily integrate VM based databases in their regular mic
 <!-- 2. Create a new directory in the home
    
    ```bash
-   mkdir /root/ndb
-   cd /root/ndb 
+   mkdir /home/ubuntu//ndb
+   cd /home/ubuntu//ndb 
    ``` -->
 <!-- 3. Clone NDB operator's git repository
 
@@ -118,7 +114,7 @@ This way developers can easily integrate VM based databases in their regular mic
     <TabItem value="kubeconfig file" label="kubeconfig">
 
     ```text title="Export your kubeconfig file to env"
-    export KUBECONFIG=/root/xyz/auth/kubeconfig
+    export KUBECONFIG=/home/ubuntu//xyz/auth/kubeconfig
     ```
 
     </TabItem>
@@ -252,7 +248,7 @@ This way developers can easily integrate VM based databases in their regular mic
 <!-- 1. Change to the downloaded NDB opertor git repo folder (if not already there)
    
     ```bash 
-    cd /root/ndb/ndb-operator
+    cd /home/ubuntu/ndb-operator
     ```
 
 2. Install the NDB Operator/Controller on OCP

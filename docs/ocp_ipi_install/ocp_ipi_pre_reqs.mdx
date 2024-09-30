@@ -41,23 +41,16 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
    10.38.18.192/26
    ```
 
-2. Logon to your UserXX-LinuxToolsVM (deployed on the HPOC cluster) using Mac Terminal or Windows Putty 
+2. Logon to your UserXX-LinuxToolsVM (deployed on the HPOC cluster) using Mac Terminal or Windows PowerShell 
 
-   > **Username**: nutanix
-
-   > **Password**: nutanix default 
-
-3. Prepare the UserXX-LinuxToolsVM 
-   
-   ```bash
-   yum update -y
-   yum install -y bind-utils nmap
+   ```bash title="Use IP address of UserXX-LinuxToolsVM"
+   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
    ```
 
 3. Find two unused static IP addresses
 
    ```bash
-   nmap -v -sn  <your CIDR>
+   nmap -v -sn  <your HPOC CIDR> # Use Lookup Tool to find your cluster CIDR
    ```
    ```bash title="Sample command"
    nmap -v -sn 10.38.18.192/26
@@ -72,8 +65,8 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
 
 2. Logon to any CVM in your cluster and execute the following to add chosen static IPs to the **Primary** IPAM network
 
-   - Username: nutanix
-   - Password: your cluster password 
+   - Username: ubuntu
+   - Password: your cluster password # Use Lookup Tool to find your CVM/PE Cluster password
    
    ```bash
    acli net.add_to_ip_blacklist <your-ipam-ahv-network> ip_list=10.38.18.219,10.38.18.220
@@ -99,7 +92,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
 
 2. We will add the following entries to DNS server using the two consecutive IPs you found in the previous section
    
-   :::danger Use your assigned HPOC cluster's IP Addresses
+   :::caution Use your assigned HPOC cluster's IP Addresses
 
    The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster. 
    
@@ -113,9 +106,9 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
    10.38.18.201   pc.ntnxlab.local
    ```
 
-2. Open PowerShell as Administrator and create the two A records
+2. Open PowerShell ISE as Administrator and create the two A records
 
-   :::warning
+   :::caution
 
    Create entry for Prism Central (pc) only if it is not present
 
@@ -193,9 +186,9 @@ In this section please using the download links provided is also ok.
 
 1. Logon to UserXX-LinuxToolsVM and download the binaries 
 
-   > **Username**: nutanix
-
-   > **Password**: nutanix default 
+   ```bash title="Use IP address of UserXX-LinuxToolsVM"
+   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
+   ```
 
    ```bash
    mkdir xyz
@@ -487,7 +480,7 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
    ls -lh ccoctl 
    ```
    ```bash title="Output"
-   -rwxr----- 1 nutanix nutanix Apr 19 00:41 ccoctl
+   -rwxr----- 1 ubuntu ubuntu Apr 19 00:41 ccoctl
    ```
 3. Create a Prism Central credentials file in ``creds`` directory
 
@@ -525,7 +518,11 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
    2022/09/29 23:53:36 Saved credentials configuration to: manifests/openshift-machine-api-nutanix-credentials-credentials.yaml
    ```
 
-6. Check the ``manifests/openshift-machine-api-nutanix-credentials-credentials.yaml`` file to make sure the contents are good using ``cat``
+6. Check the ``openshift-machine-api-nutanix-credentials-credentials.yaml`` file to make sure the contents are good using ``cat``
+   
+   ```bash
+   cat manifests/openshift-machine-api-nutanix-credentials-credentials.yaml
+   ```
 
    ```buttonless {8} title="Your credentials will be different"
    apiVersion: v1
