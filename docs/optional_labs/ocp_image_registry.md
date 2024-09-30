@@ -79,7 +79,14 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
 
 We will need to install SSL certificates on the pre-provisioned ``nutanix-objects`` store to be able to use it as a OCP registry storage and to avoid other security threats.
 
-1. Generate certificate(.pem) and private key (.key) for your Prism Central server
+1. Logon to your Linux Tools VM using ubuntu user name and password (Terminal on Mac/ Putty or PowerShell in Windows)
+   
+   ```bash title="Use IP address of UserXX-LinuxToolsVM"
+   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
+   ```
+
+
+2. Generate certificate(.pem) and private key (.key) for your Prism Central server
   
    :::note
 
@@ -122,7 +129,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
     Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
    ```
    
-2. Confirm if the SAN are populated correctly with both FQDN
+3. Confirm if the SAN are populated correctly with both FQDN
 
    ```bash
    openssl x509 -in ntnx-objects.ntnxlab.local.crt -noout -text | grep -A 1 "Subject Alternative Name"
@@ -131,7 +138,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
                 DNS:ntnx-objects.ntnxlab.local, DNS:ntnx-objects.prism-central.cluster.local   # < Confirmed both FQDN are present
    ```
 
-2. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
+4. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
 
    ```bash
    ls -l *.pem *.crt *.key | awk '{print $9}'
@@ -143,7 +150,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    rootCA.key                                   ## Root CA's private key
    ```
    
-3. ``cat`` out the contents of ``rootCA.pem``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+5. ``cat`` out the contents of ``rootCA.pem``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
 
    ```buttonless
    cat rootCA.pem
@@ -151,17 +158,17 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    cat ntnx-objects.ntnxlab.local.crt
    ```
 
-4. Go to **Prism Central** > **Services** > **Objects**
-5. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
-6. Click on **Replace SSL Certificate**
-7. Upload the following files:
+6. Go to **Prism Central** > **Services** > **Objects**
+7. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
+8. Click on **Replace SSL Certificate**
+9. Upload the following files:
   
    - Private key - ``ntnx-objects.ntnxlab.local.key``
    - Public Certificate - ``ntnx-objects.ntnxlab.local.crt``
    - CA Certificate/Chain - ``rootCA.pem`` (This was created in the previous section during IPI pre-requisites preparation)
 
-8. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
-9. Click on **Save**
+10. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
+11. Click on **Save**
 
 
 ### Generating Access Keys for S3 Bucket
