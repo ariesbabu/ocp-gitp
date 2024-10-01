@@ -88,7 +88,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
 
    > **Username**: administrator
 
-   > **Password**: default
+   > **Password**: default # Use lookup tool to find the password 
 
 2. We will add the following entries to DNS server using the two consecutive IPs you found in the previous section
    
@@ -228,6 +228,16 @@ In this section please using the download links provided is also ok.
    -rw-r--r-- 1 root root      2819 Sep 22 05:27 pull_secret.json
    ```
 ### Creating and Installing SSL Certificate on Prism Central
+
+:::danger Sharing a Nutanix Cluster?
+
+Only one person needs to do this section for generate and install SSL certificates for Prism Central.
+
+If you are sharing a HPOC for multiple users, then you need to do this section only once. Decide with other participants sharing your cluster before proceeding.
+
+Share the ``rootCA.pem`` certificate with the other users so they can use this to create OCP cluster.
+
+:::
 
 In this section we will do the following:
 

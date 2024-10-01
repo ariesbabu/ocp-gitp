@@ -10,15 +10,14 @@ This will be simplest part of all, provided you have done everything correctly t
 
     ```mdx-code-block
     <details>
-    <summary>Do you need more details about installation?</summary>
+    <summary>Would you like to see verbose installation logs?</summary>
     <div>
     <body>
+
+    Run the following command to start the installation of OCP cluster with verbose logging.
  
     ```bash 
     nohup openshift-install create cluster --log-level=debug &
-    ```
-    ```bash title="Now you can follow the nohup logs to see installation progress"
-    tail -f nohup.out
     ```
     </body>
     </div>
@@ -27,8 +26,17 @@ This will be simplest part of all, provided you have done everything correctly t
     ```bash 
     nohup openshift-install create cluster &
     ```
+    ```bash title="Now you can follow the nohup logs to see installation progress"
+    tail -f nohup.out
+    ```
 
 2. A typical installation flow would look like this
+   
+   :::caution
+
+   This steps will take up to 40 minutes.
+
+   :::
 
    ```buttonless {16,18} title="Install output - note the access information to the OCP cluster"
    openshift-install create cluster
@@ -96,10 +104,25 @@ This will be simplest part of all, provided you have done everything correctly t
    
    You have sucessfully installed OCP using IPI.
 
+:::note
+
+Now that you have finished OCP IPI install, you can move on to the **OCP Command Access** section and then on to workloads section.
+
+:::
+
+
 ## Cleanup (optional)
 
-Run through the following if you would like to delete the OCP cluster. This step is optional for HPOC as it resets at the  end of reservation.
+:::danger DO NOT Cleanup UNLESS .. 
 
+Cleaning up (deleting) the OCP cluster should be done only in the following circumstances:
+
+- You have finished all the labs.
+- You have run into issues deploying OCP cluster and you would like to clean up the resources before redeploying OCP cluster.
+
+:::
+
+Run through the following if you would like to delete the OCP cluster. 
 
 1. In your UserXX-LinuxToolsVM 
 
@@ -140,9 +163,3 @@ Run through the following if you would like to delete the OCP cluster. This step
 IPI installation method is simple and consistent to deploy as after the pre-rquisites are setup once. 
 
 Customers can easily deploy as many OCP clusters on Nutanix HCI. 
-
-:::note
-
-Now that you have finished Assisted install, you can move on to the **OCP Command Access** section and then on to workloads section.
-
-:::
