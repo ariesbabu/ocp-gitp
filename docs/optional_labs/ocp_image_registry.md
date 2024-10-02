@@ -146,14 +146,14 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    ```bash title="Output"
    ntnx-objects.ntnxlab.local.crt               ## Prism Central's public certificate signed by Root CA
    ntnx-objects.ntnxlab.local.key               ## Prism Central's private key
-   rootCA.pem                                   ## Root CA's public certificate
+   rootCA.crt                                   ## Root CA's public certificate
    rootCA.key                                   ## Root CA's private key
    ```
    
-5. ``cat`` out the contents of ``rootCA.pem``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+5. ``cat`` out the contents of ``rootCA.crt``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
 
    ```buttonless
-   cat rootCA.pem
+   cat rootCA.crt
    cat ntnx-objects.ntnxlab.local.key
    cat ntnx-objects.ntnxlab.local.crt
    ```
@@ -165,7 +165,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
   
    - Private key - ``ntnx-objects.ntnxlab.local.key``
    - Public Certificate - ``ntnx-objects.ntnxlab.local.crt``
-   - CA Certificate/Chain - ``rootCA.pem`` (This was created in the previous section during IPI pre-requisites preparation)
+   - CA Certificate/Chain - ``rootCA.crt`` (This was created in the previous section during IPI pre-requisites preparation)
 
 10. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
 11. Click on **Save**
@@ -235,7 +235,7 @@ We will create a bucket for backup destination
 
 We will need to create kubernetes resources to use the Objects store as the OCP registry store
 
-1. Change to the directory where ``rootCA.pem`` file is present. (if not already there)
+1. Change to the directory where ``rootCA.crt`` file is present. (if not already there)
 
 2. Create a connection to your OCP cluster (if not already done so)
 
@@ -258,13 +258,13 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
    xyz-7q676-worker-kbsfw   Ready    worker   104m   v1.24.0+b62823b
    ```
 
-3. Confirm the config map with the ``rootCA.pem`` contents for ``proxy/cluster`` resource
+3. Confirm the config map with the ``rootCA.crt`` contents for ``proxy/cluster`` resource
 
     ```bash
     oc -n openshift-config get cm user-ca-bundle -oyaml
     ```
    
-   This should match with the contents oc ``rootCA.pem`` file
+   This should match with the contents oc ``rootCA.crt`` file
 
 5. Create a secret with the bucket access and secret key you generated in the previous section 
   

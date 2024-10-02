@@ -28,7 +28,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
    ```bash
    sudo update-ca-certificates
    ```
-   Now your UserXX-LinuxToolsVM will be able to trust SSL connections to Prism Central and will ``openshift-install`` binary
+   Now your UserXX-LinuxToolsVM will be able to trust SSL connections to Prism Central and will be used by ``openshift-install`` binary
 
 4. Create a local ssh key which we will then use to access all the OCP cluster nodes/vms
 
@@ -72,7 +72,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 2. Change to you working directory that we created before (if not there already)
 
    ```bash
-   cd /root/xyz
+   cd /ubuntu/xyz
    ```
 3. Run the create install config command
 
