@@ -235,7 +235,7 @@ Only one person needs to do this section for generate and install SSL certificat
 
 If you are sharing a HPOC for multiple users, then you need to do this section only once. Decide with other participants sharing your cluster before proceeding.
 
-Share the ``rootCA.pem`` certificate with the other users so they can use this to create OCP cluster.
+Share the ``rootCA.crt`` certificate with the other users so they can use this to create OCP cluster.
 
 :::
 
@@ -261,10 +261,10 @@ All this will be done on the UserXX-LinuxToolsVM.
 2. Enter this command to create the pem file for rootCA 
    
    ```bash
-   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.pem
+   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.crt
    ```
    ```text title="Execution example - make sure to retype the input values as shown here"
-   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.pem
+   openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.crt
    #
    Enter pass phrase for rootCA.key:   << Enter the passphrase created during .key file generation of rootCA
    You are about to be asked to enter information that will be incorporated
@@ -329,7 +329,7 @@ All this will be done on the UserXX-LinuxToolsVM.
    fi
 
    # Sign the csr using the rootCA key and cert
-   openssl x509 -req -in $DOMAIN.csr -CA rootCA.pem -CAkey rootCA.key \
+   openssl x509 -req -in $DOMAIN.csr -CA rootCA.crt -CAkey rootCA.key \
    -CAcreateserial -out $DOMAIN.crt -days 825 -sha256 -extfile $DOMAIN.ext
    ```
 
@@ -382,21 +382,21 @@ All this will be done on the UserXX-LinuxToolsVM.
    ```bash title="Output"
    pc.ntnxlab.local.crt               ## Prism Central's public certificate signed by Root CA
    pc.ntnxlab.local.key               ## Prism Central's private key
-   rootCA.pem                         ## Root CA's public certificate
+   rootCA.crt                         ## Root CA's public certificate
    rootCA.key                         ## Root CA's private key
    ```
    
-8. ``cat`` out the contents of ``rootCA.pem``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+8. ``cat`` out the contents of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
 
    ```buttonless
-   cat rootCA.pem
+   cat rootCA.crt
    cat pc.ntnxlab.local.key
    cat pc.ntnxlab.local.crt
    ```
 
 9. In UserXX-WindowsToolsPC, use Notepad to create three new files with the same names
 
-7. Copy the ouput of previous cat command of ``rootCA.pem``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` files into to your UserXX-WindowsToolsPC VM in any directory
+7. Copy the ouput of previous cat command of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` files into to your UserXX-WindowsToolsPC VM in any directory
 
    ![](images/certs-on-wintools.png)
 
@@ -422,7 +422,7 @@ All this will be done on the UserXX-LinuxToolsVM.
    
     > **Public Certificate** - ``pc.ntnxlab.local.crt``
     
-    > **CA Certificate/Chain** - ``rootCA.pem``
+    > **CA Certificate/Chain** - ``rootCA.crt``
 
    ![](images/certs-on-wintools.png)
 

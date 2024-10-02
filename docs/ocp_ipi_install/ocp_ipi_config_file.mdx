@@ -17,11 +17,11 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 
 1. Logon to your UserXX-LinuxToolsVM 
 
-2. Copy the Root CA's public certificate to the local certiface repository
+2. Copy the Root CA's public certificate to the local certificate repository
 
    ```bash
    cd /ubuntu/xyz
-   sudo cp rootCA.pem /usr/local/share/ca-certificates/
+   sudo cp rootCA.crt /usr/local/share/ca-certificates/
    ```
 3. Update the local CA trust repository with the new one your created
 
@@ -140,7 +140,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
     ```yml {1,2,3,35} title="Sample install-config.yaml file - Edit the highlighted parts"
     additionalTrustBundlePolicy: Always                                 # Change the value to Always
     additionalTrustBundle: |                                            # Add this key
-        -----BEGIN CERTIFICATE-----                                     # Copy rootCA.pem contents here
+        -----BEGIN CERTIFICATE-----                                     # Copy rootCA.crt contents here
         MIIEJzCCAw+gAwIBAgIUfW+2AkjS2Ha3i4RWsXbPRO5jIe0wDQYJKoZIhvcNAQEL
         BQAwgaIxCzAJBgNVBAYTAkpQMRAwDgYDVQQIDAdLYXNoaXdhMRAwDgYDVQQHDAdL
         YXNoaXdhMRAwDgYDVQQKDAdudXRhbml4MQ8wDQYDVQQLDAZyb290Y2ExHTAbBgNV
@@ -272,7 +272,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
    ```bash
    ls -l openshift manifests
    ```
-8. Confirm the contents of the ``manifests/cluster-proxy-01-config.yaml`` file
+8. Confirm the contents of the ``manifests/cluster-proxy-01-config.yaml`` file to make sure you are using ``user-ca-bundle``
 
    ```bash
    cat manifests/cluster-proxy-01-config.yaml

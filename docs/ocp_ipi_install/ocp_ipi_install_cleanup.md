@@ -129,7 +129,7 @@ Run through the following if you would like to delete the OCP cluster.
 2. Change to you working directory that we created before (if not there already)
 
    ```bash
-   cd /root/xyz
+   cd /ubuntu/xyz
    ```
 
 3. Clean up with the following command:
@@ -160,6 +160,6 @@ Run through the following if you would like to delete the OCP cluster.
    INFO Time elapsed: 32s   
    ```
    
-IPI installation method is simple and consistent to deploy as after the pre-rquisites are setup once. 
+IPI installation method is simple and consistent to deploy as after the pre-requisites are setup once.
 
-Customers can easily deploy as many OCP clusters on Nutanix HCI. 
+Customers can easily deploy as many OCP clusters on Nutanix HCI.
