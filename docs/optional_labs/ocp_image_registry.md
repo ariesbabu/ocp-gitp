@@ -48,7 +48,7 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
    
    :::danger Create DNS Entry If Not Present
    
-   Use your HPOC cluster's Object's public IP only.
+   Use your HPOC cluster Object's public IP only.
 
    Create A record entry only if it is not present in DNS server.
 

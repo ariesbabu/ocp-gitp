@@ -68,7 +68,7 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     ``` bash 
     export KUBECONFIG=/home/ubuntu/xyz/auth/kubeconfig
     ```
-    ```bash title="Install Helm"
+    ```bash title="Install Helm if Not Present"
     # We also need to install Helm and jq on on Linux Tools VM
     # This will help us set up to install Kasten K10
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -77,7 +77,7 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     helm version
     ```
     ```bash title="Install jq"
-    yum install jq -y
+    sudo apt-get install jq 
     ```
 
 3. Create the ``VolumeSnapshotClass``
