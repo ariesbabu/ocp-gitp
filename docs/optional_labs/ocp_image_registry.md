@@ -48,13 +48,15 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
    
    :::danger Create DNS Entry If Not Present
    
-   Use your HPOC cluster's IP Addresses only.
+   Use your HPOC cluster's Object's public IP only.
 
-   The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster. For information on locating your cluster IP see Getting Started [Networking](../intro.md#networking) section. 
+   Create A record entry only if it is not present in DNS server.
+
+   The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster's Object's public IP. For information on locating your cluster IP see Getting Started [Networking](../intro.md#networking) section. 
    
    :::
    
-   ```buttonless
+   ```buttonless title="Sample A Record Entry"
    10.38.18.221  ntnx-objects.ntnxlab.local
    ```
 
@@ -64,15 +66,15 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
    Add-DnsServerResourceRecordA -Name ntnx-objects -IPv4Address 10.38.18.221 -ZoneName ntnxlab.local -ZoneScope ntnxlab.local
    ```
 
-3. Test name resolution for added entries
+4. Test name resolution for added entries
 
    ```PowerShell {6} 
    nslookup ntnx-objects.ntnxlab.local
    Server: dc.ntnxlab.local
-   Address: 10.38.18.203
+   Address: 10.38.18.203   # << This is the DNS server IP address
 
    Name: ntnx-objects.ntnxlab.local
-   Address: 10.38.18.221 
+   Address: 10.38.18.221   # << This is the ntnx-objects public IP address
    ```
 
 ### Installing SSL Certificate on Objects
@@ -92,7 +94,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
 
    The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
 
-   This is usually not required in environments that doesn't prepopulate deteministic FQDN as the SAN of the certificate.
+   This is usually not required in environments that doesn't pre-populate deterministic FQDN as the SAN of the certificate.
    :::
 
    ```bash
