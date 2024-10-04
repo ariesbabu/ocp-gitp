@@ -88,7 +88,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    ```
 
 
-2. Generate certificate(.pem) and private key (.key) for your Prism Central server
+2. Generate certificate(.crt) and private key (.key) for your Prism Central server
   
    :::note
 
@@ -143,7 +143,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
 4. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
 
    ```bash
-   ls -l *.pem *.crt *.key | awk '{print $9}'
+   ls -l *.crt *.key | awk '{print $9}'
    ```
    ```bash title="Output"
    ntnx-objects.ntnxlab.local.crt               ## Prism Central's public certificate signed by Root CA
@@ -259,6 +259,16 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
    xyz-7q676-worker-fg7b5   Ready    worker   104m   v1.24.0+b62823b
    xyz-7q676-worker-kbsfw   Ready    worker   104m   v1.24.0+b62823b
    ```
+
+11. Create a config map 
+
+     ```bash
+     oc create configmap object-ca --from-file=ca-bundle.crt=rootCA.crt -n openshift-config 
+     ```
+
+     ```buttonless title="Output"
+     configmap/object-ca created
+     ```
 
 3. Confirm the config map with the ``rootCA.crt`` contents for ``proxy/cluster`` resource
 
