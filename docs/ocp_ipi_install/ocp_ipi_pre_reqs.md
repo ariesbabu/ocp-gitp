@@ -50,11 +50,14 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
 3. Find two unused static IP addresses
 
    ```bash
+   cd $HOME/sol-cnai-infra/; devbox init; devbox shell
+   ```
+   ```bash title="Add nmap"
+   devbox add nmap
    nmap -v -sn  <your HPOC CIDR> # Use Lookup Tool to find your cluster CIDR
    ```
    ```bash title="Sample command"
    nmap -v -sn 10.38.18.192/26
-
    ```
    ```buttonless {1,2} title="Sample output - choose the first two consecutive IPs"
    Nmap scan report for 10.38.18.219 [host down] 
@@ -68,12 +71,22 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
    - Username: ubuntu
    - Password: your cluster password # Use Lookup Tool to find your CVM/PE Cluster password
    
-   ```bash
-   acli net.add_to_ip_blacklist <your-ipam-ahv-network> ip_list=10.38.18.219,10.38.18.220
-   ```
-   ```bash title="Sample command"
-   acli net.add_to_ip_blacklist Primary ip_list=10.38.18.219,10.38.18.220
-   ```
+   <Tabs>
+      <TabItem value="Template Command" label="Template Command" default>
+
+      ```bash
+      acli net.add_to_ip_blacklist <your-ipam-ahv-network> ip_list=10.38.18.219,10.38.18.220
+      ```
+
+      </TabItem>
+      <TabItem value="Example Command" label="Example Command">
+
+      ```bash title="Sample command"
+      acli net.add_to_ip_blacklist Primary ip_list=10.38.18.219,10.38.18.220
+      ```
+
+      </TabItem>
+   </Tabs>
 
 ### Add DNS Records
 
