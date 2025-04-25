@@ -41,11 +41,7 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
    10.38.18.192/26
    ```
 
-2. Logon to your UserXX-LinuxToolsVM (deployed on the HPOC cluster) using Mac Terminal or Windows PowerShell 
-
-   ```bash title="Use IP address of UserXX-LinuxToolsVM"
-   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
-   ```
+2. Logon to your UserXX-LinuxToolsVM Terminal in the browser using ``code-server`` that you installed in the previous section
 
 3. Find two unused static IP addresses
 
@@ -66,7 +62,7 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
    Host is up (-0.098s latency).
    ```
 
-2. Logon to any CVM in your cluster and execute the following to add chosen static IPs to the **Primary** IPAM network
+4. Logon to any CVM in your cluster and execute the following to add chosen static IPs to the **Primary** IPAM network
 
    - Username: ubuntu
    - Password: your cluster password # Use Lookup Tool to find your CVM/PE Cluster password
@@ -197,20 +193,19 @@ In this section please using the download links provided is also ok.
 :::
 
 
-1. Logon to UserXX-LinuxToolsVM and download the binaries 
+1. Logon to UserXX-LinuxToolsVM 
+   
+2. Go to Terminal in ``VSCode`` on the browser
 
-   ```bash title="Use IP address of UserXX-LinuxToolsVM"
-   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
-   ```
-
-   ```bash
-   mkdir xyz
-   cd xyz
+   ```bash title="Use your user number - for example ocpuser01"
+   cd $HOME
+   mkdir ocpuserXX # e.g. `mkdir ocpuser01` / mkdir ocpuser01
+   cd ocpuserXX # e.g. cd ocpuser01
    curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.16.5/openshift-install-linux-4.16.5.tar.gz  
    curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.16.5/openshift-client-linux-4.16.5.tar.gz
    ```
 
-2. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
+3. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
    
    ```bash
    tar xvf openshift-install-linux-4.16.5.tar.gz 
@@ -221,14 +216,14 @@ In this section please using the download links provided is also ok.
    sudo cp oc /usr/local/bin
    sudo cp openshift-install /usr/local/bin
    ```
-2. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
+4. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
 
-3. Now that the pull secret value is in your clipboard, paste the contents string to a pull secret file in the same directory
+5. Now that the pull secret value is in your clipboard, paste the contents string to a pull secret file in the same directory
 
    ```bash
    vi pull_secret.json
    ```
-4. Make sure all the files are in the xyz directory 
+6. Make sure all the files are in the ocpuserXX directory 
 
    ```bash
    ls -l 
@@ -488,6 +483,7 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
 1. In the UserXX-LinuxToolsVM, download and setup ``ccoctl`` using the following commands
 
    ```bash
+   cd $HOME/ocpuserXX # cd $HOME/ocpuser01
    RELEASE_IMAGE=$(openshift-install version | awk '/release image/ {print $3}')
 
    CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE)

@@ -3,6 +3,9 @@ title: Linux Tools VM
 sidebar_position: 1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Overview
 
 This Ubuntu VM image will be staged with packages used to support multiple lab exercises.
@@ -40,7 +43,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 1. In **Prism Central** > select **Menu** > **Compute and Storage > VMs**, and click **Create VM**
 
 1.  Fill out the following fields:
-    -   **Name** - *Initials*-Linux-ToolsVM
+    -   **Name** - ocpuserXX-Linux-ToolsVM 
     -   **Description** - (Optional) Description for your VM.
     -   **Number of VMs** - 1
     -   **CPU(s)** - 4
@@ -104,7 +107,8 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
              - bind-utils
              - nmap
            runcmd:
-             - systemctl stop ufw && systemctl disable ufw
+            - systemctl stop ufw && systemctl disable ufw
+            - 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install.sh | bash"'
            users:
              - default
              - name: ubuntu
@@ -120,7 +124,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 9. Click on **Next**
 10. Click **Create VM** at the bottom
 11. Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
-12. Select your *Initials*-Linux-ToolsVM
+12. Select your *ocpuserXX*-Linux-ToolsVM
 13. Click update and change the added disk size to 40 GB
 14. Under **Actions** drop-down menu, choose **Power On**
 
@@ -130,120 +134,71 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
     You can watch the console of the VM from Prism Central to make sure all the clouinit script has finished running.
     :::
 
-15. Login to the VM via SSH or Console session, using the following command:
-
-    ```bash
-    ssh -i <your_private_key> -l ubuntu <IP of LinuxToolsVM>
-    ```
-    ```bash title="Example command"
-    ssh -i id_rsa -l ubuntu 10.54.63.96
-    ```
-
-### Initiate Remote-SSH Connection to Jumpbox using VSCode
-
-1. In VSCode, click on Settings menu icon (gear icon) :gear: > **Settings** > **Extensions**
-2. In the search window search for **Remote SSH**
-3. Install the [Remote-SSH Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) from VSCode Marketplace
-4. click on the **Install** button for the extenstion.
-
-5. From your workstation, open **Visual Studio Code**.
-
-6. Click **View > Command Palette**.
-
-    ![](images/1.png)
-
-7. Click on **+ Add New SSH Host** and t
-
-    ![](images/2.png)
-
-8. Type ``ssh ubuntu@jumphost_VM-IP-ADDRESS>``and hit **Enter**.
-
-    ![](images/2b.png)
-
-9. Select the location to update the config file.
-
-   **Mac/Linux**
-
-    ```bash
-    /Users/<your-username>/.ssh/config
-    ```
-
-    **Windows**
-
-    ```PowerShell
-    C:\\Users\\<your-username>\\.ssh\\config
-    ```
-
-10. Open the ssh config file on your workstation to verify the contents. It should be similar to the following content
-
-    ```yaml
-    Host jumphost
-        HostName 10.x.x.x
-        IdentityFile ~/.ssh/id_rsa
-        User ubuntu
-    ```
-
-    Now that we have saved the ssh credentials, we are able to connect to the jumphost VM
-
+15. Get the IP address of the jumphost VM
+16. 
 ### Connect to you Jumpbox using VSCode
 
-1. On `VSCode`, Click **View > Command Palette** and **Connect to Host**
+1. In you browser visit the following URL
+   
+   <Tabs>
+      <TabItem value="Template URL" label="Template URL" default>
 
-2. Select the IP address of your `Jump Host` VM
+      ```url
+      https://_your_jumphost_ip
+      ```
+      </TabItem>
+      <TabItem value="Example URL" label="Example URL">
 
-3. A **New Window** :material-dock-window: will open in `VSCode`
+      ```url
+      https://10.54.63.96
+      ```
 
-4. Click the **Explorer** button from the left-hand toolbar and select **Open Folder**.
+      </TabItem>
+   </Tabs>
 
-    ![](images/4.png)
-
-5. Provide the ``$HOME/`` as the folder you want to open and click on **OK**.
-
-    :::note
-           
-    Ensure that **bin** is NOT highlighted otherwise the editor will attempt to autofill ``/bin/``. You can avoid this by clicking in the path field *before* clicking **OK**.
-
-    The connection may take up to 1 minute to display the root folder structure of the jumphost VM.
-
-6. Accept any warning message about trusting the author of the folder
-
-    ![](images/6.png)
+From now we will work on the browser to access ``VSCode`` environment and Terminal
 
 ## Install Utilities on Jumphost VM
 
 We have compiled a list of utilities that needs to be installed on the jumphost VM to use for the rest of the lab. We have affectionately called it as ``nai-llm`` utilities. Use the following method to install these utilities:
 
-1. Using `VSCode`, open `Terminal` :octicons-terminal-24: on the `Jump Host` VM
+1. Using `VSCode` in browser
+   
+2. Click the menu (hamburger) icon followed by Terminal and New Terminal
 
-2. Install `devbox` using the following command and accept all defaults
+3. Install `devbox` using the following command and accept all defaults
 
     ```sh
     curl -fsSL https://get.jetpack.io/devbox | bash
     ```
 
-3. From the ``$HOME`` directory, clone the ``sol-cnai-infra`` git repo and change working directory
+4. From the ``$HOME`` directory, clone the ``sol-cnai-infra`` git repo and change working directory
 
     ```bash
     git clone https://github.com/nutanix-japan/sol-cnai-infra.git
     cd $HOME/sol-cnai-infra/
     ```
 
-4. Start the `devbox shell`. If `nix` isn't available, you will be prompted to install:
+5. Start the `devbox shell`. If `nix` isn't available, you will be prompted to install:
 
     ```sh
     devbox init
     devbox shell
     ```
 
-5. Run Post VM Create - Workstation Bootstrapping tasks
+6. Run Post VM Create - Workstation Bootstrapping tasks
   
     ```bash
     sudo snap install task --classic
+    ```
+    ```bash
     task ws:install-packages ws:load-dotfiles --yes -d $HOME/sol-cnai-infra/
+    ```
+    ```bash
     source ~/.bashrc
     ```
 
-6. Change working directory and see ``Task`` help
+7. Change working directory and see ``Task`` help
   
     ```bash
     cd $HOME/sol-cnai-infra/ && task

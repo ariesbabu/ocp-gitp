@@ -108,7 +108,7 @@ Repeat these steps to upload [Windows2019](http://10.42.194.11/workshop_staging/
     -   **Timezone** - leave at default UTC
     -   **Guest Customization** - No Customization
 9.  Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
-10. Select your *Initials*-Linux-ToolsVM
+10. Select your *ocpuserXX-Linux-ToolsVM
 11. Under **Actions** drop-down menu, choose **Power On**
 
     :::note

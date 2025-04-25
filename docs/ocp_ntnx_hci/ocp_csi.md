@@ -71,11 +71,9 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 
 7.  In the **Filter by Keyword** text box, type **Nutanix** to find the Nutanix CSI Operator
 
-8.  Click on the **Nutanix CSI Operator**, verify Operator version to be at least `2.6.3` and click on **Install**
+8.  Click on the **Nutanix CSI Operator**, verify Operator version to be at least `3.3.0` and click on **Install**
 
-    ![](ocp_csi_images/nutanix_csi_operator.png)
-
-    Also make sure to check the supported orchestration (RH OCP platforms)
+    Make sure to check the supported orchestration (RH OCP platforms)
 
 9.  In the Operator install wizard choose the following:
 
@@ -110,19 +108,16 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
 
 ## Install StorageClass with Nutanix Volumes 
     
-1. Logon to your Linux Tools VM using ubuntu user name and password (Terminal on Mac/ Putty or PowerShell in Windows)
-   
-   ```bash title="Use IP address of UserXX-LinuxToolsVM"
-   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
-   ```
+1. Logon to your UserXX-LinuxToolsVM Terminal in the browser using ``code-server`` that you installed in the previous section
 
-5.  Export the OCP cluster's KUBECONFIG file to environment so we can perform `oc` commands
+
+2.  Export the OCP cluster's KUBECONFIG file to environment so we can perform `oc` commands
 
     ``` bash 
-    export KUBECONFIG=/home/ubuntu/xyz/auth/kubeconfig
+    export KUBECONFIG=/home/ubuntu/ocpuserXX/auth/kubeconfig
     ```
 
-6.  Create a kubernetes secret that the StorageClass can use to access the Nutanix HCI storage
+3.  Create a kubernetes secret that the StorageClass can use to access the Nutanix HCI storage
 
     Use the following Secret configuration script, modify required fields (highlighted)
 
@@ -161,7 +156,7 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
     # secret/ntnx-secret created
     ```
 
-7.  Copy the following StorageClass configuration script, modify ``Storage Container Name`` field and execute it in the command line
+4.  Copy the following StorageClass configuration script, modify ``Storage Container Name`` field and execute it in the command line
 
     ```zsh {15}
     cat << EOF >  storageclass.yaml
@@ -201,7 +196,7 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
     storageclass.storage.k8s.io/nutanix-volumes created
     ```
 
-9.  List your StorageClass
+5.  List your StorageClass
 
     ``` bash
     oc get StorageClass -A

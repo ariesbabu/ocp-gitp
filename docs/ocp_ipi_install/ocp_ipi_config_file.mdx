@@ -20,7 +20,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 2. Copy the Root CA's public certificate to the local certificate repository
 
    ```bash
-   cd /ubuntu/xyz
+   cd $HOME/ocpuserXX # e.g /home/ubuntu/ocpuser01
    sudo cp rootCA.crt /usr/local/share/ca-certificates/
    ```
 3. Update the local CA trust repository with the new one your created
@@ -72,7 +72,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 2. Change to you working directory that we created before (if not there already)
 
    ```bash
-   cd /ubuntu/xyz
+   cd $HOME/ocpuserXX
    ```
 3. Run the create install config command
 
@@ -98,7 +98,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
    ? Virtual IP Address for API 10.0.0.1              # << Type the IP you reserved for API
    ? Virtual IP Address for Ingress 10.0.0.2          # << Type the IP you reserved for Ingress
    ? Base Domain ntnxlab.local                        # << Type the name of your base domain 
-   ? Cluster Name xyz                                 # << Type the name of your sub domain or OCP cluster's name
+   ? Cluster Name ocpuserXX                                 # << Type the name of your sub domain or OCP cluster's name
    ? Pull Secret [? for help] ************************************************
    INFO Install-Config created in: .
    ```
@@ -106,11 +106,10 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 4. Now we have to prepare the install-config.yaml file by adding the following details:
 
    - Your self hosted Root CA's certificate
-   - Number of replcas for worker nodes (3 workers to 2 worker)
    - Machine network details (your HPOC's subnet)
    
 
-5. Add the details:
+5. Add the details by opening the file in ``VSCode`` or using ``vim`` command line
 
     ```bash
     vim install-config.yaml
