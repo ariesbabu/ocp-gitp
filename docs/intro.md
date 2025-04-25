@@ -51,7 +51,7 @@ The labs are designed to run on any Nutanix AHV cluster provided the following a
 - DNS server (this lab uses a Microsoft DNS configuration)
 - IP address allocations for the OCP nodes and other infrastructure elements
 - Internet connectivity (no dark site setup information is documented yet)
-- A Linux VM (any cloud distribution is ok. ``CloudInit`` file is provided in the Appendix > Linux Tools VM [section](../docs/toolsvms/linux_tools_vm.md).
+- A Linux VM - ``CloudInit`` file is provided in the Appendix > Linux Tools VM [section](../docs/toolsvms/linux_tools_vm.md).
 
 ## What is new?
 

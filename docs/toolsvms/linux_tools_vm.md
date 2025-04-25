@@ -199,11 +199,11 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 
 5. Provide the ``$HOME/`` as the folder you want to open and click on **OK**.
 
-    !!!note
-           Ensure that **bin** is NOT highlighted otherwise the editor will attempt to autofill ``/bin/``. You can avoid this by clicking in the path field *before* clicking **OK**.
+    :::note
+           
+    Ensure that **bin** is NOT highlighted otherwise the editor will attempt to autofill ``/bin/``. You can avoid this by clicking in the path field *before* clicking **OK**.
 
-    !!!warning
-           The connection may take up to 1 minute to display the root folder structure of the jumphost VM.
+    The connection may take up to 1 minute to display the root folder structure of the jumphost VM.
 
 6. Accept any warning message about trusting the author of the folder
 
