@@ -133,7 +133,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
     ```PowerShell title="Add the apps Ingress A record - use your own subdomain"
     Add-DnsServerResourceRecordA -Name *.apps.<ocpuserXX> -IPv4Address <your Ingress IP> -ZoneName ntnxlab.local -ZoneScope ntnxlab.local 
     ```
-    ```PowerShell title="Add the Prism Central A record"
+    ```PowerShell title="Optional - Add the Prism Central A record - if not present"
     Add-DnsServerResourceRecordA -Name pc -IPv4Address <your PC IP> -ZoneName ntnxlab.local -ZoneScope ntnxlab.local 
     ```
     ```mdx-code-block
@@ -144,7 +144,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
     Add-DnsServerResourceRecordA -Name api.ocpuser01 -IPv4Address 10.38.18.219 -ZoneName ntnxlab.local -ZoneScope ntnxlab.local
     Add-DnsServerResourceRecordA -Name *.apps.ocpuser01 -IPv4Address 10.38.18.220 -ZoneName ntnxlab.local -ZoneScope ntnxlab.local 
     ```
-    ```PowerShell title="Add the Prism Central A record"
+    ```PowerShell title="Optional - Add the Prism Central A record - if not present"
     Add-DnsServerResourceRecordA -Name pc -IPv4Address 10.38.18.201 -ZoneName ntnxlab.local -ZoneScope ntnxlab.local
     ```
     ```mdx-code-block
@@ -196,6 +196,8 @@ In this section please using the download links provided is also ok.
 1. Logon to UserXX-LinuxToolsVM 
    
 2. Go to Terminal in ``VSCode`` on the browser
+3. 
+4. Create a folder under your user name from cluster lookup site (if you are in a lab environment)
 
    ```bash title="Use your user number - for example ocpuser01"
    cd $HOME
@@ -205,7 +207,7 @@ In this section please using the download links provided is also ok.
    curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.16.5/openshift-client-linux-4.16.5.tar.gz
    ```
 
-3. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
+5. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
    
    ```bash
    tar xvf openshift-install-linux-4.16.5.tar.gz 
@@ -216,14 +218,14 @@ In this section please using the download links provided is also ok.
    sudo cp oc /usr/local/bin
    sudo cp openshift-install /usr/local/bin
    ```
-4. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
+6. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
 
-5. Now that the pull secret value is in your clipboard, paste the contents string to a pull secret file in the same directory
+7. Now that the pull secret value is in your clipboard, paste the contents string to a pull secret file in the same directory
 
    ```bash
    vi pull_secret.json
    ```
-6. Make sure all the files are in the ocpuserXX directory 
+8. Make sure all the files are in the ocpuserXX directory 
 
    ```bash
    ls -l 
@@ -483,13 +485,18 @@ Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-pl
 1. In the UserXX-LinuxToolsVM, download and setup ``ccoctl`` using the following commands
 
    ```bash
-   cd $HOME/ocpuserXX # cd $HOME/ocpuser01
+   cd $HOME/ocpuserXX # e.g. cd $HOME/ocpuser01
+   ```
+   ```bash
    RELEASE_IMAGE=$(openshift-install version | awk '/release image/ {print $3}')
-
+   ```
+   ```bash
    CCO_IMAGE=$(oc adm release info --image-for='cloud-credential-operator' $RELEASE_IMAGE)
-
+   ```
+   ```bash
    oc image extract $CCO_IMAGE --file="/usr/bin/ccoctl" -a pull_secret.json
-
+   ```
+   ```bash
    chmod u+x ccoctl
    ```
 

@@ -17,7 +17,9 @@ Deploy this VM on your assigned cluster if directed to do so as part of **Lab Se
 
 :::caution
 
-Only deploy the image once with your *Initials* in the image name, it does not need to be cleaned up as part of any lab completion.
+Check if ``ubuntu 24.04`` exists first before deploying. 
+
+If you are in a lab environment, only one participant needs to add this.
 
 :::
 
@@ -58,7 +60,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
     -   **Bus Type** - leave at default SCSI Setting
 4.  Click **Save**
 5.  Under **Networks** select **Attach to Subnet**
-    -   **VLAN Name** - Primary
+    -   **VLAN Name** - primary-XXX-XXXX
     -   **Network Connection State** - Connected
     -   **Assignment Type** - Assign with DHCP
 6.  Click **Save**

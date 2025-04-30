@@ -46,12 +46,12 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 2.  Using Chrome browser browse to Console URL you obtained in the previous section.
 
     ```url
-    https://console-openshift-console.apps.<initials>1.ntnxlab.local
+    https://console-openshift-console.apps.<initials>.ntnxlab.local
     ```
 
     ```url
     # example URL
-    # https://console-openshift-console.apps.xyz1.ntnxlab.local
+    # https://console-openshift-console.apps.ocpuserXX.ntnxlab.local
     ```
 
 3.  Use your credentials to Login
@@ -87,17 +87,24 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 
 11. Once installed you will see the operator in **Operator** > **Installed Operators**
 
-12. Click on **Nutanix CSI Operator**, and then click on  **NutanixCsiStorages** tab of the operator page and 
-
-13. Click on **Create NutanixCsiStorage**
-
-13. Click on **Create** button
-
-14. Wait for the status to be **Conditions: Initialized, Deployed**
-
+12. Create a NutanixCsiStorage resource to deploy your driver You can do it directly inside the Operator UI with the Create instance button or with the following resource
+    
+    ```bash
+    cat << EOF | oc apply -f -
+    apiVersion: crd.nutanix.com/v1alpha1
+    kind: NutanixCsiStorage
+    metadata:
+      name: nutanixcsistorage
+      namespace: openshift-cluster-csi-drivers
+    spec: 
+      ntnxInitConfigMap:
+        usePC : false
+    EOF
+    ```
+    
 This will create a NutanixCsiStorage resource to deploy your driver.
 
-You have succesfully installed the Nutanix CSI operator to take care of StorageClass installation and upgrades.
+You have successfully installed the Nutanix CSI operator to take care of StorageClass installation and upgrades.
 
 :::info
 
@@ -117,7 +124,7 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
     export KUBECONFIG=/home/ubuntu/ocpuserXX/auth/kubeconfig
     ```
 
-3.  Create a kubernetes secret that the StorageClass can use to access the Nutanix HCI storage
+3.  Create two kubernetes secret that the StorageClass can use to access the Nutanix HCI storage
 
     Use the following Secret configuration script, modify required fields (highlighted)
 
@@ -128,32 +135,32 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
     -   Prism Element Password
 
     ```bash {8}
-    cat << EOF > csi_secret.yaml
+    cat << EOF > ntnx-pe-secret.yaml
     apiVersion: v1
     kind: Secret
     metadata:
-      name: ntnx-secret
+      name: ntnx-pe-secret
       namespace: openshift-cluster-csi-drivers
     stringData:
       key: <Prism Element IP>:9440:<Prism Element UserName>:<Prism Element Password>    # << change this
       # example: 
-      # key: 10.38.2.71:9440:admin:password
+      # key: 10.38.2.37:9440:admin:password
     EOF
     ```
 
     ``` bash
     # Modify the highlighted fields to suit your environment
-    vi csi_secret.yaml
+    vi ntnx-pe-secret.yaml
     ```
 
     ``` bash
     # Create the secret 
-    oc apply -f csi_secret.yaml
+    oc apply -f ntnx-pe-secret.yaml
     ```
 
     ``` bash
     # example output here for the above command
-    # secret/ntnx-secret created
+    # secret/ntnx-pe-secret created
     ```
 
 4.  Copy the following StorageClass configuration script, modify ``Storage Container Name`` field and execute it in the command line
@@ -165,18 +172,22 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
     metadata:
       name: nutanix-volumes
       annotations:
-        storageclass.kubernetes.io/is-default-class: "true"     ## We will make this SC default by annotating 
+        storageclass.kubernetes.io/is-default-class: "true"  
     provisioner: csi.nutanix.com
     parameters:
-      csi.storage.k8s.io/provisioner-secret-name: ntnx-secret
+      csi.storage.k8s.io/provisioner-secret-name: ntnx-pe-secret
       csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers
-      csi.storage.k8s.io/node-publish-secret-name: ntnx-secret
+      csi.storage.k8s.io/node-publish-secret-name: ntnx-pe-secret
       csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers
-      csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret
+      csi.storage.k8s.io/controller-expand-secret-name: ntnx-pe-secret
       csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers
+      csi.storage.k8s.io/controller-publish-secret-name: ntnx-pe-secret
+      csi.storage.k8s.io/controller-publish-secret-namespace: openshift-cluster-csi-drivers
       csi.storage.k8s.io/fstype: ext4
-      storageContainer: default                                ## << Change this to match your Storage Container
-      storageType: NutanixVolumes             
+      storageContainer: default-container
+      storageType: NutanixVolumes
+      #description: "description added to each storage object created by the driver"
+      #hypervisorAttached: ENABLED
     allowVolumeExpansion: true
     reclaimPolicy: Delete
     EOF

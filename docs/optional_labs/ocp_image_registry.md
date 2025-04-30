@@ -92,7 +92,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
   
    :::note
 
-   The ``ntnx-objects.prism-central.cluster.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
+   The ``ntnxlab.ntnxlab.local`` SAN is required at this time as a second domain to workaround HPOC runbook issue which by default installs a SSL certificate by using this FQDN. 
 
    This is usually not required in environments that doesn't pre-populate deterministic FQDN as the SAN of the certificate.
    :::
@@ -101,11 +101,11 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    # Format
    # ./gencert.sh <server fqdn>
 
-   ./gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
+   ./gencert.sh ntnx-objects.ntnxlab.local ntnxlab.ntnxlab.local
    ```
 
    ```text title="Execution example - make sure to retype the input values as shown here"
-    gencert.sh ntnx-objects.ntnxlab.local ntnx-objects.prism-central.cluster.local
+    gencert.sh ntnx-objects.ntnxlab.local ntnxlab.ntnxlab.local
     #
     You are about to be asked to enter information that will be incorporated
     into your certificate request.
@@ -137,7 +137,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
    openssl x509 -in ntnx-objects.ntnxlab.local.crt -noout -text | grep -A 1 "Subject Alternative Name"
    # output here
             X509v3 Subject Alternative Name: 
-                DNS:ntnx-objects.ntnxlab.local, DNS:ntnx-objects.prism-central.cluster.local   # < Confirmed both FQDN are present
+                DNS:ntnx-objects.ntnxlab.local, DNS:ntnxlab.ntnxlab.local   # < Confirmed both FQDN are present
    ```
 
 4. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
@@ -201,9 +201,15 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
 
 11. Open the downloaded file to verify contents
 
-    ![](ocp_image_registry_images/xyz_access_key.png)
+    ```bash
+    Username: ocpuserXX@ntnxlab.com
+    Access Key: t1FzWhILj_CxU4NGNcWzZ0hW-xxxxxxx
+    Secret Key: KbGdgYMoaYx1DnIJ6gTgu-xxxxxxxxxx
+    Display Name: ocpuserXX
+    Tag: buckets-access-key-xxxxxxxxxxxxxxxxxxxx
+    ```
 
-12. Store the access key and secret key in a safe place for later access
+12. Store the access key and secret key in a safe place for later
 
 ### Create Buckets Storage for OCP Image Registry
 
@@ -227,9 +233,7 @@ We will create a bucket for backup destination
 
 8.  In the **Share Bucket ocpuserXX-registry** window, type in your email that you configured in User Access section
 
-9.  Give **Read** and **Write** permissions
-
-    ![](ocp_image_registry_images/share_k10_bucket.png)
+9.  Give **Full Access** permissions
 
 10. Click on **Save**
 
@@ -338,7 +342,7 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
     {"op": "remove", "path": "/spec/storage" },
     {"op": "add", "path": "/spec/storage", "value":
     {"s3":
-    {"bucket": "ocpuser01-registry",                       ### <<< REMEMBER TO USE YOUR BUCKET NAME
+    {"bucket": "ocpuserXX-registry",                       ### <<< REMEMBER TO USE YOUR BUCKET NAME
     "regionEndpoint": "https://ntnx-objects.ntnxlab.local",
     "encrypt": false, 
     "region": "us-east-1"}}}]'
@@ -360,7 +364,7 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
     config.imageregistry.operator.openshift.io/cluster patched
     ```
 
-8. You can use the config description to check if the image registry sucessfully connected to Nutanix Objects store ``xyz-ocp-registry``
+8. You can use the config description to check if the image registry successfully connected to Nutanix Objects store's bucket ``ocpuserXX-registry``
 
     ```bash
     oc get config.imageregistry.operator.openshift.io/cluster -oyaml
@@ -373,7 +377,7 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
       logLevel: Normal
       ## Snipped for brevity
         s3:
-          bucket: xyz-ocp-registry                            ## << your Nutanix bucket for storing container images
+          bucket: ocpuserXX-registry                            ## << your Nutanix bucket for storing container images
           region: us-east-1
           regionEndpoint: https://ntnx-objects.ntnxlab.local  ## << your Nutanix Object's URL
           trustedCA:
@@ -460,7 +464,7 @@ yum install git -y
 
 6. Click on ``ntnx-object`` object store (this will open in a new tab)
 
-7. Select your ``xyz-ocp-registry`` 
+7. Select your ``ocpuserXX-registry`` 
 
 4. Click on **Launch Objects Browser** (this will open in a new tab)
 
