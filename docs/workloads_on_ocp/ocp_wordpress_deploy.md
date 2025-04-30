@@ -12,7 +12,7 @@ We will test backup and recovery of this application in next section.
 
 ## Deploying Wordpress App
 
-1. In your **LinuxToolsVM** or your **LB_DNS VM** console,
+1. In your **LinuxToolsVM** on the browser
 
 6.  Create a new directory for your wordpress application and configuration files
 

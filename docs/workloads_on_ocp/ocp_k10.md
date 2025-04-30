@@ -57,29 +57,13 @@ Before you proceed with this section, verify that Nutanix CSI operator version a
 
 We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix CSI. This helps in facilitating snapshots of the source workload.
 
-1. Logon to your UserXX-LinuxToolsVM (deployed on the HPOC cluster) using Mac Terminal or Windows PowerShell 
+1. Logon to your UserXX-LinuxToolsVM on the browser using VSCode-server
 
-   ```bash title="Use IP address of UserXX-LinuxToolsVM"
-   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
-   ```
-
-2.  Export the OCP cluster's KUBECONFIG file to environment so we can perform `oc` commands
+2. Export the OCP cluster's KUBECONFIG file to environment so we can perform `oc` commands
 
     ``` bash 
     export KUBECONFIG=/home/ubuntu/xyz/auth/kubeconfig
     ```
-    ```bash title="Install Helm if Not Present"
-    # We also need to install Helm and jq on on Linux Tools VM
-    # This will help us set up to install Kasten K10
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-    helm version
-    ```
-    ```bash title="Install jq"
-    sudo apt-get install jq 
-    ```
-
 3. Create the ``VolumeSnapshotClass``
 
     ``` bash
@@ -93,26 +77,14 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     driver: csi.nutanix.com
     parameters:
       storageType: NutanixVolumes
-      csi.storage.k8s.io/snapshotter-secret-name: ntnx-secret
+      csi.storage.k8s.io/snapshotter-secret-name: ntnx-pe-secret
       csi.storage.k8s.io/snapshotter-secret-namespace: openshift-cluster-csi-drivers
     deletionPolicy: Delete
     EOF
 
     ```
-6. Install Helm (if it is not present)
 
-   ```bash title="Install latest Helm"
-   curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-   #
-   chmod 700 get_helm.sh
-   #
-   ./get_helm.sh
-   ```
-   ```bash title="Verify Helm version"
-   helm version
-   ```
-
-6.  Run the following script to check if your OCP cluster is Kasten K10 ready
+4.  Run the following script to check if your OCP cluster is Kasten K10 ready
 
     ``` bash
     # Add kasten helm repo
@@ -121,7 +93,7 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     curl https://docs.kasten.io/tools/k10_primer.sh | bash
     ```
 
-7.  You would notice output as following:
+5.  You would notice output as following:
 
     ``` bash
     Validating Provisioners: 
@@ -145,7 +117,7 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     job.batch "k10primer" deleted
     ```
 
-8.  Make sure all pre-checks are OK. If not, go back and check the associated errors and resolve them. Ask your instructor for help.
+6.  Make sure all pre-checks are OK. If not, go back and check the associated errors and resolve them. Ask your instructor for help.
 
     :::caution
 
@@ -325,7 +297,7 @@ However, at the time of writing this lab there were issues with the Operator app
 
 We will create a backup target to point to our bucket we created in the previous section. In Kasten this is called Location Profiles.
 
-1.  In Kasten dashboard click on **Profiles** > **Locations** > **+ New Profile**
+1.  In Kasten dashboard click on **Profiles** > **Location** > **+ New Profile**
 
 3.  Enter the following details
 
@@ -335,7 +307,7 @@ We will create a backup target to point to our bucket we created in the previous
         the previous section
     -   **S3 Secret Key** - Secret key from the file you downloaded in
         the previous section
-    -   **Endpoint** - Public IP of ntnx-objects Object Store (e.g. https://10.42.32.18)
+    -   **Endpoint** - ``https://ntnx-objects.ntnxlab.local`` (pulic URL/IP address of the Object's store endpoint)
     -   **Skip certificate chain and hostname verification** - Checked and confirm to **Disable SSL Verify** in the prompt
     -   **Region** - us-east-1
     -   **Bucket Name** - *Initials*-k10 (e.g. ocpuser01-k10)
@@ -344,11 +316,11 @@ We will create a backup target to point to our bucket we created in the previous
 
 4.  Click on **Save**
 
-5.  Kasten will do a validation and the profile will be available in the **Settings** > **Locations** page
+5.  Kasten will do a verification and the profile will be available in the **Settings** > **Locations** page
 
     :::note
 
-    If there are validation errors, please go back to checking all the input parameters for creating location profile
+    If there are verification errors, please go back to checking all the input parameters for creating location profile
 
     :::
 

@@ -107,8 +107,6 @@ and restore operations.
     -   **Deployments** - wordpress
     -   **Deployments** - wordpress-mysql
 
-    ![](ocp_k10_backup_restore_images/kasten_restore_artifacts.png)
-
 8.  Click on **Restore** and **Restore** again in the confirmation Windows
 
 9.  Return to the Kasten Dashboard to monitor the progress

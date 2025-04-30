@@ -6,6 +6,14 @@ In this section we will setup up Nutanix Objects to serve as a backup destinatio
 
 # Generating Access Keys
 
+:::caution
+
+Skip this section if you have already created a Objects user and downloaded the access and secret keys.
+
+For example: ``ocpuserXX`` user from the previous section of the lab could be used here instead of creating a new one.
+
+:::
+
 Generate access keys if you haven't done it already. 
 
 1.  Go to **Prism Central** > **Objects**
@@ -20,9 +28,7 @@ Generate access keys if you haven't done it already.
 
 5.  Select **Add people not in a directory service**
 
-6.  Enter your email and name (if you haven't already configured this part)
-
-    ![](objects_prep_images/objects_access_key.png)
+6.  Enter your email (ocpuserXX@ntnxlab.local) and name (ocpuserXX) (if you haven't already configured this part)
 
 7.  Click on **Next**
 
@@ -34,7 +40,13 @@ Generate access keys if you haven't done it already.
 
 11. Open the downloaded file to verify contents
 
-    ![](objects_prep_images/xyz_access_key.png)
+    ```bash
+    Username: ocpuserXX@ntnxlab.com
+    Access Key: t1FzWhILj_CxU4NGNcWzZ0hW-xxxxxxx
+    Secret Key: KbGdgYMoaYx1DnIJ6gTgu-xxxxxxxxxx
+    Display Name: ocpuserXX
+    Tag: buckets-access-key-xxxxxxxxxxxxxxxxxxxx
+    ```
 
 # Create Buckets for Backup Destination
 
@@ -63,10 +75,7 @@ We will create a bucket for backup destination
 
 8.  In the **Share Bucket xyz-k10** window, type in your email that you configured in User Access section
 
-9.  Give **Read** and **Write** permissions
-
-    ![](objects_prep_images/share_k10_bucket.png)
-
+9.  Give **Full Access** permissions
 10. Click on **Save**
 
 You have now provisioned a S3 bucket to store backups of the application which you will deploy in the next section.
