@@ -83,38 +83,29 @@ This way developers can easily integrate VM based databases in their regular mic
 
 ### Prepare you Linux Tools VM
 
-1. Logon to your Linux Tools VM using ubuntu user name and password (Terminal on Mac/ Putty or PowerShell in Windows)
+1. Logon to your Linux Tools VM using ubuntu user name and password on the browser
    
-   ```bash title="Use IP address of UserXX-LinuxToolsVM"
-   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
-   ```
-
    :::tip Can't find the Linux Tools VM?
 
    If you don't have a Linux Tools VM deployed on your HPOC cluster, follow instructions in Appendix > Linux Tools VM page to deploy one.
    
    :::
 
-<!-- 2. Create a new directory in the home
+2. Create a new directory in the home
    
    ```bash
-   mkdir /home/ubuntu//ndb
-   cd /home/ubuntu//ndb 
-   ``` -->
-<!-- 3. Clone NDB operator's git repository
+   mkdir $HOME/ocpuserXX/ndb
+   cd $HOME/ocpuserXX/ndb
+   ```
 
-   ```bash
-   git clone https://github.com/nutanix-cloud-native/ndb-operator
-   cd ndb-operator
-   ``` -->
 
-4. Depending on you access to ``kubeconfig`` file or kubeadmin password, logon to the OCP cluster
+1. Depending on you access to ``kubeconfig`` file or kubeadmin password, logon to the OCP cluster
    
     <Tabs groupId="Login Method">
     <TabItem value="kubeconfig file" label="kubeconfig">
 
     ```text title="Export your kubeconfig file to env"
-    export KUBECONFIG=/home/ubuntu//xyz/auth/kubeconfig
+    export KUBECONFIG=/home/ubuntu/ocpuserXX/auth/kubeconfig
     ```
 
     </TabItem>
@@ -127,35 +118,22 @@ This way developers can easily integrate VM based databases in their regular mic
     </TabItem>
     </Tabs>
 
-5. Make sure your OCP cluster is accessible
+2. Make sure your OCP cluster is accessible
 
    ```bash title="Ensure that you are getting output"
    oc get nodes
    ```
 
-6. Install Helm (if it is not present)
-
-   ```bash title="Install latest Helm"
-   curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-   #
-   chmod 700 get_helm.sh
-   #
-   ./get_helm.sh
-   ```
-   ```bash title="Verify Helm version"
-   helm version
-   ```
-
-7. Install [latest version](https://cert-manager.io/docs/installation/#getting-started) of Cert Manager as a pre-requisite for NDB Operator
+3. Install [latest version](https://cert-manager.io/docs/installation/#getting-started) of Cert Manager as a pre-requisite for NDB Operator
    
    ```bash
    oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.1/cert-manager.yaml
    ```
 
-8. Make sure all Cert Manager services are up and running
+4. Make sure all Cert Manager services are up and running
 
    ```bash
-   oc get po -w -n cert-manager
+   oc get po -n cert-manager -w 
    ```
    
 <!-- 7. We will install go language to be able to deploy the software
@@ -332,7 +310,7 @@ In this section we will create a Postgres database using NDB Operator.
      name: your-db-secret        
    type: Opaque
    stringData:
-     password: postgres_password
+     password: postgres_password   # << Do not change this for now
      ssh_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ....            # << this must be present
    EOF
    ```
@@ -373,15 +351,16 @@ In this section we will create a Postgres database using NDB Operator.
 We will use curl command to get the Era's cluster UUID in this section. 
 
 1. Logon to the  Linux Tools VM using your credentials
-
-2. Execute the following command to get Era cluster's UUID. We will use this in our database configuration file in the next section. 
-
+   
+2. Set the env for NDB VMs IP address 
+=
    ```mdx-code-block
    <Tabs>
    <TabItem value="Template command">
    ```
    ```bash 
-   curl -X GET  -u admin -k https://[NDB IP]/era/v0.9/clusters | jq '.[0].id'
+   NDB_IP=_your_ndb_vm_ip
+   echo $NDB_IP
    ``` 
    
    ```mdx-code-block
@@ -392,7 +371,35 @@ We will use curl command to get the Era's cluster UUID in this section.
    <TabItem value="Sample command">
    ```
    ```bash
-   curl -X GET  -u admin -k https://10.42.12.18/era/v0.9/clusters | jq '.[0].id'
+   NDB_IP=10.42.12.18
+   10.42.12.18
+   ``` 
+   ```mdx-code-block
+   </TabItem>
+   </Tabs>
+   ```
+
+3. Execute the following command to get Era cluster's UUID. We will use this in our database configuration file in the next section. 
+
+   ```mdx-code-block
+   <Tabs>
+   <TabItem value="Template command">
+   ```
+   ```bash 
+   NDB_UUID="$(curl -X GET -u admin -k https://$NDB_IP/era/v0.9/clusters | jq '.[0].id')"
+   echo $NDB_UUID
+   ``` 
+   
+   ```mdx-code-block
+
+   </TabItem>
+   ```
+   ```mdx-code-block
+   <TabItem value="Sample command">
+   ```
+   ```bash
+   NDB_UUID="$(curl -X GET -u admin -k https://10.42.12.18/era/v0.9/clusters | jq '.[0].id')"
+   "eafdb83c-e512-46ce-8d7d-6859dc170272"
    ``` 
    ```mdx-code-block
    </TabItem>
@@ -406,8 +413,29 @@ We will use curl command to get the Era's cluster UUID in this section.
    "eafdb83c-e512-46ce-8d7d-6859dc170272"  # << This uuid will be different for all Era clusters.
    ```
 
-3. Record the Era server's cluster UUID 
 
+4. Record the Era server's cluster UUID 
+
+### Create NDB Compute Profile
+
+Create a NDB compute profile that can be used for our Postgres database
+
+1. Prepare base64 version of NDB login credentials
+   
+   ```bash 
+   NDB_SERVER_PASSWORD="xxxxxxx"
+   NDB_CREDS_HASH=$(echo admin:$NDB_SERVER_PASSWORD | base64)
+   echo $NDB_CREDS_HASH
+   ```
+2. Send a REST call to NDB VM to create the compute profile
+
+   ```bash
+   curl -k -X POST \
+	https://10.54.77.14/era/v0.9/profiles \
+	-H 'Content-Type: application/json' \
+	-H 'Authorization: Basic YWRtaW46dGVjaFgyMDI1IQ==' \
+	-d \	'{"type":"Compute","topology":"ALL","dbVersion":"ALL","systemProfile":false,"properties":[{"name":"CPUS","value":"4","secure":false,"description":"Number of CPUs in the VM"},{"name":"CORE_PER_CPU","value":"2","secure":false,"description":"Number of cores per CPU in the VM"},{"name":"MEMORY_SIZE","value":"16","secure":false,"description":"Total memory (GiB) for the VM"}],"name":"DEFAULT_OOB_SMALL_COMPUTE","description":""}'
+   ```
 
 ### Create Postgres Database using the NDB Operator
 
@@ -429,45 +457,53 @@ We will use curl command to get the Era's cluster UUID in this section.
       # Name of the secret that holds the credentials for NDB: username, password and ca_certificate created earlier
       credentialSecret: your-ndb-secret
       # NDB Server's API URL
-      server: https://[NDB IP]:8443/era/v0.9
+      server: https://$NDB_IP:8443/era/v0.9
       # Set to true to skip SSL certificate validation, should be false if ca_certificate is provided in the credential secret.
       skipCertificateVerification: true
    EOF
    ```
 
-1. Edit the file to modify your NDB server IP
-
-1. Connect the OCP cluster to your NDB server by applying the manifest you created
+2. Connect the OCP cluster to your NDB server by applying the manifest you created
    
    ```bash
    oc apply -f ndbserver.yaml
    ```
 
-1. Create a Database resource by using the following manifest
+3. Choose a name for your DB server
+   
+   ```bash
+   MY_DB_SERVER_NAME=ocpuserXX # e.g ocpuser01
+   echo $MY_DB_SERVER_NAME
+   ```
 
-   ```bash {5,12,16}
+4. Create a Database resource by using the following manifest
+
+   ```bash {6,13,20,25}
    cat << EOF > database.yaml
    apiVersion: ndb.nutanix.com/v1alpha1
    kind: Database
    metadata:
    # This name that will be used within the kubernetes cluster
-     name: dbforflower                                                          # << This will be our kubernetes database object's name
+     name: dbforflower                                     # << This will be our kubernetes database object's name
    spec:
      # Name of the NDBServer resource created earlier
      ndbRef: ndb
      isClone: false
      # Database instance specific details (that is to be provisioned)
      databaseInstance:
-       clusterId: "a913265b-377c-44cf-8984-d049ade62585"                        # << Change to the NDB server's UUID from previous step
+       clusterId: $NDB_UUID
        # Example
        # clusterId: "a913265b-377c-44cf-8984-d049ade62585"
        # The database instance name on NDB
-       name: "pgserver<yourinitials>"                                           # << this will be our database server name
+       # profiles:
+       #   software:
+       #     name: "POSTGRES_15.6_ROCKY_LINUX_8_OOB"
+       name: "$MY_DB_SERVER_NAME"                        # << change this to your ocpuser name
        # Example
-       #name: "pgserverbln"
+       #name: "pgserver_ocpuser01"
        # Names of the databases on that instance
        databaseNames:
-         - predictiondb                                                         # << this will be our database name
+         - predictiondb                                  # << this will be our database name
        # Credentials secret name for NDB installation
        # data: password, ssh_public_key
        credentialSecret: your-db-secret
@@ -505,7 +541,7 @@ We will use curl command to get the Era's cluster UUID in this section.
    oc logs -f deployment.apps/ndb-operator-controller-manager -n ndb-operator
    ```
 
-9. You can also login to the NDB web page to see the progress. 
+9.  You can also login to the NDB web page to see the progress. 
    
    In NDB UI, Select **Menu** **Operations**
 
@@ -563,7 +599,8 @@ Refer to the following document for other database creation option with [NDB Opt
       restartPolicy: Never
       containers:
       - name: psql 
-        image: quay.io/coreos/postgres
+        image: alpine/psql
+        command: ["/bin/sh", "-c", "echo 'Pod is running' && sleep 7200"]
         env:
         - name: POSTGRES_PASSWORD
           value: postgres_password
