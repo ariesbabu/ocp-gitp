@@ -431,10 +431,10 @@ Create a NDB compute profile that can be used for our Postgres database
 
    ```bash
    curl -k -X POST \
-	https://10.54.77.14/era/v0.9/profiles \
-	-H 'Content-Type: application/json' \
-	-H 'Authorization: Basic YWRtaW46dGVjaFgyMDI1IQ==' \
-	-d \	'{"type":"Compute","topology":"ALL","dbVersion":"ALL","systemProfile":false,"properties":[{"name":"CPUS","value":"4","secure":false,"description":"Number of CPUs in the VM"},{"name":"CORE_PER_CPU","value":"2","secure":false,"description":"Number of cores per CPU in the VM"},{"name":"MEMORY_SIZE","value":"16","secure":false,"description":"Total memory (GiB) for the VM"}],"name":"DEFAULT_OOB_SMALL_COMPUTE","description":""}'
+     https://${NDB_IP}/v0.9/profiles \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Basic ${NDB_CREDS_HASH}' \
+     -d \	'{"type":"Compute","topology":"ALL","dbVersion":"ALL","systemProfile":false,"properties":[{"name":"CPUS","value":"4","secure":false,"description":"Number of CPUs in the VM"},{"name":"CORE_PER_CPU","value":"2","secure":false,"description":"Number of cores per CPU in the VM"},{"name":"MEMORY_SIZE","value":"16","secure":false,"description":"Total memory (GiB) for the VM"}],"name":"DEFAULT_OOB_SMALL_COMPUTE","description":""}'
    ```
 
 ### Create Postgres Database using the NDB Operator
