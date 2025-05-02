@@ -29,30 +29,28 @@ Let us extend our previously built ``ocp-gitp-git`` pipeline.
    ```
 2. Login as kubeadmin or a IDP user
 
-1. Switch to Developer view
+3. Switch to Developer view
    
-2. Click on **+Add** just under Developer
+4. Make sure you are under `dev` project 
    
-3. Make sure you are under `dev` project 
+5. Click on **Pipelines** option and then click on **ocp-gitp-git** pipeline
    
-4. Click on **Pipelines** option and then click on **ocp-gitp-git** pipeline
-   
-5. In the **Actions** menu, click on **Edit Pipeline**
+6. In the **Actions** menu, click on **Edit Pipeline**
    
    ![](images/edit-pl.png)
 
-6. Select the ``deploy`` step and click on the ``+`` mark next to it, to add a sequential task
+7. Select the ``deploy`` step and click on the ``+`` mark next to it, to add a sequential task
    
    ![](images/add-seq-step.png)
 
-7. A new task will appear and join the pipeline 
-8. Click on the **Add task** and in the search text box type ``openshift``
-9. Select this, click on **Add and install**
+8. A new task will appear and join the pipeline 
+9. Click on the **Add task** and in the search text box type ``openshift``
+10. Select this, click on **Add and install**
    
    ![](images/search-openshift-client-install.png)
 
-10. On the right-hand side the task property window will open 
-11. Enter the following fields:
+11. On the right-hand side the task property window will open 
+12. Enter the following fields:
     
     - **Display name (for task)** - tag-good-image
     - **SCRIPT** - copy and paste the following script

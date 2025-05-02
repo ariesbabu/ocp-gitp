@@ -142,32 +142,30 @@ In the bare-metal and virtual machine world, one would create different servers 
    - **Build Option** - Choose **Pipelines** from drop down menu
    - **Target port** - ``3000``
    - **Create a route** - leave checked
-   - **Path** - ``/ocp-gitp/ ``
+   - **Path** - leave blank
    - **Secure route** - unchecked 
    
    ![](images/dev_option1.png)
-   
-   ![](images/dev_option3.png)
 
 8. Click on **Create** button at the end after confirming the options above
 
-8. On the left hand side pane, click on **Pipelines**
+9. On the left hand side pane, click on **Pipelines**
    
-9. Click on **Last run** pipeline run (PLR) corresponding to your **ocp-gitp-git** pipeline you created
+10. Click on **Last run** pipeline run (PLR) corresponding to your **ocp-gitp-git** pipeline you created
     
    ![](images/lr_plr.png)
 
-10. You can see which step of the pipeline you are at
+11. You can see which step of the pipeline you are at
     
     ![](images/plr_details.png)
 
-11. Click on the **Logs** tab to see detailed logs at any point of the pipeline
+12. Click on the **Logs** tab to see detailed logs at any point of the pipeline
     
     ![](images/plr_logs.png)
 
     Since our pipeline has successfully rolled out our NodeJS application (our documentation website), let us check out if we are able to access it
 
-12. Click on **Topology** option, and click on the URL on your application as shown here, this is a route created by the pipeline for application access
+13. Click on **Topology** option, and click on the URL on your application as shown here, this is a route created by the pipeline for application access
     
     ![](images/plr_topology_app_access.png)
     

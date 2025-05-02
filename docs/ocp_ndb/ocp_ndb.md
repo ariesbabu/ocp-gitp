@@ -353,7 +353,7 @@ We will use curl command to get the Era's cluster UUID in this section.
 1. Logon to the  Linux Tools VM using your credentials
    
 2. Set the env for NDB VMs IP address 
-=
+   
    ```mdx-code-block
    <Tabs>
    <TabItem value="Template command">
@@ -425,16 +425,44 @@ Create a NDB compute profile that can be used for our Postgres database
    ```bash 
    NDB_SERVER_PASSWORD="xxxxxxx"
    NDB_CREDS_HASH=$(echo admin:$NDB_SERVER_PASSWORD | base64)
-   echo $NDB_CREDS_HASH
    ```
 2. Send a REST call to NDB VM to create the compute profile
 
    ```bash
-   curl -k -X POST \
-     https://${NDB_IP}/v0.9/profiles \
-     -H 'Content-Type: application/json' \
-     -H 'Authorization: Basic ${NDB_CREDS_HASH}' \
-     -d \	'{"type":"Compute","topology":"ALL","dbVersion":"ALL","systemProfile":false,"properties":[{"name":"CPUS","value":"4","secure":false,"description":"Number of CPUs in the VM"},{"name":"CORE_PER_CPU","value":"2","secure":false,"description":"Number of cores per CPU in the VM"},{"name":"MEMORY_SIZE","value":"16","secure":false,"description":"Total memory (GiB) for the VM"}],"name":"DEFAULT_OOB_SMALL_COMPUTE","description":""}'
+   curl -v -k -X POST \
+     "https://${NDB_IP}/v0.9/profiles" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Basic ${NDB_CREDS_HASH}" \
+     -d @- <<EOF
+   {
+     "type": "Compute",
+     "topology": "ALL",
+     "dbVersion": "ALL",
+     "systemProfile": false,
+     "properties": [
+       {
+         "name": "CPUS",
+         "value": "4",
+         "secure": false,
+         "description": "Number of CPUs in the VM"
+       },
+       {
+         "name": "CORE_PER_CPU",
+         "value": "2",
+         "secure": false,
+         "description": "Number of cores per CPU in the VM"
+       },
+       {
+         "name": "MEMORY_SIZE",
+         "value": "8",
+         "secure": false,
+         "description": "Total memory (GiB) for the VM"
+       }
+     ],
+     "name": "DEFAULT_OOB_SMALL_COMPUTE",
+     "description": ""
+   }
+   EOF
    ```
 
 ### Create Postgres Database using the NDB Operator
