@@ -17,7 +17,7 @@ Deploy this VM on your assigned cluster if directed to do so as part of **Lab Se
 
 :::caution
 
-Check if ``ubuntu 24.04`` exists first before deploying. 
+Check if ``ubuntu 24.04`` image exists first before deploying.
 
 If you are in a lab environment, only one participant needs to add this.
 
@@ -55,7 +55,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 3.  Under **Disks** select **Attach Disk**
     -   **Type** - DISK
     -   **Operation** - Clone from Image
-    -   **Image** - Ubuntu-image-*.qcow2
+    -   **Image** - ubuntu-2x.xx-*.qcow2
     -   **Capacity** - 100 GiB
     -   **Bus Type** - leave at default SCSI Setting
 4.  Click **Save**
