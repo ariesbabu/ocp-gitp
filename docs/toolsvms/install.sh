@@ -19,11 +19,15 @@ cert: true
 '
   ["$BASE_DIR/.local/share/code-server/User/settings.json"]='
 {
-    "security.workspace.trust.enabled": false,
+    "security.workspace.trust.enabled": true,  # Enable workspace trust
     "workbench.panel.defaultLocation": "bottom",
     "workbench.colorTheme": "Default Dark Modern",
     "workbench.startupEditor": "none",
     "telemetry.enableTelemetry": false,
+    "editor.formatOnSave": true,
+    "[yaml]": {
+      "editor.formatOnSave": false
+    },
     "update.mode": "none"
 }
 '

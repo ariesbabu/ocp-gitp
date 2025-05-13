@@ -25,6 +25,10 @@ cert: true
     "workbench.colorTheme": "Default Dark Modern",
     "workbench.startupEditor": "none",
     "telemetry.enableTelemetry": false,
+    "editor.formatOnSave": true,
+    "[yaml]": {
+      "editor.formatOnSave": false
+    },
     "update.mode": "none"
 }
 '
