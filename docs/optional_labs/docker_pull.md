@@ -27,7 +27,7 @@ This creates a file named .dockerconfigjson in the current directory ``.``
 Merge the New Registry Credentials
 Edit the .dockerconfigjson file to include the new registry credentials. The file is a JSON object with an auths key. Add an entry for your registry:
 
-```json
+```json  {7,8,9}
 {
   "auths": {
     "<existing-registry>": {
@@ -44,7 +44,7 @@ Edit the .dockerconfigjson file to include the new registry credentials. The fil
 
 Example:
 
-```json
+```json {19,20,21}
 {
     "auths": {
         "cloud.openshift.com": {

@@ -13,9 +13,9 @@ BASE_DIR="$HOME"
 # Define file paths, content, ownership, and permissions
 declare -A files=(
   ["$BASE_DIR/.config/code-server/config.yaml"]='
-bind-addr: 127.0.0.1:8080  # Only bind to localhost
+bind-addr: 0.0.0.0:443  # Only bind to localhost
 auth: password
-password: your-strong-password-here  # Replace with a strong password
+password: _password  # Replace with a strong password
 cert: true
 '
   ["$BASE_DIR/.local/share/code-server/User/settings.json"]='
