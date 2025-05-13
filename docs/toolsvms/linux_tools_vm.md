@@ -38,34 +38,34 @@ If you are in a lab environment, only one participant needs to add this.
 
 :::caution
 
-Only deploy the VM once with your *Initials* in the VM name, it does not need to be cleaned up as part of any lab completion.
+Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxrules.win/) tool) in the VM name.
 
 :::
 
 1. In **Prism Central** > select **Menu** > **Compute and Storage > VMs**, and click **Create VM**
 
-1.  Fill out the following fields:
+2.  Fill out the following fields:
     -   **Name** - ocpuserXX-Linux-ToolsVM 
     -   **Description** - (Optional) Description for your VM.
     -   **Number of VMs** - 1
     -   **CPU(s)** - 4
     -   **Number of Cores per CPU** - 1
     -   **Memory** - 4 GiB
-2.  Click **Next**
-3.  Under **Disks** select **Attach Disk**
+3.  Click **Next**
+4.  Under **Disks** select **Attach Disk**
     -   **Type** - DISK
     -   **Operation** - Clone from Image
-    -   **Image** - ubuntu-2x.xx-*.qcow2
+    -   **Image** - ``ubuntu-24.04-server-cloudimg-amd64.img``
     -   **Capacity** - 100 GiB
     -   **Bus Type** - leave at default SCSI Setting
-4.  Click **Save**
-5.  Under **Networks** select **Attach to Subnet**
+5.  Click **Save**
+6.  Under **Networks** select **Attach to Subnet**
     -   **VLAN Name** - primary-XXX-XXXX
     -   **Network Connection State** - Connected
     -   **Assignment Type** - Assign with DHCP
-6.  Click **Save**
-7.  Click **Next** at the bottom
-8.  In **Management** section
+7.  Click **Save**
+8.  Click **Next** at the bottom
+9.  In **Management** section
     -   **Categories** - leave blank
     -   **Timezone** - leave at default UTC
     -   **Guest Customization** - 
@@ -78,7 +78,9 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 
           <summary>Do you need to create a SSH key pair?</summary>
            
-           You can use any online ssh key generator if you are using Windows. Execute the following commands in you are in a Linux / Mac environment to generate a private key.
+           Execute the following commands in a terminal you are in a Linux / Mac environment to generate a private key.
+
+           Use PowerShell in windows environments.
     
            ```bash
            ssh-keygen -t rsa -b 2048 -C "Created for Linux Tools VM"
@@ -95,7 +97,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 
         - Paste the following script in the script window once you have access to your ssh key-pair.
         
-           ```yaml title="Remember to change to your hostname ocpuserXX-LinuxToolsVM"
+           ```yaml {24} title="Remember to change to your hostname ocpuserXX-LinuxToolsVM"
            #cloud-config
            hostname: ocpuserXX-LinuxToolsVM
            package_update: true
@@ -110,7 +112,7 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
              - nmap
            runcmd:
             - systemctl stop ufw && systemctl disable ufw
-            - 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install.sh | bash"'
+            - 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install_vscode_password.sh | bash"'
            users:
              - default
              - name: ubuntu
@@ -123,22 +125,34 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
            ```
 
 
-9. Click on **Next**
-10. Click **Create VM** at the bottom
-11. Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
-12. Select your *ocpuserXX*-Linux-ToolsVM
-13. Click update and change the added disk size to 40 GB
-14. Under **Actions** drop-down menu, choose **Power On**
+10. Click on **Next**
+11. Click **Create VM** at the bottom
+12. Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
+13. Select your *ocpuserXX*-Linux-ToolsVM
+14. Click update and change the added disk size to 40 GB
+15. Under **Actions** drop-down menu, choose **Power On**
 
     :::note
     It may take up to 10 minutes for the VM to be ready.
     
-    You can watch the console of the VM from Prism Central to make sure all the clouinit script has finished running.
+    You can watch the console of the VM from Prism Central to make sure all the cloudinit script has finished running.
     :::
 
-15. Get the IP address of the jumphost VM
-16. 
+16. Get the IP address of the jumphost VM
+
 ### Connect to you Jumpbox using VSCode
+
+<Tabs>
+<TabItem value="VSCode on Browser" label="VSCode on Browser">
+
+```mdx-code-block
+#### Connect to you Jumpbox using VSCode on Browser using Password
+
+:::caution
+
+The code-server will take a few minutes to come online.
+
+:::
 
 1. In you browser visit the following URL
    
@@ -157,6 +171,121 @@ Only deploy the VM once with your *Initials* in the VM name, it does not need to
 
       </TabItem>
    </Tabs>
+
+2. Enter ``_password`` as the password
+
+2. Open the following file in VSCode Explorer window
+
+   ```bash
+   /home/ubuntu/.config/code-server/config.yaml
+   ```
+4. Change the password to your desired password
+   
+   ```bash {3}
+   bind-addr: 0.0.0.0:443  # Only bind to localhost
+   auth: password
+   password: _desired_password # Replace with a strong password
+   cert: true
+   ```
+
+5. Restart VSCode server daemon
+
+   ```bash
+   sudo systemctl restart code-server@$USER
+   ```
+
+   :::caution
+   This will take a minute or so
+   :::
+
+6. Connect to VSCode on the browser and login using the new password 
+
+</TabItem>
+
+<TabItem value="VSCode on Mac/PC" label="VSCode on Mac/PC (Faster)">
+
+```mdx-code-block
+#### Connect to you Jumpbox using VSCode on Mac/PC using SSH Key
+
+If you already have VSCode installed on your workstation (PC/Mac) follow these instructions to connect:
+
+1. In VSCode, click on Settings menu icon (gear icon) :gear: > **Settings** > **Extensions**
+2. In the search window search for **Remote SSH**
+3. Install the [Remote-SSH Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) from VSCode Marketplace
+4. click on the **Install** button for the extenstion.
+
+5. From your workstation, open **Visual Studio Code**.
+
+6. Click **View > Command Palette**.
+
+    ![](images/1.png)
+
+7. Click on **+ Add New SSH Host**
+
+    ![](images/2.png)
+
+8. Type ``ssh ubuntu@jumphost_VM-IP-ADDRESS``and hit **Enter**.
+
+    ![](images/2b.png)
+
+9. Select the location to update the config file.
+
+   <Tabs>
+      <TabItem value="Mac Location" label="Mac Location" default>
+
+      ```bash
+      /Users/_your_username/.ssh/config
+      ```
+      </TabItem>
+      <TabItem value="PC Location" label="PC Location">
+
+      ```bash
+      C:\\Users\\_your_username\\.ssh\\config
+      ```
+
+      </TabItem>
+   </Tabs>
+
+1.  Open the ssh config file on your workstation to verify the contents. It should be similar to the following content
+
+    ```yaml
+    Host jumphost
+        HostName 10.x.x.x # IP of Jumphost
+        IdentityFile ~/.ssh/id_rsa # ssh private key location on Mac/PC
+        User ubuntu
+    ```
+
+Now that we have saved the ssh credentials, we are able to connect to the jumphost VM
+
+1. On `VSCode`, Click **View > Command Palette** and **Connect to Host**
+
+2. Select the IP address of your `Jump Host` VM
+
+3. A **New Window** :material-dock-window: will open in `VSCode`
+
+4. Click the **Explorer** button from the left-hand toolbar and select **Open Folder**.
+   
+   ![](images/4.png)
+
+5. Provide the ``$HOME/`` as the folder you want to open and click on **OK**.
+
+   :::note
+
+   Ensure that **bin** is NOT highlighted otherwise the editor will attempt to autofill ``/bin/``. You can avoid this by clicking in the path field *before* clicking **OK**.
+   :::
+
+   :::warning
+   
+   The connection may take up to 1 minute to display the root folder structure of the jumphost VM.
+
+   :::
+
+6. Accept any warning message about trusting the author of the folder
+   
+   ![](images/5.png)
+```
+</TabItem>
+</Tabs>
 
 From now we will work on the browser to access ``VSCode`` environment and Terminal
 
