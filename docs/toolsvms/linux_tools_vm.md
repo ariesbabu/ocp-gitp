@@ -129,8 +129,7 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
 11. Click **Create VM** at the bottom
 12. Go back to **Prism Central** > **Menu** > **Compute and Storage** > **VMs**
 13. Select your *ocpuserXX*-Linux-ToolsVM
-14. Click update and change the added disk size to 40 GB
-15. Under **Actions** drop-down menu, choose **Power On**
+14. Under **Actions** drop-down menu, choose **Power On**
 
     :::note
     It may take up to 10 minutes for the VM to be ready.
@@ -138,7 +137,7 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
     You can watch the console of the VM from Prism Central to make sure all the cloudinit script has finished running.
     :::
 
-16. Get the IP address of the jumphost VM
+15. Get the IP address of the jumphost VM
 
 ### Connect to you Jumpbox using VSCode
 
