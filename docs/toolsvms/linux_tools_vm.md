@@ -48,9 +48,9 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
     -   **Name** - ocpuserXX-Linux-ToolsVM 
     -   **Description** - (Optional) Description for your VM.
     -   **Number of VMs** - 1
-    -   **CPU(s)** - 4
+    -   **CPU(s)** - 6
     -   **Number of Cores per CPU** - 1
-    -   **Memory** - 4 GiB
+    -   **Memory** - 8 GiB
 3.  Click **Next**
 4.  Under **Disks** select **Attach Disk**
     -   **Type** - DISK
