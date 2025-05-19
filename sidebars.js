@@ -5,13 +5,13 @@ module.exports = {
       type: 'category',
       label: 'OCP Installation',
       items: [
-        {
-          type: 'category',
-          label: 'Nutanix Market Place Installation',
-          items: ['ocp_pc_mp/ocp_pc_mp',
-            'ocp_pc_mp/ocp_pc_mp_pre_reqs',
-            'ocp_pc_mp/ocp_pc_mp_install'],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'Nutanix Market Place Installation',
+        //   items: ['ocp_pc_mp/ocp_pc_mp',
+        //     'ocp_pc_mp/ocp_pc_mp_pre_reqs',
+        //     'ocp_pc_mp/ocp_pc_mp_install'],
+        // },
         {
           type: 'category',
           label: 'Nutanix IPI Installation',
@@ -20,13 +20,13 @@ module.exports = {
             'ocp_ipi_install/ocp_ipi_config_file',
             'ocp_ipi_install/ocp_ipi_install_cleanup'],
         },
-        {
-          type: 'category',
-          label: 'Nutanix Cloud Manager (NCM) Installation',
-          items: ['ocp_ntnx_hci/import_bp',
-            'ocp_ntnx_hci/prov_vm',
-            'ocp_ntnx_hci/ocp_vms'],
-        },
+        // {
+        //   type: 'category',
+        //   label: 'Nutanix Cloud Manager (NCM) Installation',
+        //   items: ['ocp_ntnx_hci/import_bp',
+        //     'ocp_ntnx_hci/prov_vm',
+        //     'ocp_ntnx_hci/ocp_vms'],
+        // },
       ]
     },
     'ocp_access/ocp_access',
