@@ -64,7 +64,7 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
 
 4. Logon to any CVM in your cluster and execute the following to add chosen static IPs to the **Primary** IPAM network
 
-   - Username: ubuntu
+   - Username: nutanix
    - Password: your cluster password # Use Lookup Tool to find your CVM/PE Cluster password
    
    <Tabs>
