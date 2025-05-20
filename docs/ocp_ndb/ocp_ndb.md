@@ -420,13 +420,21 @@ We will use curl command to get the Era's cluster UUID in this section.
 
 Create a NDB compute profile that can be used for our Postgres database
 
-1. Prepare base64 version of NDB login credentials
+1. In NDB > Go to Profiles
+2. Create a new profile
+   
+   - **Name** - DEFAULT_OOB_SMALL_COMPUTE
+   - **CPUS** - 4
+   - **CORE_PER_CPU** - 2
+   - **MEMORY** - 8
+  
+<!-- 1. Prepare base64 version of NDB login credentials
    
    ```bash 
    NDB_SERVER_PASSWORD="xxxxxxx"
    NDB_CREDS_HASH=$(echo admin:$NDB_SERVER_PASSWORD | base64)
    ```
-2. Send a REST call to NDB VM to create the compute profile
+1. Send a REST call to NDB VM to create the compute profile
 
    ```bash
    curl -v -k -X POST \
@@ -463,7 +471,7 @@ Create a NDB compute profile that can be used for our Postgres database
      "description": ""
    }
    EOF
-   ```
+   ``` -->
 
 ### Create Postgres Database using the NDB Operator
 

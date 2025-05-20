@@ -196,8 +196,8 @@ In this section please using the download links provided is also ok.
 1. Logon to UserXX-LinuxToolsVM 
    
 2. Go to Terminal in ``VSCode`` on the browser
-3. 
-4. Create a folder under your user name from cluster lookup site (if you are in a lab environment)
+
+3. Create a folder under your user name from cluster lookup site (if you are in a lab environment)
 
    ```bash title="Use your user number - for example ocpuser01"
    cd $HOME
@@ -207,7 +207,7 @@ In this section please using the download links provided is also ok.
    curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.16.5/openshift-client-linux-4.16.5.tar.gz
    ```
 
-5. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
+4. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
    
    ```bash
    tar xvf openshift-install-linux-4.16.5.tar.gz 
@@ -218,14 +218,14 @@ In this section please using the download links provided is also ok.
    sudo cp oc /usr/local/bin
    sudo cp openshift-install /usr/local/bin
    ```
-6. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
+5. Go to the [IPI Installer Web Console](https://console.redhat.com/openshift/install/nutanix/installer-provisioned) and click on **Copy pull secret** button
 
-7. Now that the pull secret value is in your clipboard, paste the contents string to a pull secret file in the same directory
+6. Now that the pull secret value is in your clipboard, paste the contents string to a pull secret file in the same directory
 
    ```bash
    vi pull_secret.json
    ```
-8. Make sure all the files are in the ocpuserXX directory 
+7. Make sure all the files are in the ocpuserXX directory 
 
    ```bash
    ls -l 
