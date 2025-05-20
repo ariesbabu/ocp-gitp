@@ -255,16 +255,16 @@ However, at the time of writing this lab there were issues with the Operator app
 
 7.  You will get a login page, to get the credentials, return to the shell and run the following commands:
 
-    Kasten K10 gives admin priveleges to k10-k10 service account during deployment.
+    Kasten K10 gives admin privileges to dashboardbff-svc service account during deployment.
 
     This service account will have two secrets.
 
-    We need to find the secret starting with *k10-k10-token-* and find the token value by decoding it.
+    We need to find the secret starting with *dashboardbff-svc-* and find the token value by decoding it.
 
     Run the following commands to get this:
 
     ``` bash
-    oc --namespace kasten-io create token k10-k10 --duration=48h
+    oc --namespace kasten-io create token dashboardbff-svc  --duration=48h
     ```
 
     ``` bash

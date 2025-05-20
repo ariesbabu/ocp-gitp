@@ -87,7 +87,7 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 
 11. Once installed you will see the operator in **Operator** > **Installed Operators**
 
-12. Create a NutanixCsiStorage resource to deploy your driver You can do it directly inside the Operator UI with the Create instance button or with the following resource
+12. Create a NutanixCsiStorage resource to deploy your driver You can do it directly inside the Operator UI with the **Create instance** button or with the following resource
     
     ```bash
     cat << EOF | oc apply -f -
@@ -98,10 +98,10 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
       namespace: openshift-cluster-csi-drivers
     spec: 
       ntnxInitConfigMap:
-        usePC : false
+        usePC : true
     EOF
     ```
-    
+
 This will create a NutanixCsiStorage resource to deploy your driver.
 
 You have successfully installed the Nutanix CSI operator to take care of StorageClass installation and upgrades.
