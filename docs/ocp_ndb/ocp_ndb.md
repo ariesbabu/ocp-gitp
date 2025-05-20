@@ -420,8 +420,8 @@ We will use curl command to get the Era's cluster UUID in this section.
 
 Create a NDB compute profile that can be used for our Postgres database
 
-1. In NDB > Go to Profiles
-2. Create a new profile
+1. In NDB > Go to Profiles > Compute Profile
+2. Create a new compute profile
    
    - **Name** - DEFAULT_OOB_SMALL_COMPUTE
    - **CPUS** - 4
