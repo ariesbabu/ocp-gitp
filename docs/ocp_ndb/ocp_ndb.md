@@ -283,8 +283,8 @@ In this section we will create a Postgres database using NDB Operator.
      name: your-ndb-secret
    type: Opaque
    stringData:
-     username: ndb-username
-     password: ndb-password
+     username: admin
+     password: _ndb_admin_password
    EOF
    ```
 3. Edit the manifest with your NDB server credentials and save it

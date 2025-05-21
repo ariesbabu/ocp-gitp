@@ -19,7 +19,7 @@ oc extract secret/pull-secret -n openshift-config --to=. --confirm
 Use docker user name and password hash
 
 ```bash
-echo -n 'myuser:mypassword' | base64
+echo -n '_docker_user:_docker_password' | base64
 ```
 
 This creates a file named .dockerconfigjson in the current directory ``.``
