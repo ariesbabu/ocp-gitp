@@ -87,7 +87,7 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 
 11. Once installed you will see the operator in **Operator** > **Installed Operators**
 
-12. Create a NutanixCsiStorage resource to deploy your driver You can do it directly inside the Operator UI with the **Create instance** button or with the following resource
+12. Create a NutanixCsiStorage resource to deploy your storage driver
     
     ```bash
     cat << EOF | oc apply -f -
@@ -98,7 +98,7 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
       namespace: openshift-cluster-csi-drivers
     spec: 
       ntnxInitConfigMap:
-        usePC : true
+        usePC : false
     EOF
     ```
 
@@ -165,7 +165,7 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
 
 4.  Copy the following StorageClass configuration script, modify ``Storage Container Name`` field and execute it in the command line
 
-    ```zsh {15}
+    ```zsh {19}
     cat << EOF >  storageclass.yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
@@ -184,7 +184,7 @@ Nutanix CSI can be installed using ``helm`` charts as well as you would do in an
       csi.storage.k8s.io/controller-publish-secret-name: ntnx-pe-secret
       csi.storage.k8s.io/controller-publish-secret-namespace: openshift-cluster-csi-drivers
       csi.storage.k8s.io/fstype: ext4
-      storageContainer: default-container
+      storageContainer: default    # <<< Make sure this Storage Container is present in the Nutanix cluster
       storageType: NutanixVolumes
       #description: "description added to each storage object created by the driver"
       #hypervisorAttached: ENABLED
