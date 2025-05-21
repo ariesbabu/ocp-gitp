@@ -13,7 +13,7 @@ If you want the credentials to be available cluster-wide (so all projects can pu
 Extract the Current Global Pull Secret
 
 ```bash
-oc extract secret/pull-secret -n openshift-config --to=/. --confirm
+oc extract secret/pull-secret -n openshift-config --to=. --confirm
 ```
 
 Use docker user name and password hash
