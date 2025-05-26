@@ -26,6 +26,7 @@ cert: true
     "workbench.startupEditor": "none",
     "telemetry.enableTelemetry": false,
     "editor.formatOnSave": true,
+    "json.format.enable": true,
     "[yaml]": {
       "editor.formatOnSave": false
     },
