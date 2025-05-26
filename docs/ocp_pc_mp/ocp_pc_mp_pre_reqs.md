@@ -48,13 +48,6 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
 
    > **Password**: nutanix default 
 
-3. Prepare the UserXX-LinuxToolsVM 
-   
-   ```bash
-   yum update -y
-   yum install -y bind-utils nmap
-   ```
-
 3. Find two unused static IP addresses
 
    ```bash
@@ -71,7 +64,7 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
    Host is up (-0.098s latency).
    ```
 
-2. Logon to any CVM in your cluster and execute the following to add chosen static IPs to the **Primary** IPAM network
+4. Logon to any CVM in your cluster and execute the following to add chosen static IPs to the **Primary** IPAM network
 
    - Username: nutanix
    - Password: your cluster password 

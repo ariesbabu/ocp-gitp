@@ -396,14 +396,6 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
 
 We will install a simple application to verify if the local OCP image registry is able to store container images in the S3 bucket. Verification of our setup as we go helps us setup our workload on OCP cluster without running into issues.
 
-:::info have you got (g)it? 
-Install it using the following command as we will need in the subsequent section.
-
-```bash
-yum install git -y
-```
-:::
-
 1. Create a new project (namespace) in OCP cluster
 
    ```bash
