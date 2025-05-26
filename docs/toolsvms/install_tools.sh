@@ -138,4 +138,15 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-echo "Docker installation completed successfully!"
+# Add ubuntu user to docker group
+echo "Adding user 'ubuntu' to docker group..."
+sudo usermod -aG docker ubuntu
+check_error "Failed to add user 'ubuntu' to docker group"
+
+# Verify user was added to docker group
+if ! groups ubuntu | grep -q docker; then
+    echo "Error: User 'ubuntu' was not added to docker group"
+    exit 1
+fi
+
+echo "Docker installation and user configuration completed successfully!"
