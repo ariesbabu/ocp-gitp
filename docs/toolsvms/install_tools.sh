@@ -3,38 +3,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-########################
-#### Initial Checks ####
-########################
-
-# Function to check if a command was successful
-check_error() {
-    if [ $? -ne 0 ]; then
-        echo "Error: $1"
-        exit 1
-    fi
-}
-
-# Check if script is run with sudo
-if [ "$(id -u)" -ne 0 ]; then
-    echo "Error: This script must be run as root (use sudo)"
-    exit 1
-fi
-
-# Check if apt-get is available
-if ! command -v apt-get &> /dev/null; then
-    echo "Error: apt-get not found. This script requires an Ubuntu-based system."
-    exit 1
-fi
-
 ################
 #### Docker ####
 ################
-
-# Update package index
-echo "Updating package index..."
-apt-get update
-check_error "Failed to update package index"
 
 # Install prerequisite packages
 echo "Installing prerequisite packages..."
@@ -192,78 +163,75 @@ fi
 #### code-server ####
 #####################
 
-# Define the base directory for the ubuntu user
-BASE_DIR="/home/ubuntu"
+# Define the base directory based on the current user
+BASE_DIR="$HOME"
 
 # Define file paths, content, ownership, and permissions
 declare -A files=(
-  ["$BASE_DIR/.config/code-server/config.yaml"]="bind-addr: 0.0.0.0:443  # Only bind to localhost
+  ["$BASE_DIR/.config/code-server/config.yaml"]='
+bind-addr: 0.0.0.0:443  # Only bind to localhost
 auth: password
 password: _password  # Replace with a strong password
 cert: true
-"
-  ["$BASE_DIR/.local/share/code-server/User/settings.json"]="{
-    \"security.workspace.trust.enabled\": true,
-    \"workbench.panel.defaultLocation\": \"bottom\",
-    \"workbench.colorTheme\": \"Default Dark Modern\",
-    \"workbench.startupEditor\": \"none\",
-    \"telemetry.enableTelemetry\": false,
-    \"editor.formatOnSave\": true,
-    \"json.format.enable\": true,
-    \"[yaml]\": {
-      \"editor.formatOnSave\": false
+'
+  ["$BASE_DIR/.local/share/code-server/User/settings.json"]='
+{
+    "security.workspace.trust.enabled": true,  # Enable workspace trust
+    "workbench.panel.defaultLocation": "bottom",
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.startupEditor": "none",
+    "telemetry.enableTelemetry": false,
+    "editor.formatOnSave": true,
+    "json.format.enable": true,
+    "[yaml]": {
+      "editor.formatOnSave": false
     },
-    \"update.mode\": \"none\"
+    "update.mode": "none"
 }
-"
-  ["$BASE_DIR/.local/share/code-server/workspace.code-workspace"]="{
-    \"folders\": [
+'
+  ["$BASE_DIR/.local/share/code-server/workspace.code-workspace"]='
+{
+    "folders": [
         {
-            \"path\": \"$BASE_DIR\"
+            "path": "'"$BASE_DIR"'"
         }
     ],
-    \"settings\": {
-        \"security.workspace.trust.untrustedFiles\": \"prompt\",
-        \"security.workspace.trust.enabled\": true
+    "settings": {
+        "security.workspace.trust.untrustedFiles": "prompt",  # Prompt for untrusted files
+        "security.workspace.trust.enabled": true
     }
 }
-"
-  ["$BASE_DIR/.local/share/code-server/coder.json"]="{
-    \"query\": {
-        \"folder\": \"$BASE_DIR\"
+'
+  ["$BASE_DIR/.local/share/code-server/coder.json"]='
+{
+    "query": {
+        "folder": "'"$BASE_DIR"'"
     },
-    \"lastVisited\": {
-        \"url\": \"$BASE_DIR/.local/share/code-server/User/workspace.code-workspace\",
-        \"workspace\": true
+    "lastVisited": {
+        "url": "'"$BASE_DIR"'/.local/share/code-server/User/workspace.code-workspace",
+        "workspace": true
     }
 }
-"
+'
 )
 
 # Set ownership and permissions
-OWNER="ubuntu:ubuntu"
-PERMISSIONS="0600"
+OWNER="$USER:$USER"
+PERMISSIONS="0600"  # More restrictive permissions
 
 # Create directories and write files
 for path in "${!files[@]}"; do
-    # Create directory if it doesn't exist
-    echo "Creating directory for $path..."
-    mkdir -p "$(dirname "$path")"
-    check_error "Failed to create directory for $path"
+  # Create directory if it doesn't exist
+  mkdir -p "$(dirname "$path")"
 
-    # Write content to the file
-    echo "Writing content to $path..."
-    echo "${files[$path]}" > "$path"
-    check_error "Failed to write content to $path"
+  # Write content to the file
+  echo "${files[$path]}" > "$path"
 
-    # Set ownership and permissions
-    echo "Setting ownership and permissions for $path..."
-    chown "$OWNER" "$path"
-    check_error "Failed to set ownership for $path"
-    chmod "$PERMISSIONS" "$path"
-    check_error "Failed to set permissions for $path"
+  # Set ownership and permissions
+  chown "$OWNER" "$path"
+  chmod "$PERMISSIONS" "$path"
 
-    echo "File $path created and configured."
+  echo "File $path created and configured."
 done
 
 # Install code-server
