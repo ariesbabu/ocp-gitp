@@ -22,3 +22,4 @@ yarn-error.log*
 # Temporary files
 # /docs/ocp_topology
 cloudinit.yaml
+sample_cloudinit.yaml
