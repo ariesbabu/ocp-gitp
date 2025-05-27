@@ -97,43 +97,39 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
 
         - Paste the following script in the script window once you have access to your ssh key-pair.
         
-           ```yaml {2,37} title="Remember to change to your hostname ocpuserXX-LinuxToolsVM"
-           #cloud-config
-           hostname: ocpuserXX-LinuxToolsVM
-           package_update: true
-           package_upgrade: true
-           package_reboot_if_required: true
-           packages:
-             - open-iscsi
-             - nfs-common
-             - git
-             - jq
-             - bind-utils
-             - nmap
-           runcmd:
-             - systemctl stop ufw && systemctl disable ufw
-             - 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install_tools.sh | bash"'
-             - [sudo, apt, install, -y, ca-certificates, curl, gnupg, lsb-release]
-             - [sudo, mkdir, -p, /etc/apt/keyrings]
-             - [curl, -fsSL, https://download.docker.com/linux/ubuntu/gpg, '|', sudo, gpg, --dearmor, -o, /etc/apt/keyrings/docker.gpg]
-             - [echo, "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable", '|', sudo, tee, /etc/apt/sources.list.d/docker.list, '>', '/dev/null']
-             - [sudo, apt, update]
-             - [sudo, apt, install, -y, docker-ce, docker-ce-cli, containerd.io, docker-compose-plugin]
-             - [sudo, usermod, -aG, docker, ubuntu]
-             - 'curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
-             - chmod +x /usr/local/bin/kubectl
-             - 'curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
-             - eject
-           users:
-             - default
-             - name: ubuntu
-               groups: sudo
-               shell: /bin/bash
-               sudo:
-                 - 'ALL=(ALL) NOPASSWD:ALL'
-               ssh-authorized-keys: 
-               - ssh-rsa XXXXXX.... # Replace XXXXX with your ssh key-pair
-           ```
+         ```yaml {2,22} title="Remember to change to your hostname ocpuserXX-LinuxToolsVM"
+         #cloud-config
+         hostname: ocpuserXX-LinuxToolsVM                    # << Change to your user name >>
+         package_update: true
+         package_upgrade: true
+         package_reboot_if_required: true
+         packages:
+           - open-iscsi
+           - nfs-common
+           - git
+           - jq
+           - bind-utils
+           - nmap
+           - docker.io
+         users:
+           - default
+           - name: ubuntu
+             groups: sudo
+             shell: /bin/bash
+             sudo:
+               - 'ALL=(ALL) NOPASSWD:ALL'
+             ssh-authorized-keys: 
+             - ssh-rsa AAAAB3Nxxxxxxxx ...                  # << Paste your SSH public key >>
+         runcmd:
+           - systemctl stop ufw && systemctl disable ufw
+           - usermod -aG docker ubuntu
+           - 'curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
+           - chmod +x /usr/local/bin/kubectl
+           - 'curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
+           - 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install_vscode_tools.sh | bash"'
+           - eject
+           - reboot
+         ```
 
 
 10. Click on **Next**
