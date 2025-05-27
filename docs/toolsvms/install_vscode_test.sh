@@ -30,13 +30,6 @@ sudo chmod +x /usr/local/bin/kubectx
 sudo curl -Lo /usr/local/bin/kubens https://github.com/ahmetb/kubectx/releases/latest/download/kubens
 sudo chmod +x /usr/local/bin/kubens
 
-
-####################
-#### kubeswitch ####
-####################
-sudo curl -Lo /usr/local/bin/switcher https://github.com/danielfoehrKn/kubeswitch/releases/latest/download/switcher_${OS}_amd64
-sudo chmod +x /usr/local/bin/switcher
-
 #####################
 #### code-server ####
 #####################
