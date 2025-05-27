@@ -5,7 +5,7 @@ IFS=$'\n\t'
 #################################
 #### kubectl bash-completion ####
 #################################
-sudo yum install -y bash-completion
+sudo apt-get install -y bash-completion
 echo 'source /usr/share/bash-completion/bash_completion' >>~/.bashrc
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 
