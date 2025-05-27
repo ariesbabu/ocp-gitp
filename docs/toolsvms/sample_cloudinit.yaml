@@ -53,11 +53,11 @@ users:
     ssh-authorized-keys: 
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGD8G3rihOrlVjdiayQy/6TX3tGiLZrIBAwtsgpeq/BsY3uprTalg7VFuwa/hqDtWxU7ewHPNknVjDntOBcAFXFjfs3bHc7FKJ50Bw1vfK6q3u+LSEVpy0u8gJx7AsMa26TlYUaVH2+KlgPOaSvoJYuHy3Zwshw8dLK3Qx29dDSxhotAJivZE8TT4jL+Be60y1E72zCUzWzJFfldMwlgyxw323r6awgxmGYlqUoz3ljkHI9Xflb9fMkBWCYhDDv2y7dHEc3W1vRokKvd4bFpbWUFJbEiwOj4PFTUqoLKhqmCmjbjJBmkWeA2qDzjoxzI/16T1CigFZDdAdMTIDa/KD lb
 runcmd:
-- systemctl --now enable docker
-- usermod -aG docker ubuntu
-- 'curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
-- chmod +x /usr/local/bin/kubectl
-- 'curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
-- 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install-tools.sh | bash"'
-- eject
-- reboot
+  - systemctl stop ufw && systemctl disable ufw
+  - usermod -aG docker ubuntu
+  - 'curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
+  - chmod +x /usr/local/bin/kubectl
+  - 'curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash'
+  - 'su - ubuntu -c "curl -fsSL https://raw.githubusercontent.com/ariesbabu/ocp-gitp/refs/heads/main/docs/toolsvms/install_vscode_test.sh | bash"'
+  - eject
+  - reboot
