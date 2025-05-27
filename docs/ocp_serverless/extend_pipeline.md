@@ -89,7 +89,7 @@ Let's do this!
       oc scale --replicas=3 dc $(params.APP_NAME)
       oc delete svc $(params.APP_NAME)
       oc expose dc $(params.APP_NAME) --type=ClusterIP --target-port=3000 --port=3000
-      oc expose svc $(params.APP_NAME) --path='/ocp-gitp/'
+      oc expose svc $(params.APP_NAME) --path='/'
       ```
     - **VERSION** - latest  
 
@@ -107,125 +107,155 @@ Let's do this!
     2. Click on **YAML** tab
 
     ```yaml title="Note the params, tasks and workspaces"
-    apiVersion: tekton.dev/v1beta1
+    apiVersion: tekton.dev/v1
     kind: Pipeline
     metadata:
-    creationTimestamp: '2023-05-19T07:14:14Z'
-    generation: 6
-    labels:
+      creationTimestamp: '2025-05-27T05:58:03Z'
+      generation: 2
+      labels:
         app.kubernetes.io/instance: ocp-gitp-git
         app.kubernetes.io/name: ocp-gitp-git
         operator.tekton.dev/operand-name: openshift-pipelines-addons
         pipeline.openshift.io/runtime: nodejs
-        pipeline.openshift.io/runtime-version: latest
+        pipeline.openshift.io/runtime-version: 20-minimal-ubi8
         pipeline.openshift.io/type: kubernetes
-    name: ocp-gitp-git
-    namespace: dev
-    resourceVersion: '8187256'
-    uid: b16628eb-a21f-483f-a00f-502b9c712d23
+      managedFields:
+        - apiVersion: tekton.dev/v1
+          fieldsType: FieldsV1
+          fieldsV1:
+            'f:metadata':
+              'f:labels':
+                .: {}
+                'f:app.kubernetes.io/instance': {}
+                'f:app.kubernetes.io/name': {}
+                'f:operator.tekton.dev/operand-name': {}
+                'f:pipeline.openshift.io/runtime': {}
+                'f:pipeline.openshift.io/runtime-version': {}
+                'f:pipeline.openshift.io/type': {}
+            'f:spec':
+              .: {}
+              'f:finally': {}
+              'f:params': {}
+              'f:tasks': {}
+              'f:workspaces': {}
+          manager: Mozilla
+          operation: Update
+          time: '2025-05-27T06:39:08Z'
+      name: ocp-gitp-git
+      namespace: dev
+      resourceVersion: '347269'
+      uid: 9e12fac5-19fa-4a13-be7c-93505503a3f5
     spec:
-    params:
+      params:
         - default: ocp-gitp-git
-        name: APP_NAME
-        type: string
-        - default: 'https://github.com/nutanix-japan/ocp-gitp.git'
-        name: GIT_REPO
-        type: string
+          name: APP_NAME
+          type: string
+        - default: 'https://github.com/ariesbabu/ocp-gitp.git'
+          name: GIT_REPO
+          type: string
         - name: GIT_REVISION
-        type: string
+          type: string
         - default: 'image-registry.openshift-image-registry.svc:5000/dev/ocp-gitp-git'
-        name: IMAGE_NAME
-        type: string
+          name: IMAGE_NAME
+          type: string
         - default: .
-        name: PATH_CONTEXT
-        type: string
-        - default: latest
-        name: VERSION
-        type: string
-    tasks:
+          name: PATH_CONTEXT
+          type: string
+        - default: 20-minimal-ubi8
+          name: VERSION
+          type: string
+      tasks:
         - name: fetch-repository
-        params:
-            - name: url
-            value: $(params.GIT_REPO)
-            - name: revision
-            value: $(params.GIT_REVISION)
-            - name: subdirectory
-            value: ''
-            - name: deleteExisting
-            value: 'true'
-        taskRef:
-            kind: ClusterTask
-            name: git-clone
-        workspaces:
+          params:
+            - name: URL
+              value: $(params.GIT_REPO)
+            - name: REVISION
+              value: $(params.GIT_REVISION)
+            - name: SUBDIRECTORY
+              value: ''
+            - name: DELETE_EXISTING
+              value: 'true'
+          taskRef:
+            params:
+              - name: kind
+                value: task
+              - name: name
+                value: git-clone
+              - name: namespace
+                value: openshift-pipelines
+            resolver: cluster
+          workspaces:
             - name: output
-            workspace: workspace
+              workspace: workspace
         - name: build
-        params:
+          params:
             - name: IMAGE
-            value: $(params.IMAGE_NAME)
-            - name: TLSVERIFY
-            value: 'false'
-            - name: PATH_CONTEXT
-            value: $(params.PATH_CONTEXT)
+              value: $(params.IMAGE_NAME)
+            - name: TLS_VERIFY
+              value: 'false'
+            - name: CONTEXT
+              value: $(params.PATH_CONTEXT)
             - name: VERSION
-            value: $(params.VERSION)
-        runAfter:
+              value: $(params.VERSION)
+          runAfter:
             - fetch-repository
-        taskRef:
-            kind: ClusterTask
-            name: s2i-nodejs
-        workspaces:
+          taskRef:
+            params:
+              - name: kind
+                value: task
+              - name: name
+                value: s2i-nodejs
+              - name: namespace
+                value: openshift-pipelines
+            resolver: cluster
+          workspaces:
             - name: source
-            workspace: workspace
+              workspace: workspace
         - name: deploy
-        params:
+          params:
             - name: SCRIPT
-            value: oc rollout status deploy/$(params.APP_NAME)
-        runAfter:
+              value: oc rollout status deploy/$(params.APP_NAME)
+          runAfter:
             - build
-        taskRef:
-            kind: ClusterTask
-            name: openshift-client
-        - name: tag-good-image
-        params:
+          taskRef:
+            params:
+              - name: kind
+                value: task
+              - name: name
+                value: openshift-client
+              - name: namespace
+                value: openshift-pipelines
+            resolver: cluster
+        - name: tag-good-name
+          params:
             - name: SCRIPT
-            value: >-
-                oc tag dev/$(params.APP_NAME):latest
-                dev/$(params.APP_NAME):promote-stage
+              value: 'oc tag dev/$(params.APP_NAME):latest dev/$(params.APP_NAME):promote-stage'
             - name: VERSION
-            value: latest
-        runAfter:
+              value: latest
+          runAfter:
             - deploy
-        taskRef:
+          taskRef:
             kind: Task
             name: openshift-client
         - name: deploy-to-stage
-        params:
+          params:
             - name: SCRIPT
-            value: >-
+              value: |-
                 oc project stage
-    
                 oc delete all --selector app=$(params.APP_NAME)
-    
-                oc new-app dev/$(params.APP_NAME):promote-stage -n stage
-                --as-deployment-config
-    
+                oc new-app dev/$(params.APP_NAME):promote-stage -n stage --as-deployment-config
                 oc scale --replicas=3 dc $(params.APP_NAME)
-    
                 oc delete svc $(params.APP_NAME)
-    
-                oc expose dc $(params.APP_NAME) --type=ClusterIP --target-port=3000
-                --port=3000
-    
-                oc expose svc $(params.APP_NAME) --path='/ocp-gitp/'
+                oc expose dc $(params.APP_NAME) --type=ClusterIP --target-port=3000 --port=3000
+                oc expose svc $(params.APP_NAME) --path='/'
             - name: VERSION
-            value: latest
-        runAfter:
-            - tag-good-image
-        taskRef:
+              value: '4.7'
+          runAfter:
+            - tag-good-name
+          taskRef:
             kind: Task
             name: openshift-client
-    workspaces:
+      workspaces:
         - name: workspace
     ```
     ```mdx-code-block
