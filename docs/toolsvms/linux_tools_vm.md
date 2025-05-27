@@ -295,7 +295,7 @@ Now that we have saved the ssh credentials, we are able to connect to the jumpho
 
 From now we will work on the browser to access ``VSCode`` environment and Terminal
 
-## Install Utilities on Jumphost VM
+<!-- ## Install Utilities on Jumphost VM
 
 We have compiled a list of utilities that needs to be installed on the jumphost VM to use for the rest of the lab. We have affectionately called it as ``nai-llm`` utilities. Use the following method to install these utilities:
 
@@ -375,6 +375,6 @@ We have compiled a list of utilities that needs to be installed on the jumphost 
 
     :::tip
 
-    Restart the jumpbox host if ``ubuntu`` user has permission issues using ``docker`` commands.
+    Restart the jumpbox host if ``ubuntu`` user has permission issues using ``docker`` commands. -->
 
 Now the jumphost VM is ready with all the tools to deploy other sections on this site. 
