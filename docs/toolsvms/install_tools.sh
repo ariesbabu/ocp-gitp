@@ -3,6 +3,25 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+################
+#### kubectl ###
+################
+
+# Install kubectl
+echo "Installing kubectx..."
+curl -Lo /usr/local/bin/kubectx https://github.com/ahmetb/kubectx/releases/latest/download/kubectx
+check_error "Failed to download kubectx"
+
+# Set permissions for kubectx
+chmod +x /usr/local/bin/kubectx
+check_error "Failed to set permissions for kubectx"
+
+# Verify kubectx installation
+if ! command -v kubectx &> /dev/null; then
+    echo "Error: kubectx installation verification failed"
+    exit 1
+fi
+
 #############################
 #### kubectl Completion ####
 #############################
@@ -30,25 +49,6 @@ if [ ! -f /home/ubuntu/.bashrc ]; then
     exit 1
 fi
 
-
-################
-#### kubectl ###
-################
-
-# Install kubectl
-echo "Installing kubectx..."
-curl -Lo /usr/local/bin/kubectx https://github.com/ahmetb/kubectx/releases/latest/download/kubectx
-check_error "Failed to download kubectx"
-
-# Set permissions for kubectx
-chmod +x /usr/local/bin/kubectx
-check_error "Failed to set permissions for kubectx"
-
-# Verify kubectx installation
-if ! command -v kubectx &> /dev/null; then
-    echo "Error: kubectx installation verification failed"
-    exit 1
-fi
 
 ################
 #### kubectx ####
