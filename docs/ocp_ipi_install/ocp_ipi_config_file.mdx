@@ -276,5 +276,19 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
    ```bash
    cat manifests/cluster-proxy-01-config.yaml
    ```
+
+   Make sure the trustedCA's name is `user-ca-bundle`
+
+   ```yml {8}
+   apiVersion: config.openshift.io/v1
+   kind: Proxy
+   metadata:
+     creationTimestamp: null
+     name: cluster
+   spec:
+     trustedCA:
+       name: user-ca-bundle
+   status: {}
+   ```
   
    We will now move on to the IPI deployment part.

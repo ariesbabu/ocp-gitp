@@ -203,15 +203,15 @@ In this section please using the download links provided is also ok.
    cd $HOME
    mkdir ocpuserXX # e.g. `mkdir ocpuser01` / mkdir ocpuser01
    cd ocpuserXX # e.g. cd ocpuser01
-   curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.16.5/openshift-install-linux-4.16.5.tar.gz  
-   curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.16.5/openshift-client-linux-4.16.5.tar.gz
+   curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
+curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-install-linux.tar.gz
    ```
 
 4. Extract the binaries and copy them to ``/usr/local/bin`` for pathless access
    
    ```bash
-   tar xvf openshift-install-linux-4.16.5.tar.gz 
-   tar xvf openshift-client-linux-4.16.5.tar.gz
+   tar xvf openshift-install-linux.tar.gz 
+   tar xvf openshift-client-linux.tar.gz
    ```
    ```bash title="Adding to path"
    sudo cp kubectl /usr/local/bin

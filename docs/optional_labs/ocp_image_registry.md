@@ -342,7 +342,7 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
     {"op": "remove", "path": "/spec/storage" },
     {"op": "add", "path": "/spec/storage", "value":
     {"s3":
-    {"bucket": "ocpuserXX-registry",                       ### <<< REMEMBER TO USE YOUR BUCKET NAME
+    {"bucket": "ocpuser01-registry",                       ### <<< REMEMBER TO USE YOUR BUCKET NAME
     "regionEndpoint": "https://ntnx-objects.ntnxlab.local",
     "encrypt": false, 
     "region": "us-east-1"}}}]'
