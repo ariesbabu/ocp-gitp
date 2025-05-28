@@ -293,7 +293,24 @@ Now that we have saved the ssh credentials, we are able to connect to the jumpho
 </TabItem>
 </Tabs>
 
+
+
+### VSCode Terminal
+
 From now we will work on the browser to access ``VSCode`` environment and Terminal
+
+1. From VSCode hamburger **menu** 
+2. Choose **Terminal** > **New Terminal**
+
+   ![](images/new_terminal.png)
+
+3. For best visibility, place the Terminal on the right instead of the bottom
+4. Choose hamburger **menu** > **View**
+5. Choose **Appearance** > **Panel Position** > **Right** as shown here
+   
+   ![](images/explorer_editor_terminal.png)
+
+   This setup allows to explore the files, edit it in VSCode editor and also execute commands. 
 
 <!-- ## Install Utilities on Jumphost VM
 

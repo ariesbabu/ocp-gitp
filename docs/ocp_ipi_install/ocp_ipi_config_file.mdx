@@ -136,7 +136,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
     </div>
     </details>
     ```
-    ```yml {1,2,3,35} title="Sample install-config.yaml file - Edit the highlighted parts"
+    ```yml {1,2,3,19,35} title="Sample install-config.yaml file - Edit the highlighted parts"
     additionalTrustBundlePolicy: Always                                 # Change the value to Always
     additionalTrustBundle: |                                            # Add this key
         -----BEGIN CERTIFICATE-----                                     # Copy rootCA.crt contents here
@@ -155,7 +155,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
       hyperthreading: Enabled
       name: worker
       platform: {}
-      replicas: 3
+      replicas: 2                                                       # Change this 2 workers
     controlPlane:
       architecture: amd64
       hyperthreading: Enabled
@@ -171,7 +171,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
       - cidr: 10.128.0.0/14         
         hostPrefix: 23
       machineNetwork:
-      - cidr: 10.38.11.0/26                                             # Change to the Nutanix clusters CIDR
+      - cidr: 10.38.11.0/26                                             # Change to the Nutanix IPAM Network CIDR
       networkType: OVNKubernetes
       serviceNetwork:
       - 172.30.0.0/16
@@ -269,7 +269,7 @@ We will use your UserXX-LinuxToolsVM as a provisioning VM to deploy OCP.
 7. Check the contents of ``manifests`` and ``openshift`` directories to make sure all the files are present (including iSCSI daemon MCO config. files)
 
    ```bash
-   ls -l openshift manifests
+   ll openshift manifests
    ```
 8. Confirm the contents of the ``manifests/cluster-proxy-01-config.yaml`` file to make sure you are using ``user-ca-bundle``
 

@@ -45,17 +45,31 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
 
 3. Find two unused static IP addresses
 
-   ```bash
+   <!-- ```bash
    cd $HOME/sol-cnai-infra/; devbox init; devbox shell
    ```
    ```bash title="Add nmap"
    devbox add nmap
    nmap -v -sn  <your HPOC CIDR> # Use Lookup Tool to find your cluster CIDR
-   ```
-   ```bash title="Sample command"
-   nmap -v -sn 10.38.18.192/26
-   ```
-   ```buttonless {1,2} title="Sample output - choose the first two consecutive IPs"
+   ``` -->
+   <Tabs>
+      <TabItem value="Template Command" label="Template Command" default>
+
+      ```bash
+      nmap -v -sn 10.x.x.x/x # use Nutanix Cluster's IPAM CIDR
+      ```
+
+      </TabItem>
+      <TabItem value="Example Command" label="Example Command">
+
+      ```bash
+      nmap -v -sn 10.38.18.192/26 # use Nutanix Cluster's IPAM CIDR
+      ```
+
+      </TabItem>
+   </Tabs>
+
+   ```text {1,2} title="Sample output - choose the first two consecutive IPs"
    Nmap scan report for 10.38.18.219 [host down] 
    Nmap scan report for 10.38.18.220 [host down]
    Nmap scan report for 10.38.18.221
@@ -406,25 +420,23 @@ All this will be done on the UserXX-LinuxToolsVM.
 
 9. In UserXX-WindowsToolsPC, use Notepad to create three new files with the same names
 
-7. Copy the ouput of previous cat command of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` files into to your UserXX-WindowsToolsPC VM in any directory
+10. Copy the ouput of previous cat command of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` files into to your Mac/PC 
 
-   ![](images/certs-on-wintools.png)
-
-8. Logon to Prism Central Web GUI on the WindowsToolsVM
+11. Logon to Prism Central Web GUI on the WindowsToolsVM
 
    ```url
    https://pc.ntnxlab.local/
    ```
 
-9. Go to **Settings > SSL Certificate**
+12. Go to **Settings > SSL Certificate**
 
-10. Click on **Replace Certificate** 
+13. Click on **Replace Certificate** 
 
-11. Select **Import Key and Certificate**
+14. Select **Import Key and Certificate**
 
-12. Click **Next**
+15. Click **Next**
 
-13. Choose the following:
+16. Choose the following:
     
     > **Private Key Type** - RSA 2048 bit 
     
@@ -436,11 +448,11 @@ All this will be done on the UserXX-LinuxToolsVM.
 
    ![](images/certs-on-wintools.png)
 
-13. Click on **Import Files**
+17. Click on **Import Files**
 
     ![](images/import-certs.png)
 
-14. Prism Central GUI will accept the certificate and restart for the changes to take effect. 
+18. Prism Central GUI will accept the certificate and restart for the changes to take effect. 
 
     ![](images/pc-crt-installed.png)
 
@@ -454,19 +466,19 @@ All this will be done on the UserXX-LinuxToolsVM.
 
     :::
 
-15. To make sure that the WindowsToolsPC has the rootCA certificate installed in the local, double click on the ``rootCA.crt`` file in windows file explorer and select **install Certificate**
+19. To make sure that the WindowsToolsPC has the rootCA certificate installed in the local, double click on the ``rootCA.crt`` file in windows file explorer and select **install Certificate**
 
     ![](images/install-rootCA.png)
 
-16. Choose **Local Machine** as Store Location and click **Next**
+20. Choose **Local Machine** as Store Location and click **Next**
 
-17. Choose **Place all certificates in the following store** and click **Browse**
+21. Choose **Place all certificates in the following store** and click **Browse**
 
-18. Choose **Trusted Root Certification Authorities** and click **Next**
+22. Choose **Trusted Root Certification Authorities** and click **Next**
 
-19. Click on **Finish**
+23. Click on **Finish**
 
-20. You will notice that the browser has no warning about about an untrusted PC site 
+24. You will notice that the browser has no warning about about an untrusted PC site 
      
     :::tip
     You may need to restart your browser if this isn't showing as a trusted site.
