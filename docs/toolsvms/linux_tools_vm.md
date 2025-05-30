@@ -138,13 +138,27 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
 13. Select your *ocpuserXX*-Linux-ToolsVM
 14. Under **Actions** drop-down menu, choose **Power On**
 
-    :::note
-    It may take up to 10 minutes for the VM to be ready.
+    :::caution
+    It may take up to 10 minutes for the VM to be ready. The VM will reboot once to finish the installation process.
     
     You can watch the console of the VM from Prism Central to make sure all the cloudinit script has finished running.
+
+    Cloudinit logs are stored in /var/log/cloud-init.log
+    
+    Logon to the tools VM using SSH 
+
+    ```bash
+    ssh -l ubuntu _your_jumphost_ip # Get the IP address of the jumphost VM from Prism UI
+    ```
+    
+    Monitor the ``cloudinit`` process logs
+
+    ```bash
+    tail -f /var/log/cloud-init.log
+    ```
     :::
 
-15. Get the IP address of the jumphost VM
+15. Get the IP address of the jumphost VM from Prism UI
 
 ### Connect to you Jumpbox using VSCode
 

@@ -135,36 +135,6 @@ This way developers can easily integrate VM based databases in their regular mic
    ```bash
    oc get po -n cert-manager -w 
    ```
-   
-<!-- 7. We will install go language to be able to deploy the software
-
-   :::caution Go version?
-
-   At the time of writing this lab Go was 1.18.8 
-
-   Make sure to download the stable version from [here](https://go.dev/doc/install).
-   :::
-
-   ```bash title="Download and install Go"
-   wget https://go.dev/dl/go1.18.8.linux-amd64.tar.gz
-   rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.8.linux-amd64.tar.gz
-   ```
-   ```bash title="Make sure the downloaded file is healthy"
-   sha256sum go1.18.8.linux-amd64.tar.gz
-   ```
-   ```bash title="Compare output to the hash in the download site"
-   4d854c7bad52d53470cf32f1b287a5c0c441dc6b98306dea27358e099698142a  go1.18.8.linux-amd64.tar.gz
-   ```
-   ```bash title="Add Go to path/env"
-   export PATH=$PATH:/usr/local/go/bin
-   source ~/.bash_profile
-   ```
-   ```bash title="Check Go version"
-   go version
-   ```
-   ```bash title="Install build tools"
-   yum groupinstall "Development Tools"
-   ``` -->
 
 ### Install the NDB Operator for OCP
 
@@ -222,38 +192,6 @@ This way developers can easily integrate VM based databases in their regular mic
    ```
    
    :::
-
-<!-- 1. Change to the downloaded NDB opertor git repo folder (if not already there)
-   
-    ```bash 
-    cd /home/ubuntu/ndb-operator
-    ```
-
-2. Install the NDB Operator/Controller on OCP
-
-    ```bash
-    make deploy
-    ```
-    ```text title="Output - make sure there are no errors"
-    /home/nutanix/ndb-operator/bin/controller-gen rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
-    test -s /home/nutanix/ndb-operator/bin/kustomize || { curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash -s -- 4.5.5 /home/nutanix/ndb-operator/bin; }
-    cd config/manager && /home/nutanix/ndb-operator/bin/kustomize edit set image controller=ghcr.io/nutanix-cloud-native/ndb-operator/controller:v0.0.2
-    /home/nutanix/ndb-operator/bin/kustomize build config/default | kubectl apply -f -
-    namespace/ndb-operator-system created
-    customresourcedefinition.apiextensions.k8s.io/databases.ndb.nutanix.com created
-    serviceaccount/ndb-operator-controller-manager created
-    role.rbac.authorization.k8s.io/ndb-operator-leader-election-role created
-    clusterrole.rbac.authorization.k8s.io/ndb-operator-manager-role created
-    clusterrole.rbac.authorization.k8s.io/ndb-operator-metrics-reader created
-    clusterrole.rbac.authorization.k8s.io/ndb-operator-proxy-role created
-    rolebinding.rbac.authorization.k8s.io/ndb-operator-leader-election-rolebinding created
-    clusterrolebinding.rbac.authorization.k8s.io/ndb-operator-manager-rolebinding created
-    clusterrolebinding.rbac.authorization.k8s.io/ndb-operator-proxy-rolebinding created
-    configmap/ndb-operator-manager-config created
-    service/ndb-operator-controller-manager-metrics-service created
-    Warning: would violate PodSecurity "restricted:v1.24": unrestricted capabilities (containers "kube-rbac-proxy", "manager" must set securityContext.capabilities.drop=["ALL"]), seccompProfile (pod or containers "kube-rbac-proxy", "manager" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
-    deployment.apps/ndb-operator-controller-manager created 
-    ``` -->
 
 ## Create NDB Postgres DB 
 
@@ -428,50 +366,6 @@ Create a NDB compute profile that can be used for our Postgres database
    - **CORE_PER_CPU** - 2
    - **MEMORY** - 8
   
-<!-- 1. Prepare base64 version of NDB login credentials
-   
-   ```bash 
-   NDB_SERVER_PASSWORD="xxxxxxx"
-   NDB_CREDS_HASH=$(echo admin:$NDB_SERVER_PASSWORD | base64)
-   ```
-1. Send a REST call to NDB VM to create the compute profile
-
-   ```bash
-   curl -v -k -X POST \
-     "https://${NDB_IP}/v0.9/profiles" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Basic ${NDB_CREDS_HASH}" \
-     -d @- <<EOF
-   {
-     "type": "Compute",
-     "topology": "ALL",
-     "dbVersion": "ALL",
-     "systemProfile": false,
-     "properties": [
-       {
-         "name": "CPUS",
-         "value": "4",
-         "secure": false,
-         "description": "Number of CPUs in the VM"
-       },
-       {
-         "name": "CORE_PER_CPU",
-         "value": "2",
-         "secure": false,
-         "description": "Number of cores per CPU in the VM"
-       },
-       {
-         "name": "MEMORY_SIZE",
-         "value": "8",
-         "secure": false,
-         "description": "Total memory (GiB) for the VM"
-       }
-     ],
-     "name": "DEFAULT_OOB_SMALL_COMPUTE",
-     "description": ""
-   }
-   EOF
-   ``` -->
 
 ### Create Postgres Database using the NDB Operator
 
@@ -883,6 +777,7 @@ We have only modified the implementation to suit deployment in a OCP cluster wit
    deployment.apps/react-deployment created
    service/react-cluster-ip-service created
    ```
+
 2. Make sure all the pods are running 
    
    ```bash title="Make sure all pods are running"
@@ -959,13 +854,34 @@ You can access the application through the OCP Routes.
 
 ### Testing Front End React Application 
 
-2. Logon to your Windows Tools VM 
-   
-    > **Username** - administrator@ntnxlab.local
+1. Add to the hosts file entry on your Mac/PC for accessing OCP UI with the following content:
 
-    > **Password** - nutanix default
+    <Tabs groupId="Hosts File">
+    <TabItem value="Template Hosts File" label="Template Hosts File">
+ 
+     ```bash {5}
+     10.x.x.x       pc.ntnxlab.local
+     10.x.x.x       console-openshift-console.apps.ocpuser0X.ntnxlab.local
+     10.x.x.x       oauth-openshift.apps.ocpuser0X.ntnxlab.local 
+     10.x.x.x       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
+     10.x.x.x       flower.apps.ocpuser04.ntnxlab.local
+     ```
+ 
+    </TabItem>
+    <TabItem value="Example Hosts Filed" label="Example Hosts File">
+ 
+     ```bash {5}
+     10.42.83.7         pc.ntnxlab.local
+     10.42.83.107       console-openshift-console.apps.ocpuser01.ntnxlab.local
+     10.42.83.107       oauth-openshift.apps.ocpuser01.ntnxlab.local 
+     10.42.83.107       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
+     10.42.83.107       flower.apps.ocpuser04.ntnxlab.local
+     ```
+    </TabItem>
+    </Tabs>
 
-3. Open the following URL in Chrome browser to access the Front End React application
+
+2. Open the following URL in Chrome browser to access the Front End React application
    
     ```url 
     http://flower.apps.ocpuserXX.ntnxlab.local/
@@ -989,7 +905,7 @@ You can access the application through the OCP Routes.
     </Tabs>
     ```
 
-4. Enter the following credentials and click on **SIGN IN**
+3. Enter the following credentials and click on **SIGN IN**
 
     > **Username** - admin
 
@@ -997,7 +913,7 @@ You can access the application through the OCP Routes.
 
     ![](images/react-splash.png)
    
-5. Move the sliders across and click on **Predict** to get flower names based on their physical attributes
+4. Move the sliders across and click on **Predict** to get flower names based on their physical attributes
 
     ![](images/react-prediction.png)
 

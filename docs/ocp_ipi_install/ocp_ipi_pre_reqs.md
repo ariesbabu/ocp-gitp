@@ -41,7 +41,7 @@ We will first find two IPs for OCP ``api`` and ``apps`` ingress endpoints in our
    10.38.18.192/26
    ```
 
-2. Logon to your UserXX-LinuxToolsVM Terminal in the browser using ``code-server`` that you installed in the previous section
+2. Logon to your ``UserXX-LinuxToolsVM`` Terminal in the browser using ``code-server`` that you installed in the previous section
 
 3. Find two unused static IP addresses
 
@@ -107,7 +107,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
 - Main domain -  ``ntnxlab.local`` (this gets created with your HPOC reservation)
   - Sub domain - ``ocpuserXX.ntnxlab.local`` (e.g. ocpuser01, ocpuser02, etc, is your OCP cluster's name)
 
-1. Logon to the AutoAD windows VM 
+1. Logon to the ``AutoAD`` windows VM 
 
    > **Username**: administrator
 
@@ -119,7 +119,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
 
    The IP addresses in the following commands are used as an example. You should use IP address details that belong to your HPOC cluster. 
    
-   For information on locating your cluster IP see [Lookup](https://lookup.howntnx.win) website.
+   For information on locating your cluster IP see [Lookup](https://lookupamer.apj-cxrules.win) website.
    
    :::
    
@@ -166,7 +166,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
     </Tabs>
     ```
 
-3. Test name resolution for added entries
+3. Test name resolution for added entries from ``AutoAD`` VM
 
    ```PowerShell {6}
    nslookup api.ocpuser01.ntnxlab.local
@@ -192,6 +192,7 @@ Your OCP cluster's name becomes a subdomain in your DNS zone ``ntnxlab.local``. 
    Name: pc.ntnxlab.local
    Address: 10.38.3.201
    ```
+4. Test name resolution for added entries from ``UserXX-LinuxToolsVM``
 
 ### Downloading OCP Tools 
 
@@ -207,7 +208,7 @@ In this section please using the download links provided is also ok.
 :::
 
 
-1. Logon to UserXX-LinuxToolsVM 
+1. Logon to ``UserXX-LinuxToolsVM`` 
    
 2. Go to Terminal in ``VSCode`` on the browser
 
@@ -216,7 +217,7 @@ In this section please using the download links provided is also ok.
    ```bash title="Use your user number - for example ocpuser01"
    cd $HOME
    mkdir ocpuserXX # e.g. `mkdir ocpuser01` / mkdir ocpuser01
-   cd ocpuserXX # e.g. cd ocpuser01
+   cd ocpuserXX    # e.g. cd ocpuser01
    curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
 curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-install-linux.tar.gz
    ```
@@ -259,19 +260,19 @@ Only one person needs to do this section for generate and install SSL certificat
 
 If you are sharing a HPOC for multiple users, then you need to do this section only once. Decide with other participants sharing your cluster before proceeding.
 
-Share the ``rootCA.crt`` certificate with the other users so they can use this to create OCP cluster.
+If you are the certificate admin, share the ``rootCA.crt`` certificate with the other users so they can use this to create OCP cluster.
 
 :::
 
 In this section we will do the following:
 
-- Create a Root CA on your UserXX-LinuxToolsVM
+- Create a Root CA on your ``UserXX-LinuxToolsVM``
 - Create a Certificate Signing Request (CSR) for Prism Central 
 - Sign the CSR using Root CA's private key
 
-All this will be done on the UserXX-LinuxToolsVM.
+All this will be done on the ``UserXX-LinuxToolsVM``.
 
-1. In the UserXX-LinuxToolsVM, Create a the Root CA certificates
+1. In the ``UserXX-LinuxToolsVM``, Create a the Root CA certificates
 
    ```bash
    openssl genrsa -des3 -out rootCA.key 2048
@@ -410,7 +411,7 @@ All this will be done on the UserXX-LinuxToolsVM.
    rootCA.key                         ## Root CA's private key
    ```
    
-8. ``cat`` out the contents of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+8. ``cat`` out the contents of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to your Mac/PC workstation in separate files
 
    ```buttonless
    cat rootCA.crt
@@ -418,15 +419,52 @@ All this will be done on the UserXX-LinuxToolsVM.
    cat pc.ntnxlab.local.crt
    ```
 
-9. In UserXX-WindowsToolsPC, use Notepad to create three new files with the same names
+9. Create a hosts file entry on your Mac/PC for Prism Central's IP with the following content:
+    
+    <Tabs groupId="Method">
+    <TabItem value="Mac Command" label="Mac Command">
 
-10. Copy the ouput of previous cat command of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` files into to your Mac/PC 
+    ```bash
+    sudo vi /etc/hosts
+    ```
 
-11. Logon to Prism Central Web GUI on the WindowsToolsVM
+    </TabItem>
+    <TabItem value="PC Command" label="PC Command">
 
-   ```url
-   https://pc.ntnxlab.local/
-   ```
+    ```PowerShell
+    notepad C:\Windows\System32\drivers\etc\hosts
+    ```
+    </TabItem>
+    </Tabs>
+
+    ```bash title="Hosts file content"
+    10.x.x.x   pc.ntnxlab.local
+    ```
+   
+10. Clear Mac/PC DNS Cache
+    
+    <Tabs groupId="Method">
+    <TabItem value="Mac Command" label="Mac Command">
+
+    ```bash
+    sudo dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
+    ```
+
+    </TabItem>
+    <TabItem value="PC Command" label="PC Command">
+
+    ```PowerShell
+    ipconfig /flushdns
+    ```
+    </TabItem>
+    </Tabs>
+
+11. Logon to Prism Central Web GUI on the Mac/PC using Chrome browser
+
+    ```url
+    https://pc.ntnxlab.local/
+    ```
 
 12. Go to **Settings > SSL Certificate**
 
@@ -446,11 +484,7 @@ All this will be done on the UserXX-LinuxToolsVM.
     
     > **CA Certificate/Chain** - ``rootCA.crt``
 
-   ![](images/certs-on-wintools.png)
-
 17. Click on **Import Files**
-
-    ![](images/import-certs.png)
 
 18. Prism Central GUI will accept the certificate and restart for the changes to take effect. 
 
@@ -466,7 +500,7 @@ All this will be done on the UserXX-LinuxToolsVM.
 
     :::
 
-19. To make sure that the WindowsToolsPC has the rootCA certificate installed in the local, double click on the ``rootCA.crt`` file in windows file explorer and select **install Certificate**
+<!-- 19. To make sure that the WindowsToolsPC has the rootCA certificate installed in the local, double click on the ``rootCA.crt`` file in windows file explorer and select **install Certificate**
 
     ![](images/install-rootCA.png)
 
@@ -486,7 +520,7 @@ All this will be done on the UserXX-LinuxToolsVM.
 
     ![](images/trusted-pc.png)
 
-    You have completed the configuring SSL certificate pre-requisites for IPI installation. 
+    You have completed the configuring SSL certificate pre-requisites for IPI installation.  -->
 
 ### Setting up Cloud Credential Operator Utility (CCOCTL)
 
@@ -494,7 +528,7 @@ Setting up of is necessary for Nutanix cluster credentials to be used with OCP c
 
 Refer to [Cloud Credential Operator CCO](https://docs.openshift.com/container-platform/4.7/authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.html) for more information. 
 
-1. In the UserXX-LinuxToolsVM, download and setup ``ccoctl`` using the following commands
+1. In the ``UserXX-LinuxToolsVM``, download and setup ``ccoctl`` using the following commands
 
    ```bash
    cd $HOME/ocpuserXX # e.g. cd $HOME/ocpuser01

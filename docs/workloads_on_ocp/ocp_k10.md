@@ -251,7 +251,31 @@ However, at the time of writing this lab there were issues with the Operator app
     </Tabs>
     ```
 
-6.  Copy the URL and paste in a browser in your **WindowsToolsVM**
+5. Add to the hosts file entry on your Mac/PC for accessing OCP UI with the following content:
+
+    <Tabs groupId="Hosts File">
+    <TabItem value="Template Hosts File" label="Template Hosts File">
+ 
+     ```bash {4}
+     10.x.x.x       pc.ntnxlab.local
+     10.x.x.x       console-openshift-console.apps.ocpuser0X.ntnxlab.local
+     10.x.x.x       oauth-openshift.apps.ocpuser0X.ntnxlab.local 
+     10.x.x.x       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
+     ```
+ 
+    </TabItem>
+    <TabItem value="Example Hosts Filed" label="Example Hosts File">
+ 
+     ```bash {4}
+     10.42.83.7         pc.ntnxlab.local
+     10.42.83.107       console-openshift-console.apps.ocpuser01.ntnxlab.local
+     10.42.83.107       oauth-openshift.apps.ocpuser01.ntnxlab.local 
+     10.42.83.107       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
+     ```
+    </TabItem>
+    </Tabs>
+
+6.  Copy the URL and paste in a browser in your **Mac/PC**
 
 7.  You will get a login page, to get the credentials, return to the shell and run the following commands:
 

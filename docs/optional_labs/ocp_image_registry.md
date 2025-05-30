@@ -81,6 +81,22 @@ In this section we will add nutanix objects store's DNS records for lookup by OC
 
 We will need to install SSL certificates on the pre-provisioned ``nutanix-objects`` store to be able to use it as a OCP registry storage and to avoid other security threats.
 
+:::danger Sharing a Nutanix Cluster?
+
+Only one person needs to do this section for generate and install SSL certificates for Objects Store.
+
+If you are sharing a HPOC for multiple users, then you need to do this section only once. Decide with other participants sharing your cluster before proceeding.
+
+If you are the certificate admin in the cluster you are sharing with other users, create and install the follwing SSL certificates on Objects store:
+
+``ntnx-objects.ntnxlab.local.crt``
+
+``ntnx-objects.ntnxlab.local.key ``
+
+``rootCA.crt``
+
+:::
+
 1. Logon to your Linux Tools VM using ubuntu user name and password (Terminal on Mac/ Putty or PowerShell in Windows)
    
    ```bash title="Use IP address of UserXX-LinuxToolsVM"
@@ -177,29 +193,25 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
 
 1.  Go to **Prism Central** > **Objects**
 
-2.  Note down the **ntnx-objects** object store's public IP
+2.  On the top menu, click on **Access Keys**
 
-    ![](ocp_image_registry_images/object_public_ip.png)
+3.  Click on **+ Add people**
 
-3.  On the top menu, click on **Access Keys**
+4.  Select **Add people not in a directory service**
 
-4.  Click on **+ Add people**
-
-5.  Select **Add people not in a directory service**
-
-6.  Enter a email (ocpuserXX@nutanix.com) and name (ocpuserXX)
+5.  Enter a email (ocpuserXX@nutanix.com) and name (ocpuserXX)
 
     ![](ocp_image_registry_images/objects_access_key.png)
 
-7.  Click on **Next**
+6.  Click on **Next**
 
-8.  Click on **Generate Keys**
+7.  Click on **Generate Keys**
 
-9.  Once generated, click on **Download Keys**
+8.  Once generated, click on **Download Keys**
 
-10. Once downloaded, click on **Close**
+9.  Once downloaded, click on **Close**
 
-11. Open the downloaded file to verify contents
+10. Open the downloaded file to verify contents
 
     ```bash
     Username: ocpuserXX@ntnxlab.com
@@ -209,7 +221,7 @@ We will need to install SSL certificates on the pre-provisioned ``nutanix-object
     Tag: buckets-access-key-xxxxxxxxxxxxxxxxxxxx
     ```
 
-12. Store the access key and secret key in a safe place for later
+11. Store the access key and secret key in a safe place for later
 
 ### Create Buckets Storage for OCP Image Registry
 
