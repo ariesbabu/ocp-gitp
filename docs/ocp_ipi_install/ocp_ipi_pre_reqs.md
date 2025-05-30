@@ -259,9 +259,6 @@ curl -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/
 Only one person needs to do this section for generate and install SSL certificates for Prism Central.
 
 If you are sharing a HPOC for multiple users, then you need to do this section only once. Decide with other participants sharing your cluster before proceeding.
-
-If you are the certificate admin, share the ``rootCA.crt`` certificate with the other users so they can use this to create OCP cluster.
-
 :::
 
 In this section we will do the following:
@@ -334,6 +331,9 @@ All this will be done on the ``UserXX-LinuxToolsVM``.
     - On a Mac, use  ``vi`` in Terminal or ``VSCode``  (if you already have it installed)
     - On Windows PC, use `Notepad` or ``VSCode`` 
 
+    :::tip Sharing a Nutanix Cluster?
+    If you are the certificate admin, share only the ``rootCA.pem`` public certificate with the other users so they can use this to create OCP cluster on the same Nutanix Cluster. 
+    :::
 
 <!-- 1. In the ``UserXX-LinuxToolsVM``, Create a the Root CA certificates
 
