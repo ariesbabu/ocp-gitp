@@ -114,7 +114,7 @@ This will be simplest part of all, provided you have done everything correctly t
    ```
    ![](images/ipi-installed-cluster.png)
    
-   You have sucessfully installed OCP using IPI.
+   You have successfully installed OCP using IPI.
 
 :::note
 
@@ -136,7 +136,7 @@ Cleaning up (deleting) the OCP cluster should be done only in the following circ
 
 Run through the following if you would like to delete the OCP cluster. 
 
-1. In your UserXX-LinuxToolsVM 
+1. In your ``UserXX-LinuxToolsVM``
 
 2. Change to you working directory that we created before (if not there already)
 
