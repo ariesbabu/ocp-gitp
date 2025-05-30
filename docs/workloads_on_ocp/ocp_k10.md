@@ -267,10 +267,10 @@ However, at the time of writing this lab there were issues with the Operator app
     <TabItem value="Example Hosts Filed" label="Example Hosts File">
  
      ```bash {4}
-     10.42.83.7         pc.ntnxlab.local
-     10.42.83.107       console-openshift-console.apps.ocpuser01.ntnxlab.local
-     10.42.83.107       oauth-openshift.apps.ocpuser01.ntnxlab.local 
-     10.42.83.107       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
+     10.42.18.7          pc.ntnxlab.local
+     10.38.18.220       console-openshift-console.apps.ocpuser01.ntnxlab.local
+     10.38.18.220       oauth-openshift.apps.ocpuser01.ntnxlab.local 
+     10.38.18.220       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
      ```
     </TabItem>
     </Tabs>

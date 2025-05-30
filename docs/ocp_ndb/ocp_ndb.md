@@ -863,19 +863,21 @@ You can access the application through the OCP Routes.
      10.x.x.x       pc.ntnxlab.local
      10.x.x.x       console-openshift-console.apps.ocpuser0X.ntnxlab.local
      10.x.x.x       oauth-openshift.apps.ocpuser0X.ntnxlab.local 
-     10.x.x.x       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
-     10.x.x.x       flower.apps.ocpuser04.ntnxlab.local
+     10.x.x.x       k10-route-kasten-io.apps.ocpuser0X.ntnxlab.local
+     10.x.x.x       wordpress-default.apps.ocpuser0X.ntnxlab.local
+     10.x.x.x       flower.apps.ocpuser0X.ntnxlab.local
      ```
  
     </TabItem>
     <TabItem value="Example Hosts Filed" label="Example Hosts File">
  
      ```bash {5}
-     10.42.83.7         pc.ntnxlab.local
-     10.42.83.107       console-openshift-console.apps.ocpuser01.ntnxlab.local
-     10.42.83.107       oauth-openshift.apps.ocpuser01.ntnxlab.local 
-     10.42.83.107       k10-route-kasten-io.apps.ocpuser04.ntnxlab.local
-     10.42.83.107       flower.apps.ocpuser04.ntnxlab.local
+     10.42.18.7         pc.ntnxlab.local
+     10.38.18.220       console-openshift-console.apps.ocpuser01.ntnxlab.local
+     10.38.18.220       oauth-openshift.apps.ocpuser01.ntnxlab.local 
+     10.38.18.220       k10-route-kasten-io.apps.ocpuser01.ntnxlab.local
+     10.38.18.220       wordpress-default.apps.ocpuser0X.ntnxlab.local
+     10.38.18.220       flower.apps.ocpuser01.ntnxlab.local
      ```
     </TabItem>
     </Tabs>

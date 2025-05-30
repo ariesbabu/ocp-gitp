@@ -89,22 +89,57 @@ If you are sharing a HPOC for multiple users, then you need to do this section o
 
 If you are the certificate admin in the cluster you are sharing with other users, create and install the follwing SSL certificates on Objects store:
 
-``ntnx-objects.ntnxlab.local.crt``
+``ntnx-objects.ntnxlab.local.pem``
 
-``ntnx-objects.ntnxlab.local.key ``
+``ntnx-objects.ntnxlab.local-key.pem ``
 
 ``rootCA.crt``
 
 :::
 
-1. Logon to your Linux Tools VM using ubuntu user name and password (Terminal on Mac/ Putty or PowerShell in Windows)
+1. Logon to your  ``UserXX-LinuxToolsVM`` using VSCode client or on the browser
+
+2. Create public and private key certificates for ``ntnx-objects.ntnxlab.local``
+
+   ```bash
+   mkcert pc.ntnxlab.local
+   ```
+   ```bash title="Command output"
+   mkcert ntnx-objects.ntnxlab.local
+   #
+   Created a new certificate valid for the following names 📜
+    - "ntnx-objects.ntnxlab.local"
    
-   ```bash title="Use IP address of UserXX-LinuxToolsVM"
-   ssh -i ~/.ssh/id_rsa -l ubuntu _X.X.X.X
+   The certificate is at "./ntnx-objects.ntnxlab.local.pem" and the key at "./ntnx-objects.ntnxlab.local-key.pem" ✅
+   
+   It will expire on 30 August 2027
    ```
 
+8. ``cat`` out the contents of certificate files and copy them to your Mac/PC workstation in separate files
+   
+   ```buttonless
+   cat ntnx-objects.ntnxlab.local.pem
+   cat ntnx-objects.ntnxlab.local-key.pem
+   ```
 
-2. Generate certificate(.crt) and private key (.key) for your Prism Central server
+9. Create these files on Mac/PC
+    
+    - On a Mac, use  ``vi`` in Terminal or ``VSCode``  (if you already have it installed)
+    - On Windows PC, use `Notepad` or ``VSCode``
+
+4. Go to **Prism Central** > **Services** > **Objects**
+5. Select the ``ntnxlab`` object store and choose **Manage FQDNs & SSL Certificates**
+6. Click on **Replace SSL Certificate**
+7. Upload the following files:
+  
+   - Private key - ``ntnx-objects.ntnxlab.local-key.pem``
+   - Public Certificate - ``ntnx-objects.ntnxlab.local.pem``
+   - CA Certificate/Chain - ``rootCA.pem`` (This was created in the previous section during IPI pre-requisites preparation)
+
+8.  Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
+9.  Click on **Save**
+  
+<!-- 2. Generate certificate(.crt) and private key (.key) for your Nutanix Object's server
   
    :::note
 
@@ -147,7 +182,7 @@ If you are the certificate admin in the cluster you are sharing with other users
     Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
    ```
    
-3. Confirm if the SAN are populated correctly with both FQDN
+1. Confirm if the SAN are populated correctly with both FQDN
 
    ```bash
    openssl x509 -in ntnx-objects.ntnxlab.local.crt -noout -text | grep -A 1 "Subject Alternative Name"
@@ -156,7 +191,7 @@ If you are the certificate admin in the cluster you are sharing with other users
                 DNS:ntnx-objects.ntnxlab.local, DNS:ntnxlab.ntnxlab.local   # < Confirmed both FQDN are present
    ```
 
-4. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
+2. List the contents of the directory to make sure ``ntnx-objects.ntnxlab.local.crt``, ``ntnx-objects.ntnxlab.local.key`` are present
 
    ```bash
    ls -l *.crt *.key | awk '{print $9}'
@@ -168,25 +203,25 @@ If you are the certificate admin in the cluster you are sharing with other users
    rootCA.key                                   ## Root CA's private key
    ```
    
-5. ``cat`` out the contents of ``rootCA.crt``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
+3. ``cat`` out the contents of ``rootCA.crt``, ``ntnx-objects.ntnxlab.local.key`` and ``ntnx-objects.ntnxlab.local.crt`` and copy them to the UserXX-WindowsToolsPC in separate files
 
    ```buttonless
    cat rootCA.crt
    cat ntnx-objects.ntnxlab.local.key
    cat ntnx-objects.ntnxlab.local.crt
-   ```
+   ``` -->
 
-6. Go to **Prism Central** > **Services** > **Objects**
-7. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
-8. Click on **Replace SSL Certificate**
-9. Upload the following files:
+<!-- 4. Go to **Prism Central** > **Services** > **Objects**
+5. Select the ``ntnx-objects`` object store and choose **Manage FQDNs & SSL Certificates**
+6. Click on **Replace SSL Certificate**
+7. Upload the following files:
   
    - Private key - ``ntnx-objects.ntnxlab.local.key``
    - Public Certificate - ``ntnx-objects.ntnxlab.local.crt``
    - CA Certificate/Chain - ``rootCA.crt`` (This was created in the previous section during IPI pre-requisites preparation)
 
-10. Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
-11. Click on **Save**
+8.  Under New FQDN, add ``ntnx-objects.ntnxlab.local`` as an additional FQDN
+9.  Click on **Save** -->
 
 
 ### Generating Access Keys for S3 Bucket

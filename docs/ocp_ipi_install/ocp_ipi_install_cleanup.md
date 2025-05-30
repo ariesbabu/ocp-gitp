@@ -98,9 +98,9 @@ This will be simplest part of all, provided you have done everything correctly t
     <TabItem value="Example Hosts Filed" label="Example Hosts File">
  
      ```bash
-     10.42.83.7      pc.ntnxlab.local
-     10.42.83.107    console-openshift-console.apps.ocpuser01.ntnxlab.local
-     10.42.83.107    oauth-openshift.apps.ocpuser01.ntnxlab.local 
+     10.42.18.7       pc.ntnxlab.local
+     10.38.18.220    console-openshift-console.apps.ocpuser01.ntnxlab.local
+     10.38.18.220    oauth-openshift.apps.ocpuser01.ntnxlab.local 
      ```
     </TabItem>
     </Tabs>

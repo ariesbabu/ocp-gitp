@@ -272,7 +272,70 @@ In this section we will do the following:
 
 All this will be done on the ``UserXX-LinuxToolsVM``.
 
-1. In the ``UserXX-LinuxToolsVM``, Create a the Root CA certificates
+1. In  ``VSCode`` terminal
+2. Install ``mkcert`` command
+
+   ```bash
+   sudo apt install -y libnss3-tools
+   sudo apt install -y mkcert
+   ```
+
+3. Create the Root CA certificates
+
+   ```bash
+   mkcert --install
+   ```
+
+   This command would install CA on the ``UserXX-LinuxToolsVM`` and add the ``rootCA.pem`` public certificate to system trust store
+
+4. Copy the contents of ``rootCA.pem`` public certificate to your present working directory
+   
+   ```bash 
+   cp /home/ubuntu/.local/share/mkcert/rootCA.pem $HOME/ocpuserXX/
+   ```
+
+5. Create public and private key certificates for ``pc.ntnxlab.local``
+
+   ```bash
+   mkcert pc.ntnxlab.local
+   ```
+   ```bash title="Command output"
+   mkcert pc.ntnxlab.local
+   #
+   Created a new certificate valid for the following names 📜
+   - "pc.ntnxlab.local"
+
+   The certificate is at "./pc.ntnxlab.local.pem" and the key at "./pc.ntnxlab.local-key.pem" ✅
+
+   It will expire on 30 August 2027
+   ```
+
+7. List the contents of the directory to make sure all the certificates are present
+
+   ```bash
+   ls -l *.pem | awk '{print $9}'
+   ```
+   ```bash title="Output"
+   pc.ntnxlab.local.pem                ## Prism Central's public certificate signed by Root CA
+   pc.ntnxlab.local-key.pem            ## Prism Central's private key
+   rootCA.pem                          ## Root CA's public certificate
+   ``` 
+   
+8. ``cat`` out the contents of certificate files and copy them to your Mac/PC workstation in separate files
+   
+   ```buttonless
+   cat pc.ntnxlab.local.pem
+   cat pc.ntnxlab.local-key.pem
+   cat rootCA.pem
+   ```
+
+9. Create these files on Mac/PC
+    
+    - On a Mac, use  ``vi`` in Terminal or ``VSCode``  (if you already have it installed)
+    - On Windows PC, use `Notepad` or ``VSCode`` 
+
+
+<!-- 1. In the ``UserXX-LinuxToolsVM``, Create a the Root CA certificates
 
    ```bash
    openssl genrsa -des3 -out rootCA.key 2048
@@ -283,7 +346,7 @@ All this will be done on the ``UserXX-LinuxToolsVM``.
    Enter PEM pass phrase:              << Enter a passphrase (of at least 4 characters)
    Verifying - Enter PEM pass phrase:  << Re-enter the passphrase for confirmation
    ```   
-2. Enter this command to create the pem file for rootCA 
+1. Enter this command to create the pem file for rootCA 
    
    ```bash
    openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.crt
@@ -396,10 +459,10 @@ All this will be done on the ``UserXX-LinuxToolsVM``.
    Certificate request self-signature ok
    subject=C = JP, ST = Chiba, L = Kashiwa, O = pc, OU = pc, CN = pc.ntnxlab.local, emailAddress = first.last@nutanix.com
    Enter pass phrase for rootCA.key:    << Enter the passphrase created during .key file generation of rootCA
-   ```
+   ``` -->
 
 
-7. List the contents of the directory to make sure pc.crt, pc.key and rootCA.crt files are present
+<!-- 7. List the contents of the directory to make sure pc.crt, pc.key and rootCA.crt files are present
 
    ```bash
    ls -l *.pem *.crt *.key | awk '{print $9}'
@@ -408,16 +471,16 @@ All this will be done on the ``UserXX-LinuxToolsVM``.
    pc.ntnxlab.local.crt               ## Prism Central's public certificate signed by Root CA
    pc.ntnxlab.local.key               ## Prism Central's private key
    rootCA.crt                         ## Root CA's public certificate
-   rootCA.key                         ## Root CA's private key
-   ```
+   rootCA.pem                         ## Root CA's private key
+   ``` -->
    
-8. ``cat`` out the contents of ``rootCA.crt``, ``pc.ntnxlab.local.key`` and ``pc.ntnxlab.local.crt`` and copy them to your Mac/PC workstation in separate files
+<!-- 8. ``cat`` out the contents of ``rootCA.crt``, ``pc.ntnxlab.local.pem`` and ``pc.ntnxlab.local-key.pem`` and copy them to your Mac/PC workstation in separate files
 
    ```buttonless
    cat rootCA.crt
+   cat pc.ntnxlab.local.crt 
    cat pc.ntnxlab.local.key
-   cat pc.ntnxlab.local.crt
-   ```
+   ``` -->
 
 9. Create a hosts file entry on your Mac/PC for Prism Central's IP with the following content:
     
@@ -478,11 +541,11 @@ All this will be done on the ``UserXX-LinuxToolsVM``.
     
     > **Private Key Type** - RSA 2048 bit 
     
-    > **Private Key** - ``pc.ntnxlab.local.key``
+    > **Private Key** - ``pc.ntnxlab.local-key.pem``
    
-    > **Public Certificate** - ``pc.ntnxlab.local.crt``
+    > **Public Certificate** - ``pc.ntnxlab.local.pem``
     
-    > **CA Certificate/Chain** - ``rootCA.crt``
+    > **CA Certificate/Chain** - ``rootCA.pem``
 
 17. Click on **Import Files**
 

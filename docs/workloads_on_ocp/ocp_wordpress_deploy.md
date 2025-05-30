@@ -129,6 +129,32 @@ We will test backup and recovery of this application in next section.
     wordpress   wordpress-default.apps.xyz9.ntnxlab.local          wordpress   80                   None
     ```
 
+1. Add to the hosts file entry on your Mac/PC for accessing Wordpress UI with the following content:
+
+    <Tabs groupId="Hosts File">
+    <TabItem value="Template Hosts File" label="Template Hosts File">
+ 
+     ```bash {5}
+     10.x.x.x       pc.ntnxlab.local
+     10.x.x.x       console-openshift-console.apps.ocpuser0X.ntnxlab.local
+     10.x.x.x       oauth-openshift.apps.ocpuser0X.ntnxlab.local 
+     10.x.x.x       k10-route-kasten-io.apps.ocpuser0X.ntnxlab.local
+     10.x.x.x       wordpress-default.apps.ocpuser0X.ntnxlab.local
+     ```
+ 
+    </TabItem>
+    <TabItem value="Example Hosts Filed" label="Example Hosts File">
+ 
+     ```bash {5}
+     10.42.18.7         pc.ntnxlab.local
+     10.38.18.220       console-openshift-console.apps.ocpuser01.ntnxlab.local
+     10.38.18.220       oauth-openshift.apps.ocpuser01.ntnxlab.local 
+     10.38.18.220       k10-route-kasten-io.apps.ocpuser01.ntnxlab.local
+     10.38.18.220       wordpress-default.apps.ocpuser01.ntnxlab.local
+     ```
+    </TabItem>
+    </Tabs>
+
 3. Copy the value of **HOST/PORT** field and prepend a `http://` to it as we not using SSL (secure) termination
 
     Your route should look as follows:
@@ -138,20 +164,22 @@ We will test backup and recovery of this application in next section.
     <TabItem value="Template URL">
     ```
     ``` url
-    http://wordpress-default.apps.<your-ocp-cluster>.ntnxlab.local
+    http://wordpress-default.apps.ocpuserXX.ntnxlab.local
     ```
     ```mdx-code-block
     </TabItem>
     <TabItem value="Sample URL">
     ```
     ``` url
-    http://wordpress-default.apps.xyz.ntnxlab.local
+    http://wordpress-default.apps.ocpuser01.ntnxlab.local
     ```
     ```mdx-code-block
     </TabItem>
     </Tabs>
     ```
-4. Copy the URL and paste in a browser in your **WindowsToolsVM**
+
+
+4. Copy the URL and paste in a browser in your **Mac/PC**
 
 5. You should see a configuration page
 
