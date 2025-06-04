@@ -264,7 +264,7 @@ We will create a bucket for backup destination
 
 1.  On the top menu, click on **Object Stores**
 
-2.  Click on **ntnx-objects**, this will open objects store management page in a separate browser tab
+2.  Click on **ntnxlab** (or other objects store) objects store, this will open objects store management page in a separate browser tab
 
 3.  Click on **Create Bucket**
 
