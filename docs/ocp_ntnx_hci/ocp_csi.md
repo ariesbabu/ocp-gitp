@@ -38,12 +38,7 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 
 ## Install Nutanix CSI Operator
 
-1.  Login to you Windows Tools VM using the following credentials;
-
-    -   **Username** - administrator@ntnxlab.local
-    -   **Password** - your HPOC password
-
-2.  Using Chrome browser browse to Console URL you obtained in the previous section.
+1.  Using Chrome browser browse to Console URL you obtained in the previous section.
 
     ```url
     https://console-openshift-console.apps.<initials>.ntnxlab.local
@@ -54,28 +49,28 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
     # https://console-openshift-console.apps.ocpuserXX.ntnxlab.local
     ```
 
-3.  Use your credentials to Login
+2.  Use your credentials to Login
 
     -   **Username** - kubeadmin
     -   **Password** - password from previous section
 
-4.  Click on **Log in** (if you are not already logged in)
+3.  Click on **Log in** (if you are not already logged in)
 
-5.  Click on **Operator** > **Operator Hub**
+4.  Click on **Operator** > **Operator Hub**
 
-6.  You will see all third party operators categorised by solution driven use cases (e.g. Big Data, Database, etc)
+5.  You will see all third party operators categorised by solution driven use cases (e.g. Big Data, Database, etc)
 
     ![](ocp_csi_images/ocp_operator_hub.png)
 
     This is in principle similar to Nutanix Calm Marketplace where you can request and install applications.
 
-7.  In the **Filter by Keyword** text box, type **Nutanix** to find the Nutanix CSI Operator
+6.  In the **Filter by Keyword** text box, type **Nutanix** to find the Nutanix CSI Operator
 
-8.  Click on the **Nutanix CSI Operator**, verify Operator version to be at least `3.3.0` and click on **Install**
+7.  Click on the **Nutanix CSI Operator**, verify Operator version to be at least `3.3.0` and click on **Install**
 
     Make sure to check the supported orchestration (RH OCP platforms)
 
-9.  In the Operator install wizard choose the following:
+8.  In the Operator install wizard choose the following:
 
     -   **Update channel** - stable
     -   **Operator recommended Namespace** - ``openshift-cluster-csi-drivers`` (automatically chosen)
@@ -83,11 +78,11 @@ In this lab, we will deploy both Nutanix Volumes and Files Storage Class and use
 
     ![](ocp_csi_images/ocp_operator_install_options.png)
 
-10. Click on **Install**
+9.  Click on **Install**
 
-11. Once installed you will see the operator in **Operator** > **Installed Operators**
+10. Once installed you will see the operator in **Operator** > **Installed Operators**
 
-12. Create a NutanixCsiStorage resource to deploy your storage driver
+11. Create a NutanixCsiStorage resource to deploy your storage driver
     
     ```bash
     cat << EOF | oc apply -f -
@@ -412,7 +407,13 @@ Here are some sample manifests to create ``pvc`` using the ``Volumes`` and ``Fil
          storage: 1Gi
     EOF
     ```
-    
+
+2. Check if the pvc is bound
+   
+   ```bash
+   oc get pvc
+   ```
+   
 <details>
 <summary>Are your pvc(s) not bound?</summary>
 <div>
