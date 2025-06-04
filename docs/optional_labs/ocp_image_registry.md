@@ -102,7 +102,7 @@ If you are the certificate admin in the cluster you are sharing with other users
 2. Create public and private key certificates for ``ntnx-objects.ntnxlab.local``
 
    ```bash
-   mkcert pc.ntnxlab.local
+   mkcert ntnx-objects.ntnxlab.local"
    ```
    ```bash title="Command output"
    mkcert ntnx-objects.ntnxlab.local

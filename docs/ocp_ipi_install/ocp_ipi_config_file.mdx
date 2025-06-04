@@ -43,28 +43,27 @@ We will use your ``UserXX-LinuxToolsVM`` as a provisioning VM to deploy OCP.
    ```
    ```buttonless title="Execution example - accept default values and no passphrase"
    Generating public/private rsa key pair.
-   Enter file in which to save the key (/root/.ssh/id_rsa): 
-   /root/.ssh/id_rsa already exists.
-   Overwrite (y/n)? y
-   Enter passphrase (empty for no passphrase):  
+   Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa): 
+   Enter passphrase (empty for no passphrase): 
    Enter same passphrase again: 
-   Your identification has been saved in /root/.ssh/id_rsa.
-   Your public key has been saved in /root/.ssh/id_rsa.pub.
+   Your identification has been saved in /home/ubuntu/.ssh/id_rsa
+   Your public key has been saved in /home/ubuntu/.ssh/id_rsa.pub
    The key fingerprint is:
-   SHA256:1gjz5zWw+aS7hiEje/pDGY2N5Y5anh6JEQYVf9GRmgs root@centos
+   SHA256:i3TtWk6hyVBmpiLZt4ZE+jNaU1ca6hUDwK9JaEQNspQ ubuntu@ocpuser10-LinuxToolsVM
    The key's randomart image is:
    +---[RSA 2048]----+
-   |  ..o.  ...o     |
-   |   . .  ..o      |
-   |    o +B.o.      |
-   |   . .E=*o +     |
-   |    .  *S.= +    |
-   |    .oBo+o = .   |
-   |    .Bo+ oo .    |
-   |    o =.. ..     |
-   |    .=o. .o.     |
+   |.o++...          |
+   |.E. o  .         |
+   |.. ...  O .      |
+   |  o=. .B B       |
+   | .+.+oB S o      |
+   |   +oB O = .     |
+   |    B = = +      |
+   |   o =   =       |
+   |  .     . .      |
    +----[SHA256]-----+
    ```
+   
 ### Creating the Installation Manifests (files)
 
 1. In your ``UserXX-LinuxToolsVM`` 
