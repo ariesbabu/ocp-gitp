@@ -178,7 +178,7 @@ In the bare-metal and virtual machine world, one would create different servers 
     Note that the documentation site NodeJS application is now hosted on your OCP cluster
 
     ```url
-    http://ocp-gitp-git-dev.apps.user02.ntnxlab.local/ocp-gitp/
+    http://ocp-gitp-git-dev.apps.user02.ntnxlab.local/
     ```
     Where:
 

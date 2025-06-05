@@ -327,7 +327,7 @@ Let's do this!
     Note that the documentation site NodeJS application is now hosted on your OCP cluster
 
     ```url
-    http://ocp-gitp-git-stage.apps.user02.ntnxlab.local/ocp-gitp/
+    http://ocp-gitp-git-stage.apps.user02.ntnxlab.local/
     ```
     Where:
 
