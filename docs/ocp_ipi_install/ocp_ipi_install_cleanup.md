@@ -11,23 +11,8 @@ This will be simplest part of all, provided you have done everything correctly t
 
 1. Start the installation of OCP cluster by executing the following
 
-    ```mdx-code-block
-    <details>
-    <summary>Would you like to see verbose installation logs?</summary>
-    <div>
-    <body>
-
-    Run the following command to start the installation of OCP cluster with verbose logging.
- 
     ```bash 
     nohup openshift-install create cluster --log-level=debug &
-    ```
-    </body>
-    </div>
-    </details>
-    
-    ```bash 
-    nohup openshift-install create cluster &
     ```
     ```bash title="Now you can follow the nohup logs to see installation progress"
     tail -f nohup.out

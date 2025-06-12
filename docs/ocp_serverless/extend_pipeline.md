@@ -268,6 +268,8 @@ Let's do this!
 2.  Click on **Save** 
     
 3.  Go to **Actions** menu, and click on **Start**
+   
+4.  Type ``main`` as git revision if prompted
     
 4.  Monitor the run in the PipelineRuns tab, and you should be able to monitor the pipeline run
     

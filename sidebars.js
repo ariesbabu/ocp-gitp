@@ -29,13 +29,13 @@ module.exports = {
         // },
       ]
     },
-    'ocp_access/ocp_access',
-    {
-      type: 'category',
-      label: 'Nutanix Storage CSI',
-      items: ['ocp_ntnx_hci/ocp_csi',
-        'optional_labs/ocp_image_registry'],
-    },
+    // 'ocp_access/ocp_access',
+    // {
+    //   type: 'category',
+    //   label: 'Nutanix Storage CSI',
+    //   items: ['ocp_ntnx_hci/ocp_csi',
+    //     'optional_labs/ocp_image_registry'],
+    // },
     {
       type: 'category',
       label: 'OCP Workload Backup and Restore',
