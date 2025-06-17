@@ -51,7 +51,7 @@ This will be simplest part of all, provided you have done everything correctly t
 3. Once the installation is done we can access OCP cluster using the following ways:
 
     ```text title="Export your kubeconfig file to env"
-    export KUBECONFIG=/home/ubuntu/auth/kubeconfig
+    export KUBECONFIG=/home/ubuntu/ocpuserXX/auth/kubeconfig # e.g KUBECONFIG=/home/ubuntu/ocpuser01/auth/kubeconfig
     ```
 
     ```bash
