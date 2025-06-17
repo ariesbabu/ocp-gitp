@@ -119,7 +119,7 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
              sudo:
                - 'ALL=(ALL) NOPASSWD:ALL'
              ssh-authorized-keys: 
-             - ssh-rsa AAAAB3Nxxxxxxxx ...                  # << Paste your SSH public key >>
+             - ssh-rsa AAAAB3Nxxxxxxxx ...                   # << Paste your SSH public key >>
          runcmd:
            - systemctl stop ufw && systemctl disable ufw
            - usermod -aG docker ubuntu
@@ -162,8 +162,8 @@ Only deploy the VM once with a username (see [Lookup](https://lookupamer.apj-cxr
 
 ### Connect to you Jumpbox using VSCode
 
-<Tabs>
-<TabItem value="VSCode on Browser" label="VSCode on Browser">
+<!-- <Tabs>
+<TabItem value="VSCode on Browser" label="VSCode on Browser"> -->
 
 ```mdx-code-block
 #### Connect to you Jumpbox using VSCode on Browser using Password
@@ -220,11 +220,11 @@ The code-server will take a few minutes to come online.
 
 6. Connect to VSCode on the browser and login using the new password 
 
-</TabItem>
+<!-- </TabItem>
 
-<TabItem value="VSCode on Mac/PC" label="VSCode on Mac/PC (Faster)">
+<TabItem value="VSCode on Mac/PC" label="VSCode on Mac/PC (Faster)"> -->
 
-```mdx-code-block
+<!-- ```mdx-code-block
 #### Connect to you Jumpbox using VSCode on Mac/PC using SSH Key
 
 If you already have VSCode installed on your workstation (PC/Mac) follow these instructions to connect:
@@ -303,9 +303,10 @@ Now that we have saved the ssh credentials, we are able to connect to the jumpho
 6. Accept any warning message about trusting the author of the folder
    
    ![](images/5.png)
-```
-</TabItem>
-</Tabs>
+``` -->
+
+<!-- </TabItem>
+</Tabs> -->
 
 
 
