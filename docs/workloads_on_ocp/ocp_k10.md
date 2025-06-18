@@ -90,7 +90,7 @@ We will start by creating a VolumeSnapshotClass kubernetes object with Nutanix C
     # Add kasten helm repo
     helm repo add kasten https://charts.kasten.io/
     # Run kasten pre-install check
-    curl https://docs.kasten.io/tools/k10_primer.sh | bash
+    curl https://docs.kasten.io/downloads/8.0.2/tools/k10_primer.sh | bash
     ```
 
 5.  You would notice output as following:
