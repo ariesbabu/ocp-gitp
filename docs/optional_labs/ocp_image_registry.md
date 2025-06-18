@@ -293,7 +293,7 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
 2. Create a connection to your OCP cluster (if not already done so)
 
    ```bash
-   export KUBECONFIG=/root/xyz/auth/kubeconfig
+   export KUBECONFIG=/home/ubuntu/ocpuserXX/auth/kubeconfig
    ```
    List the nodes in the cluster to make sure the connection is working
 
@@ -314,7 +314,7 @@ We will need to create kubernetes resources to use the Objects store as the OCP 
 11. Create a config map 
 
      ```bash
-     oc create configmap object-ca --from-file=ca-bundle.crt=rootCA.crt -n openshift-config 
+     oc create configmap object-ca --from-file=ca-bundle.crt=rootCA.pem -n openshift-config 
      ```
 
      ```buttonless title="Output"
