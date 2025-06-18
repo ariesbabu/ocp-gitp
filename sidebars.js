@@ -52,14 +52,14 @@ module.exports = {
         'ocp_serverless/ocp_serverless',
         'ocp_serverless/extend_pipeline'],
     },
-    {
-      type: 'category',
-      label: 'Multi-region Workloads',
-      items: ['ocp_topology/ocp_topology',
-        'ocp_topology/infra_topology',
-        'ocp_topology/ocp_setup',
-        'ocp_topology/multiaz_app1'],
-    },
+    // {
+    //   type: 'category',
+    //   label: 'Multi-region Workloads',
+    //   items: ['ocp_topology/ocp_topology',
+    //     'ocp_topology/infra_topology',
+    //     'ocp_topology/ocp_setup',
+    //     'ocp_topology/multiaz_app1'],
+    // },
     {
       type: 'category',
       label: 'OCP Optional Labs',
